@@ -1,10 +1,11 @@
-
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SearchBar from "@/components/SearchBar";
 import ActivityCard from "@/components/ActivityCard";
+import MapView from "@/components/map/MapView";
+import ViewToggle from "@/components/map/ViewToggle";
 import { Filter, MapPin, Sliders, Tag, Users, CalendarDays, DollarSign } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
@@ -16,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ExplorarPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showFilters, setShowFilters] = useState(false);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +32,7 @@ const ExplorarPage = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [sorting, setSorting] = useState("relevancia");
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
   
   const itemsPerPage = 9;
   
@@ -175,6 +178,14 @@ const ExplorarPage = () => {
     setPage(1);
   };
   
+  const handleViewChange = (view: "list" | "map") => {
+    setViewMode(view);
+  };
+  
+  const handleActivitySelect = (id: string) => {
+    navigate(`/actividad/${id}`);
+  };
+  
   const totalPages = Math.ceil(totalCount / itemsPerPage);
   
   const renderPagination = () => {
@@ -237,9 +248,13 @@ const ExplorarPage = () => {
       
       <div className="bg-gray-50 py-6">
         <div className="container px-4 mx-auto">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">
-            {loading ? 'Cargando actividades...' : `${totalCount} ${totalCount === 1 ? 'experiencia encontrada' : 'experiencias encontradas'}`}
-          </h1>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
+              {loading ? 'Cargando actividades...' : `${totalCount} ${totalCount === 1 ? 'experiencia encontrada' : 'experiencias encontradas'}`}
+            </h1>
+            
+            <ViewToggle view={viewMode} onViewChange={handleViewChange} />
+          </div>
           
           <div className="flex flex-col lg:flex-row gap-4">
             <SearchBar 
@@ -490,7 +505,7 @@ const ExplorarPage = () => {
               </div>
             )}
             
-            {/* Lista de actividades */}
+            {/* Lista o Mapa de actividades */}
             <div className="w-full lg:w-3/4">
               {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -499,11 +514,15 @@ const ExplorarPage = () => {
                   ))}
                 </div>
               ) : activities.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {activities.map((activity) => (
-                    <ActivityCard key={activity.id} {...activity} />
-                  ))}
-                </div>
+                viewMode === "list" ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {activities.map((activity) => (
+                      <ActivityCard key={activity.id} {...activity} />
+                    ))}
+                  </div>
+                ) : (
+                  <MapView activities={activities} onActivitySelect={handleActivitySelect} />
+                )
               ) : (
                 <div className="text-center py-12">
                   <h3 className="text-xl font-medium mb-2">No se encontraron actividades</h3>
@@ -511,7 +530,7 @@ const ExplorarPage = () => {
                 </div>
               )}
               
-              {totalPages > 1 && (
+              {viewMode === "list" && totalPages > 1 && (
                 <div className="mt-8 flex justify-center">
                   {renderPagination()}
                 </div>

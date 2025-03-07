@@ -8,8 +8,8 @@ const HeroSection = () => {
     <div className="relative">
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
-          alt="Experiencias familiares" 
+          src="https://images.unsplash.com/photo-1593430980369-68efc5a5eb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
+          alt="Familia jugando al aire libre" 
           className="h-full w-full object-cover brightness-50"
         />
       </div>
