@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,7 +10,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 
-// Definimos el tipo para los posts del blog
 interface BlogPost {
   id: string;
   title: string;
@@ -24,13 +22,11 @@ interface BlogPost {
   read_time: string;
 }
 
-// Categorías del blog
 const blogCategories = [
   "Todos", "Consejos", "Educativo", "Entretenimiento", "Gastronomía", 
   "Inspiración", "Entrevistas", "Lugares", "Manualidades", "Salud"
 ];
 
-// Datos de muestra para el blog
 const sampleBlogPosts = [
   {
     id: "1",
@@ -96,7 +92,6 @@ const BlogPage = () => {
         }
 
         if (data && data.length > 0) {
-          // Formatear los datos para que coincidan con la estructura esperada por BlogCard
           const formattedPosts: BlogPost[] = data.map(post => ({
             id: post.id,
             title: post.title,
@@ -114,7 +109,6 @@ const BlogPage = () => {
           setRecentPosts(formattedPosts);
         } else {
           console.log("No se encontraron posts en la base de datos, usando datos de muestra");
-          // Si no hay datos en la base de datos, usar los datos de muestra
           setBlogPosts(sampleBlogPosts);
           setFeaturedPosts(sampleBlogPosts);
           setRecentPosts(sampleBlogPosts);
@@ -126,7 +120,6 @@ const BlogPage = () => {
           description: "No se pudieron cargar los artículos. Por favor, inténtalo de nuevo más tarde.",
           variant: "destructive",
         });
-        // Si hay un error, usar los datos de muestra
         setBlogPosts(sampleBlogPosts);
         setFeaturedPosts(sampleBlogPosts);
         setRecentPosts(sampleBlogPosts);
@@ -140,7 +133,6 @@ const BlogPage = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implementar búsqueda filtrada cuando haya más posts
     toast({
       title: "Búsqueda realizada",
       description: `Has buscado: ${searchTerm}`,
@@ -177,13 +169,13 @@ const BlogPage = () => {
               </div>
               <div className="hidden lg:block">
                 <img 
-                  src="https://images.unsplash.com/photo-1533113354171-490d836238e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
                   alt="Familia leyendo" 
                   className="rounded-lg shadow-lg max-h-80 w-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.onerror = null;
-                    target.src = "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+                    target.src = "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
                   }}
                 />
               </div>
