@@ -31,6 +31,7 @@ const ExplorarPage = () => {
     freeOnly: false,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchDate, setSearchDate] = useState<Date | undefined>(undefined);
   const [sorting, setSorting] = useState("relevancia");
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   
@@ -49,12 +50,13 @@ const ExplorarPage = () => {
     }
     
     fetchActivities();
-  }, [location.search, page, sorting, filters]);
+  }, [location.search, page, sorting, filters, searchDate]);
   
   const fetchActivities = async () => {
     setLoading(true);
     try {
       console.log("Fetching activities with filters:", filters);
+      console.log("Search date:", searchDate);
       
       let query = supabase
         .from("activities")
@@ -77,6 +79,15 @@ const ExplorarPage = () => {
       
       if (searchQuery) {
         query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      }
+      
+      // Apply date filter if present
+      // Note: In a real application, you would have a date field in your activities table
+      // This is a placeholder for demonstration purposes
+      if (searchDate) {
+        // This is pseudo-code - your actual implementation will depend on your database schema
+        // query = query.gte("activity_date", searchDate.toISOString().split('T')[0]);
+        console.log("Would filter by date:", searchDate.toISOString().split('T')[0]);
       }
       
       // Apply sorting
@@ -118,8 +129,9 @@ const ExplorarPage = () => {
   };
   
   // Filter handlers
-  const handleSearch = (query) => {
+  const handleSearch = (query, date) => {
     setSearchQuery(query);
+    setSearchDate(date);
     setPage(1); // Reset to first page on new search
   };
   
@@ -214,6 +226,7 @@ const ExplorarPage = () => {
               className="w-full lg:w-2/3" 
               onSearch={handleSearch}
               initialValue={searchQuery}
+              initialDate={searchDate}
             />
             
             <Button 

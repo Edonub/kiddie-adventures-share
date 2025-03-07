@@ -2,8 +2,19 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import SearchBar from "./SearchBar";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleSearch = (query: string, date?: Date) => {
+    const params = new URLSearchParams();
+    if (query) params.append("query", query);
+    if (date) params.append("date", date.toISOString().split('T')[0]);
+    
+    navigate(`/explorar?${params.toString()}`);
+  };
+
   return (
     <div className="relative">
       <div className="absolute inset-0 z-0">
@@ -23,7 +34,7 @@ const HeroSection = () => {
         </p>
         
         <div className="mb-8 w-full max-w-3xl">
-          <SearchBar variant="home" />
+          <SearchBar variant="home" onSearch={handleSearch} />
         </div>
         
         <div className="flex flex-wrap items-center justify-center gap-4">

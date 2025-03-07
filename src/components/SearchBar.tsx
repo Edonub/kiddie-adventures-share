@@ -2,22 +2,28 @@
 import { useState } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Search } from "lucide-react";
+import { Search, Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
   className?: string;
-  onSearch?: (query: string) => void;
+  onSearch?: (query: string, date?: Date) => void;
   initialValue?: string;
+  initialDate?: Date;
   variant?: string;
 }
 
-const SearchBar = ({ className = "", onSearch, initialValue = "", variant }: SearchBarProps) => {
+const SearchBar = ({ className = "", onSearch, initialValue = "", initialDate, variant }: SearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState(initialValue);
+  const [date, setDate] = useState<Date | undefined>(initialDate);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSearch) {
-      onSearch(searchQuery);
+      onSearch(searchQuery, date);
     }
   };
 
@@ -29,10 +35,36 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", variant }: Sea
       <Input
         type="text"
         placeholder="Buscar experiencias, talleres, actividades..."
-        className={`pr-10 bg-white py-6 ${isHomeVariant ? 'rounded-l-lg' : ''}`}
+        className={`pr-10 bg-white py-6 ${isHomeVariant ? 'rounded-l-none rounded-r-none border-r-0' : ''}`}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+      
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button 
+            type="button"
+            variant="outline" 
+            className={cn(
+              "py-6 rounded-none border-l-0 border-r-0",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, "dd/MM/yyyy") : <span>Selecciona fecha</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            initialFocus
+            className={cn("p-3 pointer-events-auto")}
+          />
+        </PopoverContent>
+      </Popover>
+      
       <Button 
         type="submit"
         className={isHomeVariant ? "rounded-l-none" : ""}
