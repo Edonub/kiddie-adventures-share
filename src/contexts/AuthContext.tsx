@@ -23,57 +23,78 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const setData = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      // Check if user is admin
-      if (session?.user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('email, is_admin')
-          .eq('id', session.user.id)
-          .single();
-          
-        if (data && data.is_admin) {
-          setIsAdmin(true);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        // Check if user is admin
+        if (session?.user) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('email, is_admin')
+            .eq('id', session.user.id)
+            .single();
+            
+          if (error) {
+            console.error("Error fetching profile:", error);
+          } else if (data && data.is_admin) {
+            setIsAdmin(true);
+          }
         }
+      } catch (error) {
+        console.error("Error in auth context setup:", error);
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
 
     setData();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      console.log("Auth state changed:", _event, session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
-      // Check admin status on auth state change
-      if (session?.user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('email, is_admin')
-          .eq('id', session.user.id)
-          .single();
-          
-        if (data && data.is_admin) {
-          setIsAdmin(true);
+      try {
+        // Check admin status on auth state change
+        if (session?.user) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('email, is_admin')
+            .eq('id', session.user.id)
+            .single();
+            
+          if (error) {
+            console.error("Error fetching profile on auth change:", error);
+            setIsAdmin(false);
+          } else if (data && data.is_admin) {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
         } else {
           setIsAdmin(false);
         }
-      } else {
+      } catch (error) {
+        console.error("Error checking admin status:", error);
         setIsAdmin(false);
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+      toast.success("Has cerrado sesión correctamente");
+    } catch (error: any) {
+      console.error("Error signing out:", error);
+      toast.error("Error al cerrar sesión");
+    }
   };
 
   // Function to make a user admin
