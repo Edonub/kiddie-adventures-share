@@ -11,6 +11,7 @@ import ForoPage from "./pages/ForoPage";
 import BlogPage from "./pages/BlogPage";
 import AuthPage from "./pages/AuthPage";
 import AdminPage from "./pages/AdminPage";
+import SuperAdminPage from "./pages/SuperAdminPage";
 import CrearActividadPage from "./pages/CrearActividadPage";
 import ActividadDetailPage from "./pages/ActividadDetailPage";
 import NotFound from "./pages/NotFound";
@@ -31,6 +32,7 @@ function App() {
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/super-admin" element={<SuperAdminPage />} />
               <Route path="/crear-actividad" element={<CrearActividadPage />} />
               <Route path="/actividad/:id" element={<ActividadDetailPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

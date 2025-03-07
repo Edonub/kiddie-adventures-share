@@ -1,7 +1,8 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { UserIcon, PlusIcon, LogOutIcon } from "lucide-react";
+import { UserIcon, PlusIcon, LogOutIcon, ShieldIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -57,6 +58,9 @@ const Navbar = () => {
                     <Link to="/admin">Panel de Admin</Link>
                   </DropdownMenuItem>
                 )}
+                <DropdownMenuItem asChild>
+                  <Link to="/super-admin">Super Admin</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/perfil">Mi Perfil</Link>
                 </DropdownMenuItem>
