@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCard from "@/components/BlogCard";
@@ -6,83 +7,145 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2 } from "lucide-react";
 
-// Sample blog posts data
-const blogPosts = [
-  {
-    id: "1",
-    title: "10 actividades imprescindibles para hacer con niños en invierno",
-    excerpt: "Descubre las mejores actividades para disfrutar con los más pequeños durante los meses fríos del año.",
-    category: "Inspiración",
-    date: "15 mayo 2023",
-    author: "María Gómez",
-    image: "https://images.unsplash.com/photo-1610025763872-76c13223c320?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2ludGVyJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
-    readTime: "5 min"
-  },
-  {
-    id: "2",
-    title: "Cómo planificar un viaje familiar perfecto",
-    excerpt: "Guía completa con consejos prácticos para organizar un viaje en familia sin estrés y con diversión asegurada.",
-    category: "Consejos",
-    date: "2 junio 2023",
-    author: "Carlos Martínez",
-    image: "https://images.unsplash.com/photo-1551655510-955bbd123c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZmFtaWx5JTIwdHJhdmVsfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
-    readTime: "8 min"
-  },
-  {
-    id: "3",
-    title: "Entrevista: Ana López, creadora de experiencias educativas",
-    excerpt: "Conversamos con Ana López sobre cómo crear experiencias educativas memorables para los más pequeños.",
-    category: "Entrevistas",
-    date: "20 junio 2023",
-    author: "Paula Vázquez",
-    authorTitle: "Periodista educativa",
-    image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGVhY2hlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    readTime: "10 min"
-  },
-  {
-    id: "4",
-    title: "Los mejores parques infantiles de España",
-    excerpt: "Un recorrido por los parques infantiles más originales y divertidos de toda España para disfrutar en familia.",
-    category: "Lugares",
-    date: "5 julio 2023",
-    author: "Roberto Sánchez",
-    image: "https://images.unsplash.com/photo-1596997000403-f49vba4a3abb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGxheWdyb3VuZHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    readTime: "7 min"
-  },
-  {
-    id: "5",
-    title: "Recetas divertidas para cocinar con niños",
-    excerpt: "Selección de recetas fáciles y divertidas para introducir a los niños en el mundo de la cocina.",
-    category: "Gastronomía",
-    date: "14 julio 2023",
-    author: "Elena Ruiz",
-    authorTitle: "Chef especialista en cocina infantil",
-    image: "https://images.unsplash.com/photo-1605713661868-898a0c89a392?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29va2luZyUyMHdpdGglMjBraWRzfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
-    readTime: "6 min"
-  },
-  {
-    id: "6",
-    title: "Juegos educativos para desarrollar habilidades matemáticas",
-    excerpt: "Aprende cómo los juegos pueden ayudar a tus hijos a mejorar sus habilidades matemáticas de forma divertida.",
-    category: "Educativo",
-    date: "25 julio 2023",
-    author: "Javier López",
-    authorTitle: "Profesor y pedagogo",
-    image: "https://images.unsplash.com/photo-1580894908361-967195033215?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWF0aHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    readTime: "9 min"
-  },
-];
+// Definimos el tipo para los posts del blog
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  created_at: string;
+  author_name: string;
+  author_title?: string;
+  image_url: string;
+  read_time: string;
+}
 
+// Categorías del blog
 const blogCategories = [
   "Todos", "Consejos", "Educativo", "Entretenimiento", "Gastronomía", 
   "Inspiración", "Entrevistas", "Lugares", "Manualidades", "Salud"
 ];
 
-const featuredPosts = blogPosts.slice(0, 3);
-const recentPosts = [...blogPosts].sort(() => Math.random() - 0.5).slice(0, 6);
-
 const BlogPage = () => {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const { toast } = useToast();
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  useEffect(() => {
+    async function fetchBlogPosts() {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          // Formatear los datos para que coincidan con la estructura esperada por BlogCard
+          const formattedPosts: BlogPost[] = data.map(post => ({
+            id: post.id,
+            title: post.title,
+            excerpt: post.excerpt,
+            category: post.category,
+            created_at: formatDate(post.created_at),
+            author_name: post.author_name,
+            author_title: post.author_title,
+            image_url: post.image_url || 'https://images.unsplash.com/photo-1610025763872-76c13223c320?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2ludGVyJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+            read_time: post.read_time || '5 min',
+          }));
+
+          setBlogPosts(formattedPosts);
+          setFeaturedPosts(formattedPosts.slice(0, 3));
+          setRecentPosts(formattedPosts);
+        }
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+        toast({
+          title: "Error al cargar el blog",
+          description: "No se pudieron cargar los artículos. Por favor, inténtalo de nuevo más tarde.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchBlogPosts();
+  }, [toast]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implementar búsqueda filtrada cuando haya más posts
+    toast({
+      title: "Búsqueda realizada",
+      description: `Has buscado: ${searchTerm}`,
+    });
+  };
+
+  // Usar estos datos de muestra si no hay posts en la base de datos
+  const sampleBlogPosts = [
+    {
+      id: "1",
+      title: "10 actividades imprescindibles para hacer con niños en invierno",
+      excerpt: "Descubre las mejores actividades para disfrutar con los más pequeños durante los meses fríos del año.",
+      category: "Inspiración",
+      created_at: "15 mayo 2023",
+      author_name: "María Gómez",
+      image_url: "https://images.unsplash.com/photo-1610025763872-76c13223c320?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2ludGVyJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+      read_time: "5 min"
+    },
+    {
+      id: "2",
+      title: "Cómo planificar un viaje familiar perfecto",
+      excerpt: "Guía completa con consejos prácticos para organizar un viaje en familia sin estrés y con diversión asegurada.",
+      category: "Consejos",
+      created_at: "2 junio 2023",
+      author_name: "Carlos Martínez",
+      image_url: "https://images.unsplash.com/photo-1551655510-955bbd123c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZmFtaWx5JTIwdHJhdmVsfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      read_time: "8 min"
+    },
+    {
+      id: "3",
+      title: "Entrevista: Ana López, creadora de experiencias educativas",
+      excerpt: "Conversamos con Ana López sobre cómo crear experiencias educativas memorables para los más pequeños.",
+      category: "Entrevistas",
+      created_at: "20 junio 2023",
+      author_name: "Paula Vázquez",
+      author_title: "Periodista educativa",
+      image_url: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGVhY2hlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+      read_time: "10 min"
+    },
+  ];
+
+  // Si no hay posts en la base de datos, usar los de muestra
+  useEffect(() => {
+    if (!isLoading && blogPosts.length === 0) {
+      setBlogPosts(sampleBlogPosts);
+      setFeaturedPosts(sampleBlogPosts);
+      setRecentPosts([...sampleBlogPosts].sort(() => Math.random() - 0.5));
+    }
+  }, [isLoading, blogPosts.length]);
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -99,15 +162,17 @@ const BlogPage = () => {
                 <p className="text-gray-700 mb-6">
                   Descubre artículos sobre crianza, educación, actividades y mucho más para disfrutar al máximo de la vida en familia.
                 </p>
-                <div className="relative">
+                <form onSubmit={handleSearch} className="relative">
                   <Input 
                     placeholder="Buscar en el blog..." 
                     className="pl-4 pr-10 py-2 rounded-full"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <Button className="absolute right-0 top-0 rounded-full h-full bg-familyxp-primary">
+                  <Button type="submit" className="absolute right-0 top-0 rounded-full h-full bg-familyxp-primary">
                     Buscar
                   </Button>
-                </div>
+                </form>
               </div>
               <div className="hidden lg:block">
                 <img 
@@ -123,11 +188,29 @@ const BlogPage = () => {
         <section className="py-10">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Artículos destacados</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredPosts.map((post) => (
-                <BlogCard key={post.id} {...post} />
-              ))}
-            </div>
+            
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featuredPosts.map((post) => (
+                  <BlogCard 
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    category={post.category}
+                    date={post.created_at}
+                    author={post.author_name}
+                    authorTitle={post.author_title}
+                    image={post.image_url}
+                    readTime={post.read_time}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </section>
         
@@ -145,11 +228,28 @@ const BlogPage = () => {
               </TabsList>
               
               <TabsContent value="todos" className="mt-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {recentPosts.map((post) => (
-                    <BlogCard key={post.id} {...post} />
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {recentPosts.map((post) => (
+                      <BlogCard 
+                        key={post.id}
+                        id={post.id}
+                        title={post.title}
+                        excerpt={post.excerpt}
+                        category={post.category}
+                        date={post.created_at}
+                        author={post.author_name}
+                        authorTitle={post.author_title}
+                        image={post.image_url}
+                        readTime={post.read_time}
+                      />
+                    ))}
+                  </div>
+                )}
                 
                 <div className="text-center mt-8">
                   <Button className="bg-familyxp-primary">Cargar más artículos</Button>
@@ -162,7 +262,18 @@ const BlogPage = () => {
                     {blogPosts
                       .filter(post => post.category === category)
                       .map((post) => (
-                        <BlogCard key={post.id} {...post} />
+                        <BlogCard 
+                          key={post.id}
+                          id={post.id}
+                          title={post.title}
+                          excerpt={post.excerpt}
+                          category={post.category}
+                          date={post.created_at}
+                          author={post.author_name}
+                          authorTitle={post.author_title}
+                          image={post.image_url}
+                          readTime={post.read_time}
+                        />
                       ))}
                   </div>
                 </TabsContent>
