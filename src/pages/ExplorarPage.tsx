@@ -54,6 +54,8 @@ const ExplorarPage = () => {
   const fetchActivities = async () => {
     setLoading(true);
     try {
+      console.log("Fetching activities with filters:", filters);
+      
       let query = supabase
         .from("activities")
         .select("*", { count: "exact" });
@@ -99,8 +101,12 @@ const ExplorarPage = () => {
       const { data, error, count } = await query
         .range(from, to);
       
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching activities:", error);
+        throw error;
+      }
       
+      console.log("Activities fetched:", data);
       setActivities(data || []);
       setTotalCount(count || 0);
     } catch (error) {
