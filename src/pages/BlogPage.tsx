@@ -177,9 +177,14 @@ const BlogPage = () => {
               </div>
               <div className="hidden lg:block">
                 <img 
-                  src="https://images.unsplash.com/photo-1533113354171-490d836238e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFtaWx5JTIwcmVhZGluZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" 
+                  src="https://images.unsplash.com/photo-1533113354171-490d836238e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                   alt="Familia leyendo" 
                   className="rounded-lg shadow-lg max-h-80 w-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+                  }}
                 />
               </div>
             </div>
