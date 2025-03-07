@@ -12,6 +12,7 @@ import BlogPage from "./pages/BlogPage";
 import AuthPage from "./pages/AuthPage";
 import AdminPage from "./pages/AdminPage";
 import CrearActividadPage from "./pages/CrearActividadPage";
+import ActividadDetailPage from "./pages/ActividadDetailPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/crear-actividad" element={<CrearActividadPage />} />
+            <Route path="/actividad/:id" element={<ActividadDetailPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

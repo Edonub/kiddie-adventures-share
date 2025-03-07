@@ -14,6 +14,12 @@ export interface ActivityProps {
   image: string;
   ageRange: string;
   isPremium?: boolean;
+  description?: string;
+  schedule?: string;
+  duration?: string;
+  included?: string[];
+  host?: string;
+  hostDescription?: string;
 }
 
 const ActivityCard = ({
@@ -93,10 +99,10 @@ const ActivityCard = ({
             )}
           </div>
           
-          <div className="flex items-center gap-1">
-            <Calendar size={14} className="text-gray-500" />
-            <span className="text-sm text-gray-500">Reservar</span>
-          </div>
+          <Link to={`/actividad/${id}`} className="flex items-center gap-1 text-familyxp-primary">
+            <Calendar size={14} />
+            <span className="text-sm font-medium">Reservar</span>
+          </Link>
         </div>
       </div>
     </div>
