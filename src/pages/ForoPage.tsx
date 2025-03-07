@@ -126,7 +126,7 @@ const ForoPage = () => {
       <main className="flex-1 py-8">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Foro de la comunidad</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Foro de la comunidad Familea</h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Conecta con otras familias, comparte experiencias y encuentra consejos útiles para disfrutar al máximo con los más pequeños
             </p>

@@ -92,7 +92,7 @@ const BlogPage = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
-                <Badge className="bg-white text-familyxp-primary mb-4">Blog FamilyXp</Badge>
+                <Badge className="bg-white text-familyxp-primary mb-4">Blog Familea</Badge>
                 <h1 className="text-4xl font-bold text-familyxp-primary mb-4">
                   Ideas, consejos y experiencias para familias
                 </h1>
