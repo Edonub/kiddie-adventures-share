@@ -1,38 +1,42 @@
 
-import { Search, MapPin } from "lucide-react";
+import { useState } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Search } from "lucide-react";
 
 interface SearchBarProps {
   className?: string;
-  variant?: "default" | "home";
+  onSearch?: (query: string) => void;
+  initialValue?: string;
 }
 
-const SearchBar = ({ className = "", variant = "default" }: SearchBarProps) => {
+const SearchBar = ({ className = "", onSearch, initialValue = "" }: SearchBarProps) => {
+  const [searchQuery, setSearchQuery] = useState(initialValue);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSearch) {
+      onSearch(searchQuery);
+    }
+  };
+
   return (
-    <div className={`flex flex-col md:flex-row md:items-center gap-3 ${className} ${variant === "home" ? "w-full max-w-3xl bg-white p-3 rounded-lg shadow-md" : ""}`}>
-      <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-        <Input 
-          type="text" 
-          placeholder="¿Qué planes buscas?" 
-          className={`pl-10 ${variant === "home" ? "border-0 shadow-none focus:ring-0" : ""}`}
-        />
-      </div>
-      
-      <div className="relative flex-1">
-        <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-        <Input 
-          type="text" 
-          placeholder="¿Dónde buscar?" 
-          className={`pl-10 ${variant === "home" ? "border-0 shadow-none focus:ring-0" : ""}`}
-        />
-      </div>
-      
-      <Button className="bg-familyxp-primary hover:bg-familyxp-secondary">
-        Buscar
+    <form onSubmit={handleSearch} className={`relative flex items-center ${className}`}>
+      <Input
+        type="text"
+        placeholder="Buscar experiencias, talleres, actividades..."
+        className="pr-10 bg-white py-6 rounded-l-lg"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <Button 
+        type="submit"
+        className="rounded-l-none"
+      >
+        <Search className="h-5 w-5" />
+        <span className="ml-2 hidden sm:inline">Buscar</span>
       </Button>
-    </div>
+    </form>
   );
 };
 
