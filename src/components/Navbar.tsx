@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
@@ -12,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import FamilyLogo from "./FamilyLogo";
 
 const Navbar = () => {
   const { user, signOut, isAdmin } = useAuth();
@@ -20,15 +20,7 @@ const Navbar = () => {
     <nav className="w-full py-4 px-8 flex justify-between items-center bg-white shadow-sm">
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center">
-          <div className="w-8 h-8 rounded-full bg-familyxp-primary flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </div>
-          <span className="ml-2 text-xl font-bold text-familyxp-dark">Familea</span>
+          <FamilyLogo />
         </Link>
       </div>
       

@@ -1,6 +1,6 @@
-
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter } from "lucide-react";
+import FamilyLogo from "./FamilyLogo";
 
 const Footer = () => {
   return (
@@ -8,16 +8,8 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center mb-4">
-              <div className="w-8 h-8 rounded-full bg-familyxp-primary flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <span className="ml-2 text-xl font-bold text-familyxp-dark">Familea</span>
+            <div className="mb-4">
+              <FamilyLogo size="md" />
             </div>
             <p className="text-gray-600 mb-4">
               Experiencias familiares inolvidables para disfrutar con los más pequeños.
