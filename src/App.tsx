@@ -17,29 +17,32 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <BrowserRouter>
+// Ensure App is declared as a function component
+function App() {
+  return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/explorar" element={<ExplorarPage />} />
-            <Route path="/foro" element={<ForoPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/crear-actividad" element={<CrearActividadPage />} />
-            <Route path="/actividad/:id" element={<ActividadDetailPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/explorar" element={<ExplorarPage />} />
+              <Route path="/foro" element={<ForoPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/crear-actividad" element={<CrearActividadPage />} />
+              <Route path="/actividad/:id" element={<ActividadDetailPage />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
           <Toaster />
           <Sonner />
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
-  </BrowserRouter>
-);
+  );
+}
 
 export default App;
