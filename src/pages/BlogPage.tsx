@@ -30,6 +30,41 @@ const blogCategories = [
   "Inspiración", "Entrevistas", "Lugares", "Manualidades", "Salud"
 ];
 
+// Datos de muestra para el blog
+const sampleBlogPosts = [
+  {
+    id: "1",
+    title: "10 actividades imprescindibles para hacer con niños en invierno",
+    excerpt: "Descubre las mejores actividades para disfrutar con los más pequeños durante los meses fríos del año.",
+    category: "Inspiración",
+    created_at: "15 mayo 2023",
+    author_name: "María Gómez",
+    image_url: "https://images.unsplash.com/photo-1610025763872-76c13223c320?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2ludGVyJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+    read_time: "5 min"
+  },
+  {
+    id: "2",
+    title: "Cómo planificar un viaje familiar perfecto",
+    excerpt: "Guía completa con consejos prácticos para organizar un viaje en familia sin estrés y con diversión asegurada.",
+    category: "Consejos",
+    created_at: "2 junio 2023",
+    author_name: "Carlos Martínez",
+    image_url: "https://images.unsplash.com/photo-1551655510-955bbd123c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZmFtaWx5JTIwdHJhdmVsfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+    read_time: "8 min"
+  },
+  {
+    id: "3",
+    title: "Entrevista: Ana López, creadora de experiencias educativas",
+    excerpt: "Conversamos con Ana López sobre cómo crear experiencias educativas memorables para los más pequeños.",
+    category: "Entrevistas",
+    created_at: "20 junio 2023",
+    author_name: "Paula Vázquez",
+    author_title: "Periodista educativa",
+    image_url: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGVhY2hlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    read_time: "10 min"
+  },
+];
+
 const BlogPage = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
@@ -60,7 +95,7 @@ const BlogPage = () => {
           throw error;
         }
 
-        if (data) {
+        if (data && data.length > 0) {
           // Formatear los datos para que coincidan con la estructura esperada por BlogCard
           const formattedPosts: BlogPost[] = data.map(post => ({
             id: post.id,
@@ -77,6 +112,12 @@ const BlogPage = () => {
           setBlogPosts(formattedPosts);
           setFeaturedPosts(formattedPosts.slice(0, 3));
           setRecentPosts(formattedPosts);
+        } else {
+          console.log("No se encontraron posts en la base de datos, usando datos de muestra");
+          // Si no hay datos en la base de datos, usar los datos de muestra
+          setBlogPosts(sampleBlogPosts);
+          setFeaturedPosts(sampleBlogPosts);
+          setRecentPosts(sampleBlogPosts);
         }
       } catch (error) {
         console.error('Error fetching blog posts:', error);
@@ -85,6 +126,10 @@ const BlogPage = () => {
           description: "No se pudieron cargar los artículos. Por favor, inténtalo de nuevo más tarde.",
           variant: "destructive",
         });
+        // Si hay un error, usar los datos de muestra
+        setBlogPosts(sampleBlogPosts);
+        setFeaturedPosts(sampleBlogPosts);
+        setRecentPosts(sampleBlogPosts);
       } finally {
         setIsLoading(false);
       }
@@ -101,50 +146,6 @@ const BlogPage = () => {
       description: `Has buscado: ${searchTerm}`,
     });
   };
-
-  // Usar estos datos de muestra si no hay posts en la base de datos
-  const sampleBlogPosts = [
-    {
-      id: "1",
-      title: "10 actividades imprescindibles para hacer con niños en invierno",
-      excerpt: "Descubre las mejores actividades para disfrutar con los más pequeños durante los meses fríos del año.",
-      category: "Inspiración",
-      created_at: "15 mayo 2023",
-      author_name: "María Gómez",
-      image_url: "https://images.unsplash.com/photo-1610025763872-76c13223c320?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2ludGVyJTIwY2hpbGRyZW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
-      read_time: "5 min"
-    },
-    {
-      id: "2",
-      title: "Cómo planificar un viaje familiar perfecto",
-      excerpt: "Guía completa con consejos prácticos para organizar un viaje en familia sin estrés y con diversión asegurada.",
-      category: "Consejos",
-      created_at: "2 junio 2023",
-      author_name: "Carlos Martínez",
-      image_url: "https://images.unsplash.com/photo-1551655510-955bbd123c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZmFtaWx5JTIwdHJhdmVsfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
-      read_time: "8 min"
-    },
-    {
-      id: "3",
-      title: "Entrevista: Ana López, creadora de experiencias educativas",
-      excerpt: "Conversamos con Ana López sobre cómo crear experiencias educativas memorables para los más pequeños.",
-      category: "Entrevistas",
-      created_at: "20 junio 2023",
-      author_name: "Paula Vázquez",
-      author_title: "Periodista educativa",
-      image_url: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGVhY2hlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
-      read_time: "10 min"
-    },
-  ];
-
-  // Si no hay posts en la base de datos, usar los de muestra
-  useEffect(() => {
-    if (!isLoading && blogPosts.length === 0) {
-      setBlogPosts(sampleBlogPosts);
-      setFeaturedPosts(sampleBlogPosts);
-      setRecentPosts([...sampleBlogPosts].sort(() => Math.random() - 0.5));
-    }
-  }, [isLoading, blogPosts.length]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -169,7 +170,7 @@ const BlogPage = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <Button type="submit" className="absolute right-0 top-0 rounded-full h-full bg-familyxp-primary">
+                  <Button type="submit" className="absolute right-0 top-0 rounded-r-full h-full bg-familyxp-primary">
                     Buscar
                   </Button>
                 </form>
