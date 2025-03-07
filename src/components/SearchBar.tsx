@@ -8,9 +8,10 @@ interface SearchBarProps {
   className?: string;
   onSearch?: (query: string) => void;
   initialValue?: string;
+  variant?: string;
 }
 
-const SearchBar = ({ className = "", onSearch, initialValue = "" }: SearchBarProps) => {
+const SearchBar = ({ className = "", onSearch, initialValue = "", variant }: SearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState(initialValue);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -20,18 +21,21 @@ const SearchBar = ({ className = "", onSearch, initialValue = "" }: SearchBarPro
     }
   };
 
+  // Apply special styling for home variant
+  const isHomeVariant = variant === 'home';
+  
   return (
     <form onSubmit={handleSearch} className={`relative flex items-center ${className}`}>
       <Input
         type="text"
         placeholder="Buscar experiencias, talleres, actividades..."
-        className="pr-10 bg-white py-6 rounded-l-lg"
+        className={`pr-10 bg-white py-6 ${isHomeVariant ? 'rounded-l-lg' : ''}`}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <Button 
         type="submit"
-        className="rounded-l-none"
+        className={isHomeVariant ? "rounded-l-none" : ""}
       >
         <Search className="h-5 w-5" />
         <span className="ml-2 hidden sm:inline">Buscar</span>
