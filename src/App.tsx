@@ -14,6 +14,12 @@ import AdminPage from "./pages/AdminPage";
 import SuperAdminPage from "./pages/SuperAdminPage";
 import CrearActividadPage from "./pages/CrearActividadPage";
 import ActividadDetailPage from "./pages/ActividadDetailPage";
+import TerminosPage from "./pages/TerminosPage";
+import PrivacidadPage from "./pages/PrivacidadPage";
+import ContactoPage from "./pages/ContactoPage";
+import CentroAyudaPage from "./pages/CentroAyudaPage";
+import ComoFuncionaPage from "./pages/ComoFuncionaPage";
+import GruposPage from "./pages/GruposPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +41,15 @@ function App() {
               <Route path="/super-admin" element={<SuperAdminPage />} />
               <Route path="/crear-actividad" element={<CrearActividadPage />} />
               <Route path="/actividad/:id" element={<ActividadDetailPage />} />
+              
+              {/* Nuevas rutas para el footer */}
+              <Route path="/terminos" element={<TerminosPage />} />
+              <Route path="/privacidad" element={<PrivacidadPage />} />
+              <Route path="/contacto" element={<ContactoPage />} />
+              <Route path="/centro-ayuda" element={<CentroAyudaPage />} />
+              <Route path="/como-funciona" element={<ComoFuncionaPage />} />
+              <Route path="/grupos" element={<GruposPage />} />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
