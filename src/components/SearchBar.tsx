@@ -35,7 +35,7 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDate, v
       <Input
         type="text"
         placeholder="Buscar experiencias, talleres, actividades..."
-        className={`pr-10 bg-white py-6 ${isHomeVariant ? 'rounded-l-none rounded-r-none border-r-0' : ''}`}
+        className={`pr-10 bg-white py-6 w-full ${isHomeVariant ? 'rounded-l-none rounded-r-none border-r-0' : ''}`}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -46,7 +46,7 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDate, v
             type="button"
             variant="outline" 
             className={cn(
-              "py-6 rounded-none border-l-0 border-r-0",
+              "py-6 rounded-none border-l-0 border-r-0 w-full",
               !date && "text-muted-foreground"
             )}
           >
