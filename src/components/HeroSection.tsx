@@ -35,14 +35,14 @@ const HeroSection = () => {
       </div>
       
       <div className="relative z-10 flex min-h-[70vh] flex-col items-center justify-center px-4 py-16 text-center text-white">
-        <h1 className="mb-3 text-4xl font-bold md:text-5xl lg:text-6xl">
+        <h1 className="mb-3 text-3xl font-bold md:text-4xl lg:text-6xl">
           Experiencias familiares inolvidables
         </h1>
-        <p className="mb-6 max-w-2xl text-lg md:text-xl">
+        <p className="mb-6 max-w-2xl text-base md:text-lg">
           Descubre actividades únicas para disfrutar con los más pequeños y crear recuerdos que durarán toda la vida
         </p>
         
-        <div className="mb-8 w-full max-w-3xl">
+        <div className="mb-8 w-full max-w-3xl px-2 sm:px-0">
           <SearchBar variant="home" onSearch={handleSearch} />
         </div>
         

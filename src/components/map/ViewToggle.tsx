@@ -14,19 +14,19 @@ const ViewToggle = ({ view, onViewChange }: ViewToggleProps) => {
         variant={view === "list" ? "default" : "ghost"}
         size="sm"
         onClick={() => onViewChange("list")}
-        className="flex items-center gap-2"
+        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3"
       >
         <List size={16} />
-        <span className="hidden sm:inline">Lista</span>
+        <span className="text-xs sm:text-sm">Lista</span>
       </Button>
       <Button
         variant={view === "map" ? "default" : "ghost"}
         size="sm"
         onClick={() => onViewChange("map")}
-        className="flex items-center gap-2"
+        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3"
       >
         <Map size={16} />
-        <span className="hidden sm:inline">Mapa</span>
+        <span className="text-xs sm:text-sm">Mapa</span>
       </Button>
     </div>
   );

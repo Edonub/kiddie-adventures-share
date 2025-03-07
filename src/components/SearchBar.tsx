@@ -29,11 +29,11 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDateRan
   const isHomeVariant = variant === 'home';
   
   return (
-    <form onSubmit={handleSearch} className={`relative flex items-center ${className}`}>
+    <form onSubmit={handleSearch} className={`relative flex flex-col sm:flex-row items-center gap-2 sm:gap-0 ${className}`}>
       <Input
         type="text"
         placeholder="Buscar experiencias, talleres, actividades..."
-        className={`pr-10 bg-white py-6 w-full ${isHomeVariant ? 'rounded-l-none rounded-r-none border-r-0' : ''}`}
+        className={`pr-10 bg-white py-6 w-full ${isHomeVariant ? 'sm:rounded-l-none sm:rounded-r-none sm:border-r-0 rounded-lg sm:rounded-lg mb-2 sm:mb-0' : ''}`}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
@@ -42,17 +42,20 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDateRan
         initialDateRange={dateRange}
         onChange={setDateRange}
         className={cn(
-          "w-full",
-          isHomeVariant && "rounded-none border-l-0 border-r-0"
+          "w-full mb-2 sm:mb-0",
+          isHomeVariant && "sm:rounded-none sm:border-l-0 sm:border-r-0 rounded-lg sm:rounded-none"
         )}
       />
       
       <Button 
         type="submit"
-        className={isHomeVariant ? "rounded-l-none" : ""}
+        className={cn(
+          "w-full sm:w-auto",
+          isHomeVariant && "sm:rounded-l-none rounded-lg sm:rounded-l-none"
+        )}
       >
         <Search className="h-5 w-5" />
-        <span className="ml-2 hidden sm:inline">Buscar</span>
+        <span className="ml-2 inline">Buscar</span>
       </Button>
     </form>
   );

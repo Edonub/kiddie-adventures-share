@@ -92,6 +92,16 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Make all images responsive */
+  img {
+    @apply max-w-full h-auto;
+  }
+  
+  /* Add container padding for mobile */
+  .container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
 }
 
 /* Date Range Picker Custom Styles */
@@ -107,4 +117,20 @@
 
 .day-range-middle {
   border-radius: 0 !important;
+}
+
+/* Custom responsive styles */
+@media (max-width: 640px) {
+  .rdp {
+    --rdp-cell-size: 36px !important;
+    margin: 0 auto !important;
+  }
+  
+  .rdp-months {
+    flex-direction: column !important;
+  }
+  
+  .rdp-caption {
+    padding: 0 !important;
+  }
 }
