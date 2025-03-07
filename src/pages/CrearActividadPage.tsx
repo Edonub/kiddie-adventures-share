@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import Navbar from "@/components/Navbar";
+import { Upload } from "lucide-react";
 
 const CrearActividadPage = () => {
   const { user } = useAuth();
@@ -29,9 +30,50 @@ const CrearActividadPage = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("0");
   const [imageUrl, setImageUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [ageRange, setAgeRange] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+      // Clear the URL input when a file is selected
+      setImageUrl("");
+    }
+  };
+
+  const uploadImage = async (): Promise<string | null> => {
+    if (!selectedFile) return imageUrl;
+
+    setUploading(true);
+    try {
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+      const filePath = `${fileName}`;
+      
+      const { error: uploadError, data } = await supabase.storage
+        .from('activity_images')
+        .upload(filePath, selectedFile);
+        
+      if (uploadError) {
+        throw uploadError;
+      }
+      
+      // Get the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('activity_images')
+        .getPublicUrl(filePath);
+        
+      return publicUrl;
+    } catch (error: any) {
+      toast.error(`Error al subir la imagen: ${error.message}`);
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,13 +87,21 @@ const CrearActividadPage = () => {
     setLoading(true);
     
     try {
+      // Upload image if a file has been selected
+      const finalImageUrl = await uploadImage();
+      
+      if (uploading) {
+        toast.error("Espera a que la imagen termine de subir");
+        return;
+      }
+      
       const activityData = {
         title,
         description,
         location,
         category,
         price: parseFloat(price),
-        image_url: imageUrl,
+        image_url: finalImageUrl,
         age_range: ageRange,
         is_premium: isPremium,
         creator_id: user.id,
@@ -159,15 +209,53 @@ const CrearActividadPage = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="imageUrl">URL de la Imagen</Label>
-                <Input
-                  id="imageUrl"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://ejemplo.com/imagen.jpg"
-                />
+                <Label htmlFor="image">Imagen de la Actividad</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm text-muted-foreground">Subir una imagen</Label>
+                    <div className="flex items-center gap-4">
+                      <Button 
+                        type="button"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => document.getElementById('file-upload')?.click()}
+                      >
+                        <Upload className="mr-2 h-4 w-4" />
+                        Seleccionar Archivo
+                      </Button>
+                      <Input
+                        id="file-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileChange}
+                      />
+                    </div>
+                    {selectedFile && (
+                      <p className="text-sm text-green-600 mt-1">
+                        Archivo seleccionado: {selectedFile.name}
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="imageUrl" className="text-sm text-muted-foreground">
+                      O introducir URL de una imagen
+                    </Label>
+                    <Input
+                      id="imageUrl"
+                      value={imageUrl}
+                      onChange={(e) => {
+                        setImageUrl(e.target.value);
+                        setSelectedFile(null);
+                      }}
+                      placeholder="https://ejemplo.com/imagen.jpg"
+                      disabled={!!selectedFile}
+                    />
+                  </div>
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Añade una URL de imagen para ilustrar la actividad (opcional)
+                  Añade una imagen para ilustrar la actividad
                 </p>
               </div>
               
@@ -180,7 +268,7 @@ const CrearActividadPage = () => {
                 <Label htmlFor="isPremium">Marcar como Actividad Premium</Label>
               </div>
             
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading || uploading}>
                 {loading ? "Creando..." : "Crear Actividad"}
               </Button>
             </form>
