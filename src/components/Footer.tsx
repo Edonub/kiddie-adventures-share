@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import FamilyLogo from "./FamilyLogo";
@@ -43,8 +44,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/foro" className="text-gray-600 hover:text-familyxp-primary">Foro</Link></li>
               <li><Link to="/blog" className="text-gray-600 hover:text-familyxp-primary">Blog</Link></li>
-              <li><Link to="/grupos" className="text-gray-600 hover:text-familyxp-primary">Planes en grupo</Link></li>
-              <li><Link to="/como-funciona" className="text-gray-600 hover:text-familyxp-primary">Cómo funciona</Link></li>
             </ul>
           </div>
 
