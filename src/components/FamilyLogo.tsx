@@ -33,16 +33,16 @@ const FamilyLogo = ({ variant = "default", showText = true, size = "md" }: LogoP
 
   return (
     <div className="flex items-center">
-      <div className={`flex items-center justify-center ${logoSizes[size].container}`}>
+      <div className={`flex items-center justify-center ${logoSizes[size].container} bg-white rounded-md p-1`}>
         <img 
           src="/lovable-uploads/fd36a416-2d6f-40f2-9c3b-5b483c9410a2.png" 
           alt="Familea Logo" 
           className={`${logoSizes[size].logoHeight} w-auto`}
         />
       </div>
-      {showText === false ? null : (
+      {showText && (
         <span className={`${logoSizes[size].spacing} ${logoSizes[size].text} font-bold ${textColor}`}>
-          {/* Text is already in the logo image, so we don't need to add it separately */}
+          Familea
         </span>
       )}
     </div>

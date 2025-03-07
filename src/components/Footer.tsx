@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import FamilyLogo from "./FamilyLogo";
@@ -10,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <FamilyLogo size="md" />
+              <FamilyLogo size="md" variant="default" />
             </div>
             <p className="text-gray-600 mb-4">
               Experiencias familiares inolvidables para disfrutar con los más pequeños.

@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav className="w-full py-4 px-8 flex justify-between items-center bg-white shadow-sm">
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center">
-          <FamilyLogo showText={true} size="md" />
+          <FamilyLogo showText={true} size="md" variant="default" />
         </Link>
       </div>
       
