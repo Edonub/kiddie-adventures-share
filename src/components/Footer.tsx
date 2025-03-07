@@ -17,7 +17,7 @@ const Footer = () => {
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
               </div>
-              <span className="ml-2 text-xl font-bold text-familyxp-dark">FamilyXp</span>
+              <span className="ml-2 text-xl font-bold text-familyxp-dark">Familea</span>
             </div>
             <p className="text-gray-600 mb-4">
               Experiencias familiares inolvidables para disfrutar con los más pequeños.
@@ -69,7 +69,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 mt-8 pt-6 text-center">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} FamilyXp. Todos los derechos reservados.
+            © {new Date().getFullYear()} Familea. Todos los derechos reservados.
           </p>
         </div>
       </div>

@@ -17,7 +17,7 @@ const Navbar = () => {
               <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
           </div>
-          <span className="ml-2 text-xl font-bold text-familyxp-dark">FamilyXp</span>
+          <span className="ml-2 text-xl font-bold text-familyxp-dark">Familea</span>
         </Link>
       </div>
       
