@@ -1,5 +1,5 @@
 
-import { Users } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type LogoProps = {
   variant?: "default" | "white";
@@ -9,24 +9,23 @@ type LogoProps = {
 
 const FamilyLogo = ({ variant = "default", showText = true, size = "md" }: LogoProps) => {
   const textColor = variant === "white" ? "text-white" : "text-familyxp-primary";
-  const iconColor = variant === "white" ? "white" : "#0077b6";
   
   const logoSizes = {
     sm: {
-      container: "w-6 h-6",
-      icon: 14,
+      container: "h-6",
+      logoHeight: "h-6",
       text: "text-sm",
       spacing: "ml-1",
     },
     md: {
-      container: "w-8 h-8",
-      icon: 18,
+      container: "h-8",
+      logoHeight: "h-8",
       text: "text-xl",
       spacing: "ml-2",
     },
     lg: {
-      container: "w-10 h-10",
-      icon: 24,
+      container: "h-10",
+      logoHeight: "h-10",
       text: "text-2xl",
       spacing: "ml-3",
     },
@@ -34,12 +33,16 @@ const FamilyLogo = ({ variant = "default", showText = true, size = "md" }: LogoP
 
   return (
     <div className="flex items-center">
-      <div className={`${logoSizes[size].container} rounded-full bg-familyxp-tertiary flex items-center justify-center`}>
-        <Users size={logoSizes[size].icon} color={iconColor} strokeWidth={2.5} />
+      <div className={`flex items-center justify-center ${logoSizes[size].container}`}>
+        <img 
+          src="/lovable-uploads/fd36a416-2d6f-40f2-9c3b-5b483c9410a2.png" 
+          alt="Familea Logo" 
+          className={`${logoSizes[size].logoHeight} w-auto`}
+        />
       </div>
-      {showText && (
+      {showText === false ? null : (
         <span className={`${logoSizes[size].spacing} ${logoSizes[size].text} font-bold ${textColor}`}>
-          Familea
+          {/* Text is already in the logo image, so we don't need to add it separately */}
         </span>
       )}
     </div>

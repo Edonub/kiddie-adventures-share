@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { UserIcon, PlusIcon, LogOutIcon, ShieldIcon } from "lucide-react";
+import { UserIcon, PlusIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav className="w-full py-4 px-8 flex justify-between items-center bg-white shadow-sm">
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center">
-          <FamilyLogo />
+          <FamilyLogo showText={true} size="md" />
         </Link>
       </div>
       
