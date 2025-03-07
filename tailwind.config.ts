@@ -64,10 +64,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				familyxp: {
-					'primary': '#94C1FA',     // Pastel blue (was #FF4A6B)
-					'secondary': '#BDD7FB',   // Lighter pastel blue (was #FF8596)
-					'tertiary': '#E1EDFD',    // Very light blue (was #FFE0E6)
-					'light': '#F5F9FE',       // Almost white blue (was #FFF5F7)
+					'primary': '#0077b6',     // Azul medio (Pantone 275 aproximado)
+					'secondary': '#4da6da',   // Azul medio más claro
+					'tertiary': '#d0e8f2',    // Azul muy claro
+					'light': '#e6f2f9',       // Azul casi blanco
 					'dark': '#333333',
 					'success': '#34D399',
 					'warning': '#FBBF24',
