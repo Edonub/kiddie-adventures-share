@@ -64,10 +64,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				familyxp: {
-					'primary': '#FF4A6B',
-					'secondary': '#FF8596',
-					'tertiary': '#FFE0E6',
-					'light': '#FFF5F7',
+					'primary': '#94C1FA',     // Pastel blue (was #FF4A6B)
+					'secondary': '#BDD7FB',   // Lighter pastel blue (was #FF8596)
+					'tertiary': '#E1EDFD',    // Very light blue (was #FFE0E6)
+					'light': '#F5F9FE',       // Almost white blue (was #FFF5F7)
 					'dark': '#333333',
 					'success': '#34D399',
 					'warning': '#FBBF24',
