@@ -14,6 +14,8 @@ import FilterSection from "@/components/filters/FilterSection";
 import ActivityList from "@/components/activities/ActivityList";
 import Pagination from "@/components/activities/Pagination";
 import SortingSelector from "@/components/activities/SortingSelector";
+import { DateRange } from "@/components/DateRangePicker";
+import { parse } from "date-fns";
 
 const ExplorarPage = () => {
   const location = useLocation();
@@ -31,17 +33,21 @@ const ExplorarPage = () => {
     freeOnly: false,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchDate, setSearchDate] = useState<Date | undefined>(undefined);
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
   const [sorting, setSorting] = useState("relevancia");
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   
   const itemsPerPage = 9;
   
   useEffect(() => {
-    // Extract category from query params if present
+    // Extract query parameters
     const params = new URLSearchParams(location.search);
     const categoryParam = params.get("category");
+    const queryParam = params.get("query");
+    const dateFromParam = params.get("dateFrom");
+    const dateToParam = params.get("dateTo");
     
+    // Set filters based on URL parameters
     if (categoryParam) {
       setFilters(prev => ({
         ...prev,
@@ -49,14 +55,35 @@ const ExplorarPage = () => {
       }));
     }
     
+    if (queryParam) {
+      setSearchQuery(queryParam);
+    }
+    
+    // Parse date parameters if they exist
+    let newDateRange: DateRange = { from: undefined, to: undefined };
+    
+    if (dateFromParam) {
+      try {
+        newDateRange.from = parse(dateFromParam, "yyyy-MM-dd", new Date());
+        
+        if (dateToParam) {
+          newDateRange.to = parse(dateToParam, "yyyy-MM-dd", new Date());
+        }
+        
+        setDateRange(newDateRange);
+      } catch (error) {
+        console.error("Error parsing dates:", error);
+      }
+    }
+    
     fetchActivities();
-  }, [location.search, page, sorting, filters, searchDate]);
+  }, [location.search, page, sorting, filters, dateRange]);
   
   const fetchActivities = async () => {
     setLoading(true);
     try {
       console.log("Fetching activities with filters:", filters);
-      console.log("Search date:", searchDate);
+      console.log("Date range:", dateRange);
       
       let query = supabase
         .from("activities")
@@ -81,13 +108,15 @@ const ExplorarPage = () => {
         query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
       }
       
-      // Apply date filter if present
-      // Note: In a real application, you would have a date field in your activities table
-      // This is a placeholder for demonstration purposes
-      if (searchDate) {
-        // This is pseudo-code - your actual implementation will depend on your database schema
-        // query = query.gte("activity_date", searchDate.toISOString().split('T')[0]);
-        console.log("Would filter by date:", searchDate.toISOString().split('T')[0]);
+      // Apply date range filters if present
+      if (dateRange.from) {
+        // In a real application, you'd filter by an actual date field
+        // This is a placeholder - implement according to your schema
+        console.log("Would filter by start date:", dateRange.from);
+        
+        if (dateRange.to) {
+          console.log("Would filter by end date:", dateRange.to);
+        }
       }
       
       // Apply sorting
@@ -117,7 +146,6 @@ const ExplorarPage = () => {
         throw error;
       }
       
-      console.log("Activities fetched:", data);
       setActivities(data || []);
       setTotalCount(count || 0);
     } catch (error) {
@@ -129,9 +157,13 @@ const ExplorarPage = () => {
   };
   
   // Filter handlers
-  const handleSearch = (query, date) => {
+  const handleSearch = (query: string, newDateRange?: DateRange) => {
     setSearchQuery(query);
-    setSearchDate(date);
+    
+    if (newDateRange) {
+      setDateRange(newDateRange);
+    }
+    
     setPage(1); // Reset to first page on new search
   };
   
@@ -226,7 +258,7 @@ const ExplorarPage = () => {
               className="w-full lg:w-2/3" 
               onSearch={handleSearch}
               initialValue={searchQuery}
-              initialDate={searchDate}
+              initialDateRange={dateRange}
             />
             
             <Button 

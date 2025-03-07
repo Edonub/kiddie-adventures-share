@@ -3,14 +3,23 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import SearchBar from "./SearchBar";
 import { useNavigate } from "react-router-dom";
+import { DateRange } from "./DateRangePicker";
+import { format } from "date-fns";
 
 const HeroSection = () => {
   const navigate = useNavigate();
 
-  const handleSearch = (query: string, date?: Date) => {
+  const handleSearch = (query: string, dateRange?: DateRange) => {
     const params = new URLSearchParams();
     if (query) params.append("query", query);
-    if (date) params.append("date", date.toISOString().split('T')[0]);
+    
+    if (dateRange?.from) {
+      params.append("dateFrom", format(dateRange.from, "yyyy-MM-dd"));
+      
+      if (dateRange.to) {
+        params.append("dateTo", format(dateRange.to, "yyyy-MM-dd"));
+      }
+    }
     
     navigate(`/explorar?${params.toString()}`);
   };
