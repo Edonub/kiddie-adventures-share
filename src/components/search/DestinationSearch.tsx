@@ -1,5 +1,5 @@
 
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,6 +21,15 @@ const DestinationSearch = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
+  // Clear destination input handler
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDestination("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   // Handle click outside suggestions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,7 +49,7 @@ const DestinationSearch = ({
     };
   }, []);
 
-  // Improved destination search handler
+  // Fetch destinations as user types
   const handleDestinationChange = async (value: string) => {
     setDestination(value);
     
@@ -51,7 +60,7 @@ const DestinationSearch = ({
         const { data, error } = await supabase
           .from('destinations')
           .select('name, country')
-          .ilike('name', `${value}%`)
+          .ilike('name', `%${value}%`) // Changed to include % at start for partial matching
           .order('popularity', { ascending: false })
           .limit(5);
           
@@ -66,28 +75,14 @@ const DestinationSearch = ({
           setShowSuggestions(true);
         } else {
           // If no data from Supabase, use fallback mock data
-          const mockDestinations = [
-            { name: "Madrid", country: "España" },
-            { name: "Barcelona", country: "España" },
-            { name: "Valencia", country: "España" },
-            { name: "Málaga", country: "España" },
-            { name: "Sevilla", country: "España" }
-          ].filter(d => d.name.toLowerCase().startsWith(value.toLowerCase()));
-          
+          const mockDestinations = getMockDestinations(value);
           setSuggestions(mockDestinations);
           setShowSuggestions(mockDestinations.length > 0);
         }
       } catch (error) {
         console.error("Error fetching destinations:", error);
-        // Fallback to simple filtering
-        const mockDestinations = [
-          { name: "Madrid", country: "España" },
-          { name: "Barcelona", country: "España" },
-          { name: "Valencia", country: "España" },
-          { name: "Málaga", country: "España" },
-          { name: "Sevilla", country: "España" }
-        ].filter(d => d.name.toLowerCase().startsWith(value.toLowerCase()));
-        
+        // Fallback to mock data
+        const mockDestinations = getMockDestinations(value);
         setSuggestions(mockDestinations);
         setShowSuggestions(mockDestinations.length > 0);
       }
@@ -95,6 +90,31 @@ const DestinationSearch = ({
       setSuggestions([]);
       setShowSuggestions(false);
     }
+  };
+
+  // Get mock destinations based on input value
+  const getMockDestinations = (value: string) => {
+    const lowerValue = value.toLowerCase();
+    
+    // More comprehensive mock data with neighborhoods and regions
+    const allDestinations = [
+      { name: "Sevilla", country: "España" },
+      { name: "Centro, Sevilla", country: "España" },
+      { name: "Triana Este, Sevilla", country: "España" },
+      { name: "Casco Antiguo, Sevilla", country: "España" },
+      { name: "Sevilla Este, Sevilla", country: "España" },
+      { name: "Madrid", country: "España" },
+      { name: "Barcelona", country: "España" },
+      { name: "Valencia", country: "España" },
+      { name: "Málaga", country: "España" },
+      { name: "Seville Cathedral, Sevilla", country: "España" },
+      { name: "Santa Cruz, Sevilla", country: "España" }
+    ];
+    
+    return allDestinations.filter(d => 
+      d.name.toLowerCase().includes(lowerValue) || 
+      d.country.toLowerCase().includes(lowerValue)
+    ).slice(0, 5);
   };
 
   const selectSuggestion = (suggestion: string) => {
@@ -124,6 +144,14 @@ const DestinationSearch = ({
               if (destination.length > 1) setShowSuggestions(true);
             }}
           />
+          {destination && (
+            <button 
+              onClick={handleClear} 
+              className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X size={16} className="text-gray-500" />
+            </button>
+          )}
         </div>
         
         {showSuggestions && suggestions.length > 0 && (
@@ -134,12 +162,14 @@ const DestinationSearch = ({
             {suggestions.map((suggestion, index) => (
               <div 
                 key={index}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center"
                 onClick={() => selectSuggestion(suggestion.name)}
               >
-                <MapPin size={16} className="text-gray-500 mr-2" />
-                <span className="mr-2">{suggestion.name}, </span>
-                <span className="text-gray-500 text-sm">{suggestion.country}</span>
+                <MapPin size={18} className="text-gray-500 mr-3" />
+                <div>
+                  <div className="font-medium">{suggestion.name}</div>
+                  <div className="text-gray-500 text-sm">{suggestion.country}</div>
+                </div>
               </div>
             ))}
           </div>
