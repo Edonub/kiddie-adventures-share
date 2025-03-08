@@ -79,7 +79,7 @@ const CrearActividadPage = () => {
     e.preventDefault();
     
     if (!user) {
-      toast.error("Debes iniciar sesión para crear actividades");
+      toast.error("Debes iniciar sesión para crear experiencias");
       navigate("/auth");
       return;
     }
@@ -113,10 +113,10 @@ const CrearActividadPage = () => {
         
       if (error) throw error;
       
-      toast.success("Actividad creada exitosamente");
-      navigate("/explorar");
+      toast.success("Experiencia creada exitosamente");
+      navigate("/");
     } catch (error: any) {
-      toast.error(error.message || "Error al crear la actividad");
+      toast.error(error.message || "Error al crear la experiencia");
     } finally {
       setLoading(false);
     }
@@ -128,15 +128,15 @@ const CrearActividadPage = () => {
       <div className="container mx-auto p-6 max-w-3xl">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Crear Nueva Actividad</CardTitle>
+            <CardTitle className="text-2xl">Crear Nueva Experiencia</CardTitle>
             <CardDescription>
-              Comparte una actividad o experiencia interesante para familias
+              Comparte actividades y experiencias interesantes para familias
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Título de la Actividad</Label>
+                <Label htmlFor="title">Título de la Experiencia</Label>
                 <Input
                   id="title"
                   value={title}
@@ -153,7 +153,7 @@ const CrearActividadPage = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
-                  placeholder="Describe la actividad, qué incluye, qué van a aprender los niños, etc."
+                  placeholder="Describe la experiencia, qué incluye, qué van a aprender los niños, etc."
                   className="min-h-[150px]"
                 />
               </div>
@@ -209,7 +209,7 @@ const CrearActividadPage = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="image">Imagen de la Actividad</Label>
+                <Label htmlFor="image">Imagen de la Experiencia</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-sm text-muted-foreground">Subir una imagen</Label>
@@ -255,7 +255,7 @@ const CrearActividadPage = () => {
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Añade una imagen para ilustrar la actividad
+                  Añade una imagen para ilustrar la experiencia
                 </p>
               </div>
               
@@ -265,11 +265,11 @@ const CrearActividadPage = () => {
                   checked={isPremium}
                   onCheckedChange={(checked) => setIsPremium(checked as boolean)}
                 />
-                <Label htmlFor="isPremium">Marcar como Actividad Premium</Label>
+                <Label htmlFor="isPremium">Marcar como Experiencia Premium</Label>
               </div>
             
               <Button type="submit" className="w-full" disabled={loading || uploading}>
-                {loading ? "Creando..." : "Crear Actividad"}
+                {loading ? "Creando..." : "Crear Experiencia"}
               </Button>
             </form>
           </CardContent>

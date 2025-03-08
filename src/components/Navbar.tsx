@@ -1,7 +1,8 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { UserIcon, PlusIcon, LogOutIcon, Menu, Globe } from "lucide-react";
+import { UserIcon, LogOutIcon, Menu, Globe } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -36,7 +37,7 @@ const Navbar = () => {
       <div className="flex items-center gap-2 md:gap-3">
         <Link to="/crear-actividad" className="hidden md:block">
           <Button variant="ghost" className="hidden md:flex items-center gap-1 rounded-full">
-            <span>Pon tu casa en Familea</span>
+            <span>Crear Experiencia</span>
           </Button>
         </Link>
         
@@ -65,10 +66,10 @@ const Navbar = () => {
                 <Link to="/perfil">Mi Perfil</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/mis-actividades">Mis Alojamientos</Link>
+                <Link to="/mis-actividades">Mis Experiencias</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="md:hidden" asChild>
-                <Link to="/crear-actividad">Publicar alojamiento</Link>
+                <Link to="/crear-actividad">Crear Experiencia</Link>
               </DropdownMenuItem>
               {isAdmin && (
                 <>
@@ -107,7 +108,7 @@ const Navbar = () => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/crear-actividad">Publica tu alojamiento</Link>
+                <Link to="/crear-actividad">Crear Experiencia</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/centro-ayuda">Centro de ayuda</Link>
@@ -147,7 +148,7 @@ const Navbar = () => {
                   to="/crear-actividad" 
                   className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 >
-                  Publica tu alojamiento
+                  Crear Experiencia
                 </Link>
                 {!user && (
                   <>
