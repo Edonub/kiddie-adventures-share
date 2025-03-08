@@ -73,13 +73,13 @@ const DateRangePicker = ({
     return (
       <div
         className={cn(
-          "h-9 w-9 p-0 font-normal",
+          "h-7 w-8 p-0 font-normal text-xs", // Smaller height and text
           isSelected && "bg-primary text-primary-foreground",
           isRangeStart && "rounded-l-md",
           isRangeEnd && "rounded-r-md",
-          isInRange && !isRangeStart && !isRangeEnd && "bg-familyxp-tertiary",
-          isWeekendDay && "text-familyxp-primary font-semibold",
-          isToday(day) && "border border-familyxp-primary"
+          isInRange && !isRangeStart && !isRangeEnd && "bg-familea-tertiary",
+          isWeekendDay && "text-familea-primary font-semibold",
+          isToday(day) && "border border-familea-primary"
         )}
       >
         {format(day, "d")}
@@ -130,9 +130,23 @@ const DateRangePicker = ({
             locale={es}
             className={cn("p-3 pointer-events-auto rounded-md border")}
             classNames={{
+              month: "space-y-2", // Reduced spacing
+              caption: "flex justify-center pt-1 relative items-center",
+              caption_label: "text-sm font-medium",
+              nav: "space-x-1 flex items-center",
+              nav_button: cn(
+                buttonVariants({ variant: "outline" }),
+                "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100" // Smaller buttons
+              ),
               day_range_start: "day-range-start",
               day_range_end: "day-range-end",
-              day_range_middle: "bg-familyxp-tertiary day-range-middle",
+              day_range_middle: "bg-familea-tertiary day-range-middle",
+              table: "w-full border-collapse space-y-0.5", // Reduced spacing
+              head_row: "flex",
+              head_cell: "text-muted-foreground rounded-md w-8 font-normal text-[0.7rem]", // Smaller text
+              row: "flex w-full mt-1", // Reduced spacing
+              cell: "h-7 w-8 text-center text-sm p-0 relative", // Smaller cells
+              day: "h-7 w-8 p-0 font-normal text-xs aria-selected:opacity-100" // Smaller height and text
             }}
             components={{
               IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,

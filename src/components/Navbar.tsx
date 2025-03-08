@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -52,11 +51,11 @@ const Navbar = () => {
               <Button variant="outline" size="sm" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-1 h-auto">
                 <Menu size={18} />
                 <Avatar className="h-6 w-6 bg-gray-200">
-                  {user.avatar_url ? (
-                    <AvatarImage src={user.avatar_url} alt="Avatar de usuario" />
-                  ) : (
-                    <AvatarFallback><UserIcon size={14} /></AvatarFallback>
-                  )}
+                  <AvatarImage 
+                    src={user.user_metadata?.avatar_url || "https://ui-avatars.com/api/?name=User&background=random"} 
+                    alt="Profile" 
+                  />
+                  <AvatarFallback>{user.email?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>

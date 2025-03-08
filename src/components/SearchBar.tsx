@@ -25,14 +25,14 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDateRan
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch suggestions as user types
+  // Fetch suggestions as user types - improved to filter from start
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (searchQuery.length > 1) {
+      if (searchQuery.length > 0) {
         const { data, error } = await supabase
           .from('destinations')
           .select('name, country')
-          .ilike('name', `%${searchQuery}%`)
+          .ilike('name', `${searchQuery}%`) // Changed to start with pattern
           .order('popularity', { ascending: false })
           .limit(5);
           
@@ -92,7 +92,7 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDateRan
           className={`pr-10 bg-white py-6 w-full ${isHomeVariant ? 'sm:rounded-l-full sm:rounded-r-none sm:border-r-0 rounded-lg sm:rounded-lg mb-2 sm:mb-0' : 'rounded-full'}`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setShowSuggestions(searchQuery.length > 1)}
+          onFocus={() => setShowSuggestions(searchQuery.length > 0)}
         />
         
         {showSuggestions && suggestions.length > 0 && (
@@ -134,6 +134,7 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDateRan
               selected={dateRange.from}
               onSelect={(date) => setDateRange({ ...dateRange, from: date })}
               initialFocus
+              className="p-2"
             />
           </PopoverContent>
         </Popover>
@@ -160,6 +161,7 @@ const SearchBar = ({ className = "", onSearch, initialValue = "", initialDateRan
               selected={dateRange.to}
               onSelect={(date) => setDateRange({ ...dateRange, to: date })}
               initialFocus
+              className="p-2"
             />
           </PopoverContent>
         </Popover>

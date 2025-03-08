@@ -52,15 +52,16 @@ const AirbnbSearchBar = () => {
     navigate(`/explorar?${params.toString()}`);
   };
 
-  // Handle fetch suggestions as user types
+  // Improved destination search handler - fetches results as you type
   const handleDestinationChange = async (value: string) => {
     setDestination(value);
     
-    if (value.length > 1) {
+    if (value.length > 0) {
+      // Using ilike with pattern at the beginning for prefix search (starts with)
       const { data, error } = await supabase
         .from('destinations')
         .select('name, country')
-        .ilike('name', `%${value}%`)
+        .ilike('name', `${value}%`)
         .order('popularity', { ascending: false })
         .limit(5);
         
@@ -100,7 +101,7 @@ const AirbnbSearchBar = () => {
               onChange={(e) => handleDestinationChange(e.target.value)}
               onFocus={() => {
                 setActiveTab("destination");
-                if (destination.length > 1) setShowSuggestions(true);
+                if (destination.length > 0) setShowSuggestions(true);
               }}
             />
             
@@ -141,6 +142,7 @@ const AirbnbSearchBar = () => {
               selected={dateFrom}
               onSelect={setDateFrom}
               initialFocus
+              className="p-2"
             />
           </PopoverContent>
         </Popover>
@@ -165,6 +167,7 @@ const AirbnbSearchBar = () => {
               selected={dateTo}
               onSelect={setDateTo}
               initialFocus
+              className="p-2"
             />
           </PopoverContent>
         </Popover>
@@ -189,7 +192,7 @@ const AirbnbSearchBar = () => {
                   handleSearch();
                 }}
                 size="icon" 
-                className="bg-familyxp-primary hover:bg-familyxp-secondary text-white rounded-full"
+                className="bg-familea-primary hover:bg-familea-secondary text-white rounded-full"
               >
                 <Search size={18} />
               </Button>

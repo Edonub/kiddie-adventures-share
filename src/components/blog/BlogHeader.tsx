@@ -23,12 +23,12 @@ const BlogHeader = ({ onSearch }: BlogHeaderProps) => {
   };
 
   return (
-    <section className="bg-familyxp-tertiary py-12">
+    <section className="bg-familea-tertiary py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
-            <Badge className="bg-white text-familyxp-primary mb-4">Blog Familea</Badge>
-            <h1 className="text-4xl font-bold text-familyxp-primary mb-4">
+            <Badge className="bg-white text-familea-primary mb-4">Blog Familea</Badge>
+            <h1 className="text-4xl font-bold text-familea-primary mb-4">
               Ideas, consejos y experiencias para familias
             </h1>
             <p className="text-gray-700 mb-6">
@@ -41,7 +41,7 @@ const BlogHeader = ({ onSearch }: BlogHeaderProps) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Button type="submit" className="absolute right-0 top-0 rounded-r-full h-full bg-familyxp-primary">
+              <Button type="submit" className="absolute right-0 top-0 rounded-r-full h-full bg-familea-primary">
                 Buscar
               </Button>
             </form>
