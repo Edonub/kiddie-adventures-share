@@ -15,18 +15,18 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: "beach", name: "A pie de playa", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "playa" },
-    { id: "iconic", name: "Iconos", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "iconos" },
-    { id: "castles", name: "Castillos", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "castillos" },
-    { id: "tiny", name: "Minicasas", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "minicasas" },
-    { id: "famous", name: "Ciudades famosas", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "ciudades-famosas" },
-    { id: "piano", name: "Pianos de cola", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "pianos" },
-    { id: "rural", name: "Casas rurales", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "rural" },
-    { id: "cabins", name: "Cabañas", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "cabanas" },
-    { id: "mansions", name: "Mansiones", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "mansiones" },
-    { id: "dome", name: "Casas domo", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "domo" },
-    { id: "tree", name: "Casas del árbol", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "arbol" },
-    { id: "unique", name: "Singulares", icon: "/lovable-uploads/48a3679d-a4b8-45a3-8799-59c0c9cb234d.png", slug: "singulares" },
+    { id: "beach", name: "A pie de playa", icon: "https://a0.muscache.com/pictures/10ce1091-c854-40f3-a2fb-defc2995bcaf.jpg", slug: "playa" },
+    { id: "iconic", name: "Iconos", icon: "https://a0.muscache.com/pictures/3b1eb541-46d9-4bef-abc4-c37d77e3c21b.jpg", slug: "iconos" },
+    { id: "castles", name: "Castillos", icon: "https://a0.muscache.com/pictures/1b6a8b70-a3b6-48b5-88e1-2243d9172c06.jpg", slug: "castillos" },
+    { id: "tiny", name: "Minicasas", icon: "https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg", slug: "minicasas" },
+    { id: "famous", name: "Ciudades famosas", icon: "https://a0.muscache.com/pictures/ed8b9e47-609b-44c2-9768-33e6a22eccb2.jpg", slug: "ciudades-famosas" },
+    { id: "piano", name: "Pianos de cola", icon: "https://a0.muscache.com/pictures/8eccb972-4bd6-43c5-ac83-27822c0d3dcd.jpg", slug: "pianos" },
+    { id: "rural", name: "Casas rurales", icon: "https://a0.muscache.com/pictures/6ad4bd95-f086-437d-97e3-14d12155ddfe.jpg", slug: "rural" },
+    { id: "cabins", name: "Cabañas", icon: "https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg", slug: "cabanas" },
+    { id: "mansions", name: "Mansiones", icon: "https://a0.muscache.com/pictures/78ba8486-6ba6-4a43-a56d-f556189193da.jpg", slug: "mansiones" },
+    { id: "dome", name: "Casas domo", icon: "https://a0.muscache.com/pictures/89faf9ae-bbbc-4bc4-aecd-cc15bf36cbca.jpg", slug: "domo" },
+    { id: "tree", name: "Casas del árbol", icon: "https://a0.muscache.com/pictures/4d4a4eba-c7e4-43eb-9ce2-95e1d200d10e.jpg", slug: "arbol" },
+    { id: "unique", name: "Singulares", icon: "https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg", slug: "singulares" },
   ];
 
   useEffect(() => {
@@ -51,9 +51,9 @@ const Index = () => {
           price: item.price || Math.floor(Math.random() * 200) + 100,
           rating: item.rating || (4 + Math.random()),
           images: [
-            "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFkcmlkfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
-            "https://images.unsplash.com/photo-1560184897-ae75f418493e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2075&q=80",
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2070&q=80"
           ]
         }));
         
@@ -69,7 +69,7 @@ const Index = () => {
     fetchData();
   }, []);
 
-  // Sample properties for illustration if no data is available
+  // Sample properties with better images for illustration if no data is available
   const sampleProperties = [
     {
       id: "1",
@@ -80,8 +80,8 @@ const Index = () => {
       price: 231,
       rating: 4.92,
       images: [
-        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-        "https://images.unsplash.com/photo-1560184897-ae75f418493e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=2070&q=80",
+        "https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=2070&q=80"
       ]
     },
     {
@@ -93,8 +93,8 @@ const Index = () => {
       price: 188,
       rating: 4.9,
       images: [
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80",
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2075&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2070&q=80"
       ]
     },
     {
@@ -106,8 +106,8 @@ const Index = () => {
       price: 175,
       rating: 4.91,
       images: [
-        "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2127&q=80",
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=2127&q=80",
+        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2070&q=80"
       ]
     },
     {
@@ -119,8 +119,8 @@ const Index = () => {
       price: 114,
       rating: 5.0,
       images: [
-        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-        "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=2071&q=80",
+        "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=2070&q=80"
       ]
     }
   ];

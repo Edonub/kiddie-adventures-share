@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Filter } from "lucide-react";
 import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 interface CategoryItem {
   id: string;
@@ -20,7 +20,7 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
   return (
     <div className="border-b border-gray-200 mb-6">
       <div className="relative px-4">
-        <ScrollArea orientation="horizontal" className="max-w-full pb-4">
+        <ScrollArea className="max-w-full pb-4">
           <div className="flex items-center py-4 space-x-8 min-w-max">
             {categories.map((category) => (
               <Link 
@@ -41,6 +41,7 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
               </Button>
             </div>
           </div>
+          <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
     </div>

@@ -48,13 +48,13 @@ const BlogHeader = ({ onSearch }: BlogHeaderProps) => {
           </div>
           <div className="hidden lg:block">
             <img 
-              src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
+              src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=2069&q=80" 
               alt="Familia disfrutando en la playa" 
               className="rounded-lg shadow-lg max-h-80 w-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.onerror = null;
-                target.src = "https://images.unsplash.com/photo-1540479859555-17af45c78602?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
+                target.src = "https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&w=1200&q=80";
               }}
             />
           </div>

@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { UserIcon, PlusIcon, LogOutIcon, Menu, Globe } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -31,12 +31,14 @@ const Navbar = () => {
       <div className="hidden md:flex items-center space-x-6">
         <Link to="/" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Alojamientos</Link>
         <Link to="/explorar" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Experiencias</Link>
+        <Link to="/foro" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Foro</Link>
+        <Link to="/blog" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Blog</Link>
       </div>
       
       <div className="flex items-center gap-2 md:gap-3">
         <Link to="/crear-actividad" className="hidden md:block">
           <Button variant="ghost" className="hidden md:flex items-center gap-1 rounded-full">
-            <span>Pon tu casa en FamilyXP</span>
+            <span>Pon tu casa en Familea</span>
           </Button>
         </Link>
         
@@ -47,10 +49,14 @@ const Navbar = () => {
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-2">
+              <Button variant="outline" size="sm" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-1 h-auto">
                 <Menu size={18} />
-                <Avatar className="h-7 w-7 bg-gray-200">
-                  <AvatarFallback><UserIcon size={14} /></AvatarFallback>
+                <Avatar className="h-6 w-6 bg-gray-200">
+                  {user.avatar_url ? (
+                    <AvatarImage src={user.avatar_url} alt="Avatar de usuario" />
+                  ) : (
+                    <AvatarFallback><UserIcon size={14} /></AvatarFallback>
+                  )}
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -87,9 +93,9 @@ const Navbar = () => {
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-2">
+              <Button variant="outline" size="sm" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-1 h-auto">
                 <Menu size={18} />
-                <Avatar className="h-7 w-7 bg-gray-200">
+                <Avatar className="h-6 w-6 bg-gray-200">
                   <AvatarFallback><UserIcon size={14} /></AvatarFallback>
                 </Avatar>
               </Button>
@@ -133,6 +139,18 @@ const Navbar = () => {
                   className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 >
                   Experiencias
+                </Link>
+                <Link 
+                  to="/foro" 
+                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Foro
+                </Link>
+                <Link 
+                  to="/blog" 
+                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Blog
                 </Link>
                 <Link 
                   to="/crear-actividad" 

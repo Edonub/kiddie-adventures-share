@@ -2,31 +2,47 @@
 import { Button } from "./ui/button";
 import { Search, Users, Plus, Minus } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import DateRangePicker, { DateRange } from "./DateRangePicker";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
+import { Calendar } from "./ui/calendar";
 
 const AirbnbSearchBar = () => {
   const navigate = useNavigate();
   const [destination, setDestination] = useState("");
-  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
+  const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [activeTab, setActiveTab] = useState<"destination" | "dates" | "guests">("destination");
   const [suggestions, setSuggestions] = useState<{name: string, country: string}[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Handle click outside suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (destination) params.append("destino", destination);
     
-    if (dateRange?.from) {
-      params.append("dateFrom", format(dateRange.from, "yyyy-MM-dd"));
+    if (dateFrom) {
+      params.append("dateFrom", format(dateFrom, "yyyy-MM-dd"));
       
-      if (dateRange.to) {
-        params.append("dateTo", format(dateRange.to, "yyyy-MM-dd"));
+      if (dateTo) {
+        params.append("dateTo", format(dateTo, "yyyy-MM-dd"));
       }
     }
     
@@ -61,6 +77,9 @@ const AirbnbSearchBar = () => {
   const selectSuggestion = (suggestion: string) => {
     setDestination(suggestion);
     setShowSuggestions(false);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   return (
@@ -73,12 +92,16 @@ const AirbnbSearchBar = () => {
           <div className="px-2 relative">
             <div className="text-xs font-bold">Destino</div>
             <input 
+              ref={inputRef}
               type="text" 
               placeholder="Buscar destinos" 
               className="w-full bg-transparent border-none outline-none text-sm"
               value={destination}
               onChange={(e) => handleDestinationChange(e.target.value)}
-              onFocus={() => setActiveTab("destination")}
+              onFocus={() => {
+                setActiveTab("destination");
+                if (destination.length > 1) setShowSuggestions(true);
+              }}
             />
             
             {showSuggestions && suggestions.length > 0 && (
@@ -107,17 +130,17 @@ const AirbnbSearchBar = () => {
               <div className="px-2">
                 <div className="text-xs font-bold">Llegada</div>
                 <div className="text-sm text-gray-500">
-                  {dateRange.from ? format(dateRange.from, "dd MMM") : "Introduce la fecha"}
+                  {dateFrom ? format(dateFrom, "dd MMM") : "Seleccionar fecha"}
                 </div>
               </div>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <DateRangePicker
-              initialDateRange={dateRange}
-              onChange={setDateRange}
-              className="border-none shadow-none"
-              showDirect={true}
+            <Calendar
+              mode="single"
+              selected={dateFrom}
+              onSelect={setDateFrom}
+              initialFocus
             />
           </PopoverContent>
         </Popover>
@@ -131,17 +154,17 @@ const AirbnbSearchBar = () => {
               <div className="px-2">
                 <div className="text-xs font-bold">Salida</div>
                 <div className="text-sm text-gray-500">
-                  {dateRange.to ? format(dateRange.to, "dd MMM") : "Introduce la fecha"}
+                  {dateTo ? format(dateTo, "dd MMM") : "Seleccionar fecha"}
                 </div>
               </div>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <DateRangePicker
-              initialDateRange={dateRange}
-              onChange={setDateRange}
-              className="border-none shadow-none"
-              showDirect={true}
+            <Calendar
+              mode="single"
+              selected={dateTo}
+              onSelect={setDateTo}
+              initialFocus
             />
           </PopoverContent>
         </Popover>
