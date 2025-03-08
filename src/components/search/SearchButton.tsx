@@ -13,10 +13,9 @@ const SearchButton = ({
       <Button 
         onClick={onClick} 
         size="lg" 
-        className="w-full md:w-auto text-white rounded-full bg-blue-800 hover:bg-blue-700 flex items-center justify-center px-4"
+        className="w-full md:w-auto text-white rounded-full bg-blue-800 hover:bg-blue-700 flex items-center justify-center"
       >
-        <Search size={18} className="mr-2" />
-        <span className="whitespace-nowrap">Buscar</span>
+        <Search size={20} />
       </Button>
     </div>;
 };
