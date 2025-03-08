@@ -61,7 +61,7 @@ const AirbnbSearchBar = () => {
           />
         </div>
         
-        <div className="w-full md:w-[22%]">
+        <div className="w-full md:w-[28%]">
           <DateSelection 
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -72,7 +72,7 @@ const AirbnbSearchBar = () => {
           />
         </div>
         
-        <div className="w-full md:w-[22%]">
+        <div className="w-full md:w-[28%]">
           <GuestSelector 
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -83,7 +83,7 @@ const AirbnbSearchBar = () => {
           />
         </div>
 
-        <div className="w-full md:w-[22%]">
+        <div className="w-full md:w-[11%]">
           <SearchButton onClick={handleSearch} />
         </div>
       </div>
