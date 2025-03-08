@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { UserIcon, PlusIcon, LogOutIcon, Menu, X } from "lucide-react";
+import { UserIcon, PlusIcon, LogOutIcon, Menu, Globe } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full py-4 px-4 sm:px-8 flex justify-between items-center bg-white shadow-sm">
+    <nav className="w-full py-4 px-4 sm:px-8 flex justify-between items-center bg-white border-b border-gray-200">
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center">
           <FamilyLogo showText={true} size="md" variant="default" />
@@ -29,62 +29,87 @@ const Navbar = () => {
       </div>
       
       <div className="hidden md:flex items-center space-x-6">
-        <Link to="/" className="text-familyxp-dark hover:text-familyxp-primary transition-colors font-medium">Inicio</Link>
-        <Link to="/explorar" className="text-familyxp-dark hover:text-familyxp-primary transition-colors font-medium">Explorar</Link>
-        <Link to="/foro" className="text-familyxp-dark hover:text-familyxp-primary transition-colors font-medium">Foro</Link>
-        <Link to="/blog" className="text-familyxp-dark hover:text-familyxp-primary transition-colors font-medium">Blog</Link>
-        {isAdmin && (
-          <Link to="/admin" className="text-familyxp-dark hover:text-familyxp-primary transition-colors font-medium">Admin</Link>
-        )}
+        <Link to="/" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Alojamientos</Link>
+        <Link to="/explorar" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Experiencias</Link>
       </div>
       
       <div className="flex items-center gap-2 md:gap-3">
+        <Link to="/crear-actividad" className="hidden md:block">
+          <Button variant="ghost" className="hidden md:flex items-center gap-1 rounded-full">
+            <span>Pon tu casa en FamilyXP</span>
+          </Button>
+        </Link>
+        
+        <Button variant="ghost" size="icon" className="hidden md:flex rounded-full">
+          <Globe size={20} />
+        </Button>
+        
         {user ? (
-          <>
-            <Link to="/crear-actividad" className="hidden md:block">
-              <Button variant="ghost" className="hidden md:flex items-center gap-1">
-                <PlusIcon size={16} />
-                <span>Crear actividad</span>
-              </Button>
-            </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer bg-familyxp-tertiary text-familyxp-primary">
-                  <AvatarFallback><UserIcon size={18} /></AvatarFallback>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-2">
+                <Menu size={18} />
+                <Avatar className="h-7 w-7 bg-gray-200">
+                  <AvatarFallback><UserIcon size={14} /></AvatarFallback>
                 </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {isAdmin && (
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/perfil">Mi Perfil</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/mis-actividades">Mis Alojamientos</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="md:hidden" asChild>
+                <Link to="/crear-actividad">Publicar alojamiento</Link>
+              </DropdownMenuItem>
+              {isAdmin && (
+                <>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/admin">Panel de Admin</Link>
                   </DropdownMenuItem>
-                )}
-                <DropdownMenuItem asChild>
-                  <Link to="/super-admin">Super Admin</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/perfil">Mi Perfil</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/mis-actividades">Mis Actividades</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="md:hidden" asChild>
-                  <Link to="/crear-actividad">Crear Actividad</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} className="text-red-500">
-                  <LogOutIcon size={16} className="mr-2" />
-                  Cerrar Sesión
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </>
+                  <DropdownMenuItem asChild>
+                    <Link to="/super-admin">Super Admin</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={signOut} className="text-red-500">
+                <LogOutIcon size={16} className="mr-2" />
+                Cerrar Sesión
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
-          <Link to="/auth">
-            <Button>Iniciar Sesión</Button>
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="rounded-full flex items-center gap-2 border border-gray-300 shadow-sm hover:shadow-md transition-all p-2">
+                <Menu size={18} />
+                <Avatar className="h-7 w-7 bg-gray-200">
+                  <AvatarFallback><UserIcon size={14} /></AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link to="/auth">Iniciar sesión</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/auth?signup=true">Registrarse</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/crear-actividad">Publica tu alojamiento</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/centro-ayuda">Centro de ayuda</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
         
         {/* Mobile Menu Button */}
@@ -101,40 +126,42 @@ const Navbar = () => {
                   to="/" 
                   className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 >
-                  Inicio
+                  Alojamientos
                 </Link>
                 <Link 
                   to="/explorar" 
                   className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 >
-                  Explorar
+                  Experiencias
                 </Link>
                 <Link 
-                  to="/foro" 
+                  to="/crear-actividad" 
                   className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 >
-                  Foro
+                  Publica tu alojamiento
                 </Link>
-                <Link 
-                  to="/blog" 
-                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
-                >
-                  Blog
-                </Link>
+                {!user && (
+                  <>
+                    <Link 
+                      to="/auth" 
+                      className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                    >
+                      Iniciar sesión
+                    </Link>
+                    <Link 
+                      to="/auth?signup=true" 
+                      className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                    >
+                      Registrarse
+                    </Link>
+                  </>
+                )}
                 {isAdmin && (
                   <Link 
                     to="/admin" 
                     className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                   >
                     Admin
-                  </Link>
-                )}
-                {user && (
-                  <Link 
-                    to="/crear-actividad" 
-                    className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    Crear Actividad
                   </Link>
                 )}
               </div>
