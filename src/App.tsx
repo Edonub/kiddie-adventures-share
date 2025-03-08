@@ -19,6 +19,7 @@ import ContactoPage from "./pages/ContactoPage";
 import CentroAyudaPage from "./pages/CentroAyudaPage";
 import ComoFuncionaPage from "./pages/ComoFuncionaPage";
 import GruposPage from "./pages/GruposPage";
+import ForoCochesPage from "./pages/ForoCochesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ function App() {
               <Route path="/centro-ayuda" element={<CentroAyudaPage />} />
               <Route path="/como-funciona" element={<ComoFuncionaPage />} />
               <Route path="/grupos" element={<GruposPage />} />
+              <Route path="/forocoches" element={<ForoCochesPage />} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
