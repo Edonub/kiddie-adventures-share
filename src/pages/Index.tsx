@@ -225,7 +225,7 @@ const Index = () => {
                       Filtros
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-80 p-4">
+                  <DropdownMenuContent className="w-80 p-4" side="bottom" align="end">
                     <DropdownMenuLabel>Filtros</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     
