@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { UserIcon, PlusIcon, LogOutIcon } from "lucide-react";
+import { UserIcon, PlusIcon, LogOutIcon, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -12,13 +12,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState } from "react";
 import FamilyLogo from "./FamilyLogo";
 
 const Navbar = () => {
   const { user, signOut, isAdmin } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full py-4 px-8 flex justify-between items-center bg-white shadow-sm">
+    <nav className="w-full py-4 px-4 sm:px-8 flex justify-between items-center bg-white shadow-sm">
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center">
           <FamilyLogo showText={true} size="md" variant="default" />
@@ -35,10 +38,10 @@ const Navbar = () => {
         )}
       </div>
       
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 md:gap-3">
         {user ? (
           <>
-            <Link to="/crear-actividad">
+            <Link to="/crear-actividad" className="hidden md:block">
               <Button variant="ghost" className="hidden md:flex items-center gap-1">
                 <PlusIcon size={16} />
                 <span>Crear actividad</span>
@@ -67,6 +70,9 @@ const Navbar = () => {
                 <DropdownMenuItem asChild>
                   <Link to="/mis-actividades">Mis Actividades</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem className="md:hidden" asChild>
+                  <Link to="/crear-actividad">Crear Actividad</Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut} className="text-red-500">
                   <LogOutIcon size={16} className="mr-2" />
@@ -80,6 +86,61 @@ const Navbar = () => {
             <Button>Iniciar Sesión</Button>
           </Link>
         )}
+        
+        {/* Mobile Menu Button */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu size={24} />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[280px] sm:w-[350px]">
+            <div className="py-4">
+              <div className="flex flex-col space-y-4 mt-6">
+                <Link 
+                  to="/" 
+                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Inicio
+                </Link>
+                <Link 
+                  to="/explorar" 
+                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Explorar
+                </Link>
+                <Link 
+                  to="/foro" 
+                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Foro
+                </Link>
+                <Link 
+                  to="/blog" 
+                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Blog
+                </Link>
+                {isAdmin && (
+                  <Link 
+                    to="/admin" 
+                    className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                  >
+                    Admin
+                  </Link>
+                )}
+                {user && (
+                  <Link 
+                    to="/crear-actividad" 
+                    className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+                  >
+                    Crear Actividad
+                  </Link>
+                )}
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </nav>
   );
