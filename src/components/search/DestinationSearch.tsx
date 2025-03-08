@@ -2,6 +2,14 @@
 import { Search, MapPin, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+interface NominatimResult {
+  display_name: string;
+  place_id: number;
+  lat: string;
+  lon: string;
+}
 
 interface DestinationSearchProps {
   destination: string;
@@ -16,15 +24,20 @@ const DestinationSearch = ({
   activeTab, 
   setActiveTab 
 }: DestinationSearchProps) => {
-  const [suggestions, setSuggestions] = useState<{name: string, country: string}[]>([]);
+  const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
+  const debounceTimerRef = useRef<number | null>(null);
 
   // Clear destination input handler
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDestination("");
+    setSuggestions([]);
+    setShowSuggestions(false);
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -49,50 +62,69 @@ const DestinationSearch = ({
     };
   }, []);
 
-  // Fetch destinations as user types
-  const handleDestinationChange = async (value: string) => {
-    setDestination(value);
+  // Fetch locations from Nominatim API with debounce
+  const fetchLocations = async (query: string) => {
+    if (query.length < 2) return;
     
-    if (value.length > 1) {
-      try {
-        console.log("Fetching destinations for:", value);
-        // Use Supabase to fetch destinations
-        const { data, error } = await supabase
-          .from('destinations')
-          .select('name, country')
-          .ilike('name', `%${value}%`) // Changed to include % at start for partial matching
-          .order('popularity', { ascending: false })
-          .limit(5);
-          
-        if (error) {
-          console.error("Supabase error:", error);
-          throw error;
-        }
-        
-        console.log("Destination results:", data);
-        if (data && data.length > 0) {
-          setSuggestions(data);
+    setIsLoading(true);
+    setSearchError(null);
+    
+    try {
+      // Use OpenStreetMap Nominatim API
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1`
+      );
+      
+      if (!response.ok) {
+        throw new Error(`Error en la búsqueda: ${response.statusText}`);
+      }
+      
+      const data: NominatimResult[] = await response.json();
+      console.log("Nominatim results:", data);
+      
+      if (data && data.length > 0) {
+        setSuggestions(data);
+        setShowSuggestions(true);
+      } else {
+        setSuggestions([]);
+        // Only show no results message if user typed enough characters
+        if (query.length > 2) {
+          setSearchError("No se encontraron resultados");
           setShowSuggestions(true);
         } else {
-          // If no data from Supabase, use fallback mock data
-          const mockDestinations = getMockDestinations(value);
-          setSuggestions(mockDestinations);
-          setShowSuggestions(mockDestinations.length > 0);
+          setShowSuggestions(false);
         }
-      } catch (error) {
-        console.error("Error fetching destinations:", error);
-        // Fallback to mock data
-        const mockDestinations = getMockDestinations(value);
-        setSuggestions(mockDestinations);
-        setShowSuggestions(mockDestinations.length > 0);
       }
-    } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
+    } catch (error) {
+      console.error("Error fetching from Nominatim:", error);
+      setSearchError("Error al buscar localidades. Intente nuevamente.");
+      // Fallback to mock data in case of API error
+      const mockData = getMockDestinations(query);
+      if (mockData.length > 0) {
+        setSuggestions(mockData as unknown as NominatimResult[]);
+        setShowSuggestions(true);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Get mock destinations based on input value
+  // Debounced search
+  const handleDestinationChange = (value: string) => {
+    setDestination(value);
+    
+    // Clear previous timer
+    if (debounceTimerRef.current) {
+      window.clearTimeout(debounceTimerRef.current);
+    }
+    
+    // Set new timer
+    debounceTimerRef.current = window.setTimeout(() => {
+      fetchLocations(value);
+    }, 300); // 300ms debounce
+  };
+
+  // Get mock destinations based on input value (fallback)
   const getMockDestinations = (value: string) => {
     const lowerValue = value.toLowerCase();
     
@@ -117,10 +149,43 @@ const DestinationSearch = ({
     ).slice(0, 5);
   };
 
-  const selectSuggestion = (suggestion: string) => {
+  const selectSuggestion = (suggestion: NominatimResult) => {
     console.log("Selected suggestion:", suggestion);
-    setDestination(suggestion);
+    // Extract the first part of the display name (usually city, country)
+    const displayParts = suggestion.display_name.split(',');
+    const simplified = displayParts.length > 1 
+      ? `${displayParts[0].trim()}, ${displayParts[displayParts.length-1].trim()}`
+      : suggestion.display_name;
+      
+    setDestination(simplified);
     setShowSuggestions(false);
+    
+    // Store the full location data including coordinates if needed later
+    // This can be used for maps or for more precise search
+    localStorage.setItem('selectedLocation', JSON.stringify({
+      name: simplified,
+      lat: suggestion.lat,
+      lon: suggestion.lon,
+      full: suggestion.display_name
+    }));
+  };
+
+  // Format display name to be more readable
+  const formatDisplayName = (displayName: string): { main: string, secondary: string } => {
+    const parts = displayName.split(',').map(part => part.trim());
+    
+    if (parts.length === 1) {
+      return { main: parts[0], secondary: '' };
+    }
+    
+    const main = parts[0];
+    // Take last part for country and join middle parts for region/state
+    const country = parts[parts.length - 1];
+    const secondary = parts.length > 2 
+      ? `${parts[1]}, ${country}` 
+      : country;
+      
+    return { main, secondary };
   };
 
   return (
@@ -135,16 +200,21 @@ const DestinationSearch = ({
           <input 
             ref={inputRef}
             type="text" 
-            placeholder="Buscar localidades" 
+            placeholder="¿A dónde viajas?" 
             className="w-full bg-transparent border-none outline-none text-sm"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
             onFocus={() => {
               setActiveTab("destination");
-              if (destination.length > 1) setShowSuggestions(true);
+              if (destination.length > 1) {
+                fetchLocations(destination);
+              }
             }}
           />
-          {destination && (
+          {isLoading && (
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
+          )}
+          {destination && !isLoading && (
             <button 
               onClick={handleClear} 
               className="p-1 rounded-full hover:bg-gray-100 transition-colors"
@@ -154,24 +224,35 @@ const DestinationSearch = ({
           )}
         </div>
         
-        {showSuggestions && suggestions.length > 0 && (
+        {showSuggestions && (
           <div 
             ref={suggestionsRef}
-            className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-10 border max-h-60 overflow-y-auto"
+            className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-20 border max-h-60 overflow-y-auto"
           >
-            {suggestions.map((suggestion, index) => (
-              <div 
-                key={index}
-                className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center"
-                onClick={() => selectSuggestion(suggestion.name)}
-              >
-                <MapPin size={18} className="text-gray-500 mr-3" />
-                <div>
-                  <div className="font-medium">{suggestion.name}</div>
-                  <div className="text-gray-500 text-sm">{suggestion.country}</div>
-                </div>
-              </div>
-            ))}
+            {searchError ? (
+              <div className="px-4 py-3 text-gray-500">{searchError}</div>
+            ) : suggestions.length > 0 ? (
+              suggestions.map((suggestion, index) => {
+                const { main, secondary } = formatDisplayName(suggestion.display_name);
+                return (
+                  <div 
+                    key={suggestion.place_id || index}
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center"
+                    onClick={() => selectSuggestion(suggestion)}
+                  >
+                    <MapPin size={18} className="text-gray-500 mr-3 flex-shrink-0" />
+                    <div className="truncate">
+                      <div className="font-medium">{main}</div>
+                      <div className="text-gray-500 text-sm truncate">{secondary}</div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : isLoading ? (
+              <div className="px-4 py-3 text-gray-500">Buscando localidades...</div>
+            ) : (
+              <div className="px-4 py-3 text-gray-500">Empieza a escribir para buscar</div>
+            )}
           </div>
         )}
       </div>
