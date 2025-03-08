@@ -129,13 +129,13 @@ const DestinationSearch = ({
       onClick={() => setActiveTab("destination")}
     >
       <div className="px-2 relative">
-        <div className="text-xs font-bold">Destino</div>
+        <div className="text-xs font-bold">Localidad</div>
         <div className="flex items-center">
           <MapPin size={16} className="text-gray-500 mr-2" />
           <input 
             ref={inputRef}
             type="text" 
-            placeholder="Buscar destinos" 
+            placeholder="Buscar localidades" 
             className="w-full bg-transparent border-none outline-none text-sm"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}

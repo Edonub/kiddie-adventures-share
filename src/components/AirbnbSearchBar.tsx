@@ -20,7 +20,7 @@ const AirbnbSearchBar = () => {
   const handleSearch = () => {
     console.log("Searching for destination:", destination);
     if (!destination.trim()) {
-      toast.error("Por favor selecciona un destino");
+      toast.error("Por favor selecciona una localidad");
       return;
     }
     

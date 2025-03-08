@@ -12,7 +12,7 @@ const SearchButton = ({ onClick }: SearchButtonProps) => {
       <Button 
         onClick={onClick}
         size="lg" 
-        className="w-full md:w-auto bg-familea-primary hover:bg-familea-secondary text-white rounded-full"
+        className="w-full md:w-auto bg-[#ff4d4d] hover:bg-[#e63939] text-white rounded-full"
       >
         <Search size={18} className="mr-2" />
         <span>Buscar</span>
