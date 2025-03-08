@@ -70,9 +70,9 @@ const DestinationSearch = ({
     setSearchError(null);
     
     try {
-      // Use OpenStreetMap Nominatim API
+      // Use OpenStreetMap Nominatim API with filtro para España (countrycodes=es)
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1`
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&countrycodes=es&format=json&limit=5&addressdetails=1`
       );
       
       if (!response.ok) {
@@ -80,7 +80,7 @@ const DestinationSearch = ({
       }
       
       const data: NominatimResult[] = await response.json();
-      console.log("Nominatim results:", data);
+      console.log("Nominatim results for Spain:", data);
       
       if (data && data.length > 0) {
         setSuggestions(data);
@@ -89,7 +89,7 @@ const DestinationSearch = ({
         setSuggestions([]);
         // Only show no results message if user typed enough characters
         if (query.length > 2) {
-          setSearchError("No se encontraron resultados");
+          setSearchError("No se encontraron localidades en España");
           setShowSuggestions(true);
         } else {
           setShowSuggestions(false);
@@ -97,7 +97,7 @@ const DestinationSearch = ({
       }
     } catch (error) {
       console.error("Error fetching from Nominatim:", error);
-      setSearchError("Error al buscar localidades. Intente nuevamente.");
+      setSearchError("Error al buscar localidades españolas. Intente nuevamente.");
       // Fallback to mock data in case of API error
       const mockData = getMockDestinations(query);
       if (mockData.length > 0) {
@@ -128,19 +128,23 @@ const DestinationSearch = ({
   const getMockDestinations = (value: string) => {
     const lowerValue = value.toLowerCase();
     
-    // More comprehensive mock data with neighborhoods and regions
+    // Mock data de localidades españolas
     const allDestinations = [
       { name: "Sevilla", country: "España" },
       { name: "Centro, Sevilla", country: "España" },
-      { name: "Triana Este, Sevilla", country: "España" },
+      { name: "Triana, Sevilla", country: "España" },
       { name: "Casco Antiguo, Sevilla", country: "España" },
       { name: "Sevilla Este, Sevilla", country: "España" },
       { name: "Madrid", country: "España" },
       { name: "Barcelona", country: "España" },
       { name: "Valencia", country: "España" },
       { name: "Málaga", country: "España" },
-      { name: "Seville Cathedral, Sevilla", country: "España" },
-      { name: "Santa Cruz, Sevilla", country: "España" }
+      { name: "Granada", country: "España" },
+      { name: "Toledo", country: "España" },
+      { name: "Santiago de Compostela", country: "España" },
+      { name: "Bilbao", country: "España" },
+      { name: "San Sebastián", country: "España" },
+      { name: "Córdoba", country: "España" }
     ];
     
     return allDestinations.filter(d => 
@@ -154,8 +158,8 @@ const DestinationSearch = ({
     // Extract the first part of the display name (usually city, country)
     const displayParts = suggestion.display_name.split(',');
     const simplified = displayParts.length > 1 
-      ? `${displayParts[0].trim()}, ${displayParts[displayParts.length-1].trim()}`
-      : suggestion.display_name;
+      ? `${displayParts[0].trim()}, España`
+      : `${suggestion.display_name}, España`;
       
     setDestination(simplified);
     setShowSuggestions(false);
@@ -166,7 +170,8 @@ const DestinationSearch = ({
       name: simplified,
       lat: suggestion.lat,
       lon: suggestion.lon,
-      full: suggestion.display_name
+      full: suggestion.display_name,
+      country: "España"
     }));
   };
 
@@ -175,15 +180,14 @@ const DestinationSearch = ({
     const parts = displayName.split(',').map(part => part.trim());
     
     if (parts.length === 1) {
-      return { main: parts[0], secondary: '' };
+      return { main: parts[0], secondary: 'España' };
     }
     
     const main = parts[0];
-    // Take last part for country and join middle parts for region/state
-    const country = parts[parts.length - 1];
+    // Simplificamos para mostrar siempre España como país
     const secondary = parts.length > 2 
-      ? `${parts[1]}, ${country}` 
-      : country;
+      ? `${parts[1]}, España` 
+      : 'España';
       
     return { main, secondary };
   };
@@ -200,7 +204,7 @@ const DestinationSearch = ({
           <input 
             ref={inputRef}
             type="text" 
-            placeholder="¿A dónde viajas?" 
+            placeholder="¿A qué localidad de España viajas?" 
             className="w-full bg-transparent border-none outline-none text-sm"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
@@ -249,9 +253,9 @@ const DestinationSearch = ({
                 );
               })
             ) : isLoading ? (
-              <div className="px-4 py-3 text-gray-500">Buscando localidades...</div>
+              <div className="px-4 py-3 text-gray-500">Buscando localidades en España...</div>
             ) : (
-              <div className="px-4 py-3 text-gray-500">Empieza a escribir para buscar</div>
+              <div className="px-4 py-3 text-gray-500">Empieza a escribir para buscar localidades en España</div>
             )}
           </div>
         )}

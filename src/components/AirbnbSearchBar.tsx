@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -20,7 +19,7 @@ const AirbnbSearchBar = () => {
   const handleSearch = () => {
     console.log("Searching for destination:", destination);
     if (!destination.trim()) {
-      toast.error("Por favor selecciona una localidad");
+      toast.error("Por favor selecciona una localidad española");
       return;
     }
     
@@ -38,12 +37,12 @@ const AirbnbSearchBar = () => {
     const totalGuests = adults + children;
     if (totalGuests > 0) params.append("guests", totalGuests.toString());
     
-    // Save search parameters to localStorage for potential use elsewhere
     localStorage.setItem('lastSearch', JSON.stringify({
       destination,
       dateFrom: dateFrom ? format(dateFrom, "yyyy-MM-dd") : null,
       dateTo: dateTo ? format(dateTo, "yyyy-MM-dd") : null,
-      guests: totalGuests
+      guests: totalGuests,
+      country: "España"
     }));
     
     navigate(`/explorar?${params.toString()}`);
