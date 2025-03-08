@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { ForumCategory } from "@/components/forum/ForumCategories";
 
 type Comment = {
   id: string;
@@ -25,9 +26,10 @@ interface CommentFormProps {
   replyTo: Comment | null;
   setReplyTo: (comment: Comment | null) => void;
   onCommentSubmitted: () => void;
+  category?: ForumCategory;
 }
 
-const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted }: CommentFormProps) => {
+const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "general" }: CommentFormProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [newComment, setNewComment] = useState("");
@@ -50,7 +52,8 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted }: CommentFormPro
       const commentData = {
         content: newComment.trim(),
         user_id: user.id,
-        parent_id: replyTo ? replyTo.id : null
+        parent_id: replyTo ? replyTo.id : null,
+        // We'll add a metadata column for category in future if needed
       };
       
       const { error } = await supabase

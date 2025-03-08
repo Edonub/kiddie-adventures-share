@@ -1,4 +1,6 @@
 
+import { ForumCategory } from "./ForumCategories";
+
 export type Comment = {
   id: string;
   content: string;
@@ -11,4 +13,5 @@ export type Comment = {
     avatar_url: string;
   };
   replies?: Comment[];
+  category?: ForumCategory;
 };

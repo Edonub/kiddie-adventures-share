@@ -7,14 +7,17 @@ import { toast } from "sonner";
 import CommentForm from "@/components/forum/CommentForm";
 import CommentList from "@/components/forum/CommentList";
 import { Comment } from "@/components/forum/types";
+import ForumCategories, { ForumCategory } from "@/components/forum/ForumCategories";
 
-const sampleComments: Comment[] = [
+// Sample comments data with categories
+const sampleComments: (Comment & { category?: ForumCategory })[] = [
   {
     id: "sample-1",
     content: "¡Hola a todos! ¿Alguien tiene recomendaciones de actividades para hacer con niños de 5 años en Madrid este fin de semana?",
     created_at: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
     user_id: "sample-user-1",
     parent_id: null,
+    category: "general",
     profiles: {
       first_name: "María",
       last_name: "García",
@@ -53,6 +56,7 @@ const sampleComments: Comment[] = [
     created_at: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
     user_id: "sample-user-4",
     parent_id: null,
+    category: "viajes",
     profiles: {
       first_name: "Javier",
       last_name: "López",
@@ -79,10 +83,66 @@ const sampleComments: Comment[] = [
     created_at: new Date(Date.now() - 86400000 * 1).toISOString(), // 1 day ago
     user_id: "sample-user-6",
     parent_id: null,
+    category: "general",
     profiles: {
       first_name: "Elena",
       last_name: "Sánchez",
       avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena"
+    },
+    replies: []
+  },
+  {
+    id: "sample-4",
+    content: "¿Alguien conoce algún hotel con habitaciones familiares en Barcelona? Necesitamos espacio para 2 adultos y 3 niños.",
+    created_at: new Date(Date.now() - 86400000 * 4).toISOString(), // 4 days ago
+    user_id: "sample-user-7",
+    parent_id: null,
+    category: "alojamientos",
+    profiles: {
+      first_name: "Miguel",
+      last_name: "González",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Miguel"
+    },
+    replies: []
+  },
+  {
+    id: "sample-5",
+    content: "¿Cuál ha sido el mayor desastre que habéis tenido viajando con niños? Yo olvidé el osito de peluche de mi hijo y fue un drama total 😂",
+    created_at: new Date(Date.now() - 86400000 * 5).toISOString(), // 5 days ago
+    user_id: "sample-user-8",
+    parent_id: null,
+    category: "humor",
+    profiles: {
+      first_name: "Paula",
+      last_name: "Martín",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Paula"
+    },
+    replies: [
+      {
+        id: "sample-5-reply-1",
+        content: "¡Jajaja! Una vez mi hija de 4 años le dijo al camarero que su comida estaba asquerosa. ¡Quería morirme de vergüenza!",
+        created_at: new Date(Date.now() - 86400000 * 4.5).toISOString(), // 4.5 days ago
+        user_id: "sample-user-9",
+        parent_id: "sample-5",
+        profiles: {
+          first_name: "Diego",
+          last_name: "Pérez",
+          avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Diego"
+        }
+      }
+    ]
+  },
+  {
+    id: "sample-6",
+    content: "¿Creéis que es mejor Netflix o Disney+ para niños pequeños? Estoy pensando en suscribirme a uno.",
+    created_at: new Date(Date.now() - 86400000 * 6).toISOString(), // 6 days ago
+    user_id: "sample-user-10",
+    parent_id: null,
+    category: "offtopic",
+    profiles: {
+      first_name: "Lucía",
+      last_name: "Jiménez",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lucia"
     },
     replies: []
   }
@@ -93,10 +153,11 @@ const ForoPage = () => {
   const [loading, setLoading] = useState(true);
   const [replyTo, setReplyTo] = useState<Comment | null>(null);
   const [showSampleData, setShowSampleData] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<ForumCategory>("general");
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [selectedCategory]);
 
   const fetchComments = async () => {
     setLoading(true);
@@ -146,7 +207,11 @@ const ForoPage = () => {
 
       if (commentsWithReplies.length === 0) {
         setShowSampleData(true);
-        setComments(sampleComments);
+        // Filter sample comments by selected category
+        const filteredComments = sampleComments.filter(comment => 
+          comment.category === selectedCategory
+        );
+        setComments(filteredComments);
       } else {
         setShowSampleData(false);
         setComments(commentsWithReplies);
@@ -155,12 +220,20 @@ const ForoPage = () => {
       console.error("Error fetching comments:", error);
       toast.error("Error al cargar los comentarios del foro");
       
-      // Show sample data if there was an error
+      // Show filtered sample data if there was an error
       setShowSampleData(true);
-      setComments(sampleComments);
+      const filteredComments = sampleComments.filter(comment => 
+        comment.category === selectedCategory
+      );
+      setComments(filteredComments);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Update comment form to include category
+  const handleCommentSubmitted = () => {
+    fetchComments();
   };
 
   return (
@@ -183,10 +256,16 @@ const ForoPage = () => {
             )}
           </div>
           
+          {/* Add the category selector */}
+          <ForumCategories 
+            selectedCategory={selectedCategory} 
+            onCategoryChange={setSelectedCategory} 
+          />
+          
           <CommentForm 
             replyTo={replyTo} 
             setReplyTo={setReplyTo} 
-            onCommentSubmitted={fetchComments} 
+            onCommentSubmitted={handleCommentSubmitted} 
           />
           
           <CommentList 
