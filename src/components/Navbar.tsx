@@ -28,10 +28,9 @@ const Navbar = () => {
       </div>
       
       <div className="hidden md:flex items-center space-x-6">
-        <Link to="/" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Alojamientos</Link>
-        <Link to="/explorar" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Experiencias</Link>
-        <Link to="/foro" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Foro</Link>
-        <Link to="/blog" className="font-medium text-gray-800 hover:text-familyxp-primary transition-colors">Blog</Link>
+        <Link to="/" className="font-medium text-gray-800 hover:text-familea-primary transition-colors">Experiencias</Link>
+        <Link to="/foro" className="font-medium text-gray-800 hover:text-familea-primary transition-colors">Foro</Link>
+        <Link to="/blog" className="font-medium text-gray-800 hover:text-familea-primary transition-colors">Blog</Link>
       </div>
       
       <div className="flex items-center gap-2 md:gap-3">
@@ -117,7 +116,6 @@ const Navbar = () => {
           </DropdownMenu>
         )}
         
-        {/* Mobile Menu Button */}
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden">
@@ -129,12 +127,6 @@ const Navbar = () => {
               <div className="flex flex-col space-y-4 mt-6">
                 <Link 
                   to="/" 
-                  className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
-                >
-                  Alojamientos
-                </Link>
-                <Link 
-                  to="/explorar" 
                   className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 >
                   Experiencias
