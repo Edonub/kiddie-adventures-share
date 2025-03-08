@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -51,32 +52,40 @@ const AirbnbSearchBar = () => {
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-full shadow-lg border border-gray-200 relative z-10">
       <div className="flex flex-col md:flex-row md:items-center">
-        <DestinationSearch 
-          destination={destination}
-          setDestination={setDestination}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
+        <div className="w-full md:w-[33%]">
+          <DestinationSearch 
+            destination={destination}
+            setDestination={setDestination}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+        </div>
         
-        <DateSelection 
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          dateFrom={dateFrom}
-          setDateFrom={setDateFrom}
-          dateTo={dateTo}
-          setDateTo={setDateTo}
-        />
+        <div className="w-full md:w-[22%]">
+          <DateSelection 
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            dateFrom={dateFrom}
+            setDateFrom={setDateFrom}
+            dateTo={dateTo}
+            setDateTo={setDateTo}
+          />
+        </div>
         
-        <GuestSelector 
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          adults={adults}
-          setAdults={setAdults}
-          children={children}
-          setChildren={setChildren}
-        />
+        <div className="w-full md:w-[22%]">
+          <GuestSelector 
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            adults={adults}
+            setAdults={setAdults}
+            children={children}
+            setChildren={setChildren}
+          />
+        </div>
 
-        <SearchButton onClick={handleSearch} />
+        <div className="w-full md:w-[22%]">
+          <SearchButton onClick={handleSearch} />
+        </div>
       </div>
     </div>
   );
