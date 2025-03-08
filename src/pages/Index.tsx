@@ -8,11 +8,32 @@ import PropertyCard from "@/components/PropertyCard";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { 
+  Filter, Tag, MapPin, Calendar, Wallet, 
+  CreditCard, Clock, Users 
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const Index = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [bookingType, setBookingType] = useState<"all" | "free" | "paid">("all");
+  const [priceRange, setPriceRange] = useState([200]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const categories = [
     { id: "beach", name: "A pie de playa", icon: "https://a0.muscache.com/pictures/10ce1091-c854-40f3-a2fb-defc2995bcaf.jpg", slug: "playa" },
@@ -29,15 +50,42 @@ const Index = () => {
     { id: "unique", name: "Singulares", icon: "https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg", slug: "singulares" },
   ];
 
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(c => c !== categoryId) 
+        : [...prev, categoryId]
+    );
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Fetch activities from Supabase to use as mock "properties"
-        const { data, error } = await supabase
+        // Build query with filters
+        let query = supabase
           .from("activities")
           .select("*")
           .order('created_at', { ascending: false });
+        
+        // Apply booking type filter
+        if (bookingType === "free") {
+          query = query.eq("price", 0);
+        } else if (bookingType === "paid") {
+          query = query.gt("price", 0);
+        }
+        
+        // Apply price range filter if not free only
+        if (bookingType !== "free") {
+          query = query.lte("price", priceRange[0]);
+        }
+        
+        // Apply category filter if any selected
+        if (selectedCategories.length > 0) {
+          query = query.in("category", selectedCategories);
+        }
+        
+        const { data, error } = await query;
 
         if (error) throw error;
         
@@ -67,60 +115,60 @@ const Index = () => {
     };
 
     fetchData();
-  }, []);
+  }, [bookingType, priceRange, selectedCategories]);
 
   // Sample properties with better images for illustration if no data is available
   const sampleProperties = [
     {
       id: "1",
-      title: "Platja de Nules",
-      location: "España",
-      host: "María Del Carmen",
+      title: "Villa de lujo con piscina",
+      location: "Marbella, España",
+      host: "María",
       dates: "8-13 mar",
       price: 231,
       rating: 4.92,
       images: [
-        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=2070&q=80",
-        "https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?auto=format&fit=crop&w=2070&q=80",
+        "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=2064&q=80"
       ]
     },
     {
       id: "2",
-      title: "El Puig de Santa Maria",
-      location: "España",
+      title: "Apartamento con vistas al mar",
+      location: "Valencia, España",
       host: "Ellen",
       dates: "16-21 mar",
       price: 188,
       rating: 4.9,
       images: [
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2075&q=80",
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2070&q=80"
       ]
     },
     {
       id: "3",
-      title: "Valencia",
-      location: "España",
+      title: "Casa histórica en el centro",
+      location: "Sevilla, España",
       host: "Elena",
       dates: "8-13 mar",
       price: 175,
       rating: 4.91,
       images: [
-        "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=2127&q=80",
-        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=2084&q=80",
+        "https://images.unsplash.com/photo-1503174971373-b1f69850bded?auto=format&fit=crop&w=2013&q=80"
       ]
     },
     {
       id: "4",
-      title: "Casablanca",
-      location: "España",
+      title: "Cabaña junto al lago",
+      location: "Asturias, España",
       host: "Angeles",
       dates: "10-15 mar",
       price: 114,
       rating: 5.0,
       images: [
-        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=2071&q=80",
-        "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=2070&q=80"
+        "https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=2070&q=80",
+        "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=2070&q=80"
       ]
     }
   ];
@@ -138,7 +186,165 @@ const Index = () => {
               <AirbnbSearchBar />
             </div>
             
-            <CategoryTabs categories={categories} activeCategory="beach" />
+            <div className="flex flex-wrap items-center justify-between mb-6">
+              <CategoryTabs categories={categories} activeCategory="beach" />
+              
+              <div className="flex space-x-2 mt-4 sm:mt-0">
+                {/* Booking Type Selector */}
+                <div className="flex rounded-full border border-gray-300 p-1">
+                  <Button
+                    variant={bookingType === "all" ? "default" : "ghost"} 
+                    className="rounded-full text-sm px-4"
+                    onClick={() => setBookingType("all")}
+                  >
+                    Todos
+                  </Button>
+                  <Button
+                    variant={bookingType === "free" ? "default" : "ghost"} 
+                    className="rounded-full text-sm px-4"
+                    onClick={() => setBookingType("free")}
+                  >
+                    <Tag className="mr-2 h-4 w-4" />
+                    Gratis
+                  </Button>
+                  <Button
+                    variant={bookingType === "paid" ? "default" : "ghost"} 
+                    className="rounded-full text-sm px-4"
+                    onClick={() => setBookingType("paid")}
+                  >
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Reservar
+                  </Button>
+                </div>
+                
+                {/* Filters Dropdown */}
+                <DropdownMenu open={showFilters} onOpenChange={setShowFilters}>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="rounded-full flex items-center">
+                      <Filter className="mr-2 h-4 w-4" />
+                      Filtros
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-80 p-4">
+                    <DropdownMenuLabel>Filtros</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    
+                    <div className="space-y-4">
+                      {/* Price Range */}
+                      <div>
+                        <h3 className="text-sm font-medium mb-2 flex items-center">
+                          <Wallet className="mr-2 h-4 w-4" /> Precio
+                        </h3>
+                        <Slider
+                          value={priceRange}
+                          max={500}
+                          step={10}
+                          onValueChange={setPriceRange}
+                          className="my-4"
+                        />
+                        <div className="flex justify-between text-sm">
+                          <span>0€</span>
+                          <span>{priceRange[0]}€</span>
+                        </div>
+                      </div>
+                      
+                      <DropdownMenuSeparator />
+                      
+                      {/* Categories */}
+                      <div>
+                        <h3 className="text-sm font-medium mb-2 flex items-center">
+                          <Tag className="mr-2 h-4 w-4" /> Categorías
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {categories.slice(0, 6).map(category => (
+                            <div key={category.id} className="flex items-center space-x-2">
+                              <Checkbox 
+                                id={`category-${category.id}`}
+                                checked={selectedCategories.includes(category.id)}
+                                onCheckedChange={() => toggleCategory(category.id)}
+                              />
+                              <Label htmlFor={`category-${category.id}`} className="text-sm">
+                                {category.name}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <DropdownMenuSeparator />
+                      
+                      {/* Location */}
+                      <div>
+                        <h3 className="text-sm font-medium mb-2 flex items-center">
+                          <MapPin className="mr-2 h-4 w-4" /> Ubicación
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {['Madrid', 'Barcelona', 'Valencia', 'Sevilla'].map(location => (
+                            <div key={location} className="flex items-center space-x-2">
+                              <Checkbox id={`location-${location}`} />
+                              <Label htmlFor={`location-${location}`} className="text-sm">
+                                {location}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <DropdownMenuSeparator />
+                      
+                      {/* Duration */}
+                      <div>
+                        <h3 className="text-sm font-medium mb-2 flex items-center">
+                          <Clock className="mr-2 h-4 w-4" /> Duración
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {['< 1 hora', '1-3 horas', 'Medio día', 'Día completo'].map(duration => (
+                            <div key={duration} className="flex items-center space-x-2">
+                              <Checkbox id={`duration-${duration}`} />
+                              <Label htmlFor={`duration-${duration}`} className="text-sm">
+                                {duration}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <DropdownMenuSeparator />
+                      
+                      {/* Group Size */}
+                      <div>
+                        <h3 className="text-sm font-medium mb-2 flex items-center">
+                          <Users className="mr-2 h-4 w-4" /> Tamaño del grupo
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {['Individual', 'Parejas', 'Pequeño grupo', 'Grupo grande'].map(size => (
+                            <div key={size} className="flex items-center space-x-2">
+                              <Checkbox id={`size-${size}`} />
+                              <Label htmlFor={`size-${size}`} className="text-sm">
+                                {size}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex justify-between">
+                      <Button variant="outline" size="sm" onClick={() => {
+                        setSelectedCategories([]);
+                        setPriceRange([200]);
+                        setBookingType("all");
+                      }}>
+                        Limpiar
+                      </Button>
+                      <Button size="sm" onClick={() => setShowFilters(false)}>
+                        Aplicar filtros
+                      </Button>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
             
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
