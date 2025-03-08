@@ -15,6 +15,7 @@ export type Database = {
           category: string
           created_at: string
           creator_id: string | null
+          creator_name: string | null
           description: string
           id: string
           image_url: string | null
@@ -31,6 +32,7 @@ export type Database = {
           category: string
           created_at?: string
           creator_id?: string | null
+          creator_name?: string | null
           description: string
           id?: string
           image_url?: string | null
@@ -47,6 +49,7 @@ export type Database = {
           category?: string
           created_at?: string
           creator_id?: string | null
+          creator_name?: string | null
           description?: string
           id?: string
           image_url?: string | null
@@ -185,6 +188,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      destinations: {
+        Row: {
+          country: string
+          created_at: string
+          id: string
+          name: string
+          popularity: number | null
+          updated_at: string
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          id?: string
+          name: string
+          popularity?: number | null
+          updated_at?: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          id?: string
+          name?: string
+          popularity?: number | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {

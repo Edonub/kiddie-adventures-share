@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { addDays, format, isSameDay, isWithinInterval, startOfDay, endOfDay, isSaturday, isSunday, startOfWeek, endOfWeek, isWeekend, isToday } from "date-fns";
+import { format, addDays, isSameDay, isWithinInterval, startOfDay, endOfDay, isSaturday, isSunday, startOfWeek, endOfWeek, isWeekend, isToday } from "date-fns";
 import { es } from "date-fns/locale";
 import { Button } from "./ui/button";
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
@@ -17,58 +17,19 @@ interface DateRangePickerProps {
   className?: string;
   onChange?: (dateRange: DateRange) => void;
   initialDateRange?: DateRange;
+  showDirect?: boolean;
 }
 
 const DateRangePicker = ({
   className = "",
   onChange,
   initialDateRange,
+  showDirect = false,
 }: DateRangePickerProps) => {
   const [dateRange, setDateRange] = useState<DateRange>(
     initialDateRange ?? { from: undefined, to: undefined }
   );
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Preset date range options
-  const presets = [
-    {
-      name: "Fin de semana",
-      getValue: () => {
-        const today = new Date();
-        const daysUntilFriday = (5 + 7 - today.getDay()) % 7;
-        const friday = addDays(today, daysUntilFriday);
-        const sunday = addDays(friday, 2);
-        return { from: friday, to: sunday };
-      },
-    },
-    {
-      name: "Semana",
-      getValue: () => {
-        const today = new Date();
-        const monday = startOfWeek(today, { weekStartsOn: 1 });
-        const sunday = endOfWeek(today, { weekStartsOn: 1 });
-        return { from: monday, to: sunday };
-      },
-    },
-    {
-      name: "Próxima semana",
-      getValue: () => {
-        const today = new Date();
-        const nextMonday = addDays(startOfWeek(today, { weekStartsOn: 1 }), 7);
-        const nextSunday = addDays(endOfWeek(today, { weekStartsOn: 1 }), 7);
-        return { from: nextMonday, to: nextSunday };
-      },
-    },
-    {
-      name: "Mes",
-      getValue: () => {
-        const today = new Date();
-        const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-        const lastDayCurrentMonth = new Date(firstDayNextMonth.getTime() - 86400000);
-        return { from: today, to: lastDayCurrentMonth };
-      },
-    },
-  ];
+  const [isOpen, setIsOpen] = useState(showDirect);
 
   useEffect(() => {
     if (onChange && (dateRange.from || dateRange.to)) {
@@ -93,11 +54,6 @@ const DateRangePicker = ({
       // If selected date is before start date, make it the new start date
       return { from: day, to: undefined };
     });
-  };
-
-  const handlePresetSelect = (preset: typeof presets[0]) => {
-    const range = preset.getValue();
-    setDateRange(range);
   };
 
   // Custom day renderer for the calendar
@@ -158,78 +114,31 @@ const DateRangePicker = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 bg-white" align="start">
-          <div className="flex flex-col p-4 gap-2 md:flex-row md:gap-6">
-            <div className="space-y-4">
-              <h2 className="font-medium text-sm">Selección rápida</h2>
-              <div className="flex flex-col space-y-2">
-                {presets.map((preset) => (
-                  <Button
-                    key={preset.name}
-                    variant="outline"
-                    size="sm"
-                    className="text-sm justify-start font-normal"
-                    onClick={() => handlePresetSelect(preset)}
-                  >
-                    {preset.name}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Calendar
-                mode="range"
-                defaultMonth={dateRange.from}
-                selected={{
-                  from: dateRange.from,
-                  to: dateRange.to,
-                }}
-                onSelect={(range) => {
-                  if (range?.from) {
-                    setDateRange({ from: range.from, to: range.to });
-                  }
-                }}
-                numberOfMonths={1}
-                locale={es}
-                className={cn("p-3 pointer-events-auto rounded-md border")}
-                classNames={{
-                  day_range_start: "day-range-start",
-                  day_range_end: "day-range-end",
-                  day_range_middle: "bg-familyxp-tertiary day-range-middle",
-                }}
-                components={{
-                  IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,
-                  IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" {...props} />,
-                }}
-              />
-              
-              <Calendar
-                mode="range"
-                defaultMonth={dateRange.from ? addDays(dateRange.from, 31) : undefined}
-                selected={{
-                  from: dateRange.from,
-                  to: dateRange.to,
-                }}
-                onSelect={(range) => {
-                  if (range?.from) {
-                    setDateRange({ from: range.from, to: range.to });
-                  }
-                }}
-                numberOfMonths={1}
-                locale={es}
-                className={cn("p-3 pointer-events-auto rounded-md border hidden md:block")}
-                classNames={{
-                  day_range_start: "day-range-start",
-                  day_range_end: "day-range-end",
-                  day_range_middle: "bg-familyxp-tertiary day-range-middle",
-                }}
-                components={{
-                  IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,
-                  IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" {...props} />,
-                }}
-              />
-            </div>
-          </div>
+          <Calendar
+            mode="range"
+            defaultMonth={dateRange.from}
+            selected={{
+              from: dateRange.from,
+              to: dateRange.to,
+            }}
+            onSelect={(range) => {
+              if (range?.from) {
+                setDateRange({ from: range.from, to: range.to });
+              }
+            }}
+            numberOfMonths={1}
+            locale={es}
+            className={cn("p-3 pointer-events-auto rounded-md border")}
+            classNames={{
+              day_range_start: "day-range-start",
+              day_range_end: "day-range-end",
+              day_range_middle: "bg-familyxp-tertiary day-range-middle",
+            }}
+            components={{
+              IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" {...props} />,
+              IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" {...props} />,
+            }}
+          />
           
           <div className="flex items-center justify-between p-4 border-t">
             <Button variant="ghost" onClick={() => setIsOpen(false)}>
