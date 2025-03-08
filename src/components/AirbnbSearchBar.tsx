@@ -1,12 +1,13 @@
 
 import { Button } from "./ui/button";
-import { Search, Users, Plus, Minus } from "lucide-react";
+import { Search, Users, Plus, Minus, MapPin, Calendar } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar } from "./ui/calendar";
+import { Calendar as CalendarComponent } from "./ui/calendar";
+import { toast } from "sonner";
 
 const AirbnbSearchBar = () => {
   const navigate = useNavigate();
@@ -19,11 +20,17 @@ const AirbnbSearchBar = () => {
   const [suggestions, setSuggestions] = useState<{name: string, country: string}[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
 
   // Handle click outside suggestions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      if (
+        inputRef.current && 
+        !inputRef.current.contains(event.target as Node) && 
+        suggestionsRef.current && 
+        !suggestionsRef.current.contains(event.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     };
@@ -36,6 +43,11 @@ const AirbnbSearchBar = () => {
 
   const handleSearch = () => {
     console.log("Searching for destination:", destination);
+    if (!destination.trim()) {
+      toast.error("Por favor selecciona un destino");
+      return;
+    }
+    
     const params = new URLSearchParams();
     if (destination) params.append("destino", destination);
     
@@ -125,27 +137,34 @@ const AirbnbSearchBar = () => {
         >
           <div className="px-2 relative">
             <div className="text-xs font-bold">Destino</div>
-            <input 
-              ref={inputRef}
-              type="text" 
-              placeholder="Buscar destinos" 
-              className="w-full bg-transparent border-none outline-none text-sm"
-              value={destination}
-              onChange={(e) => handleDestinationChange(e.target.value)}
-              onFocus={() => {
-                setActiveTab("destination");
-                if (destination.length > 1) setShowSuggestions(true);
-              }}
-            />
+            <div className="flex items-center">
+              <MapPin size={16} className="text-gray-500 mr-2" />
+              <input 
+                ref={inputRef}
+                type="text" 
+                placeholder="Buscar destinos" 
+                className="w-full bg-transparent border-none outline-none text-sm"
+                value={destination}
+                onChange={(e) => handleDestinationChange(e.target.value)}
+                onFocus={() => {
+                  setActiveTab("destination");
+                  if (destination.length > 1) setShowSuggestions(true);
+                }}
+              />
+            </div>
             
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-10 border">
+              <div 
+                ref={suggestionsRef}
+                className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-10 border max-h-60 overflow-y-auto"
+              >
                 {suggestions.map((suggestion, index) => (
                   <div 
                     key={index}
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => selectSuggestion(suggestion.name)}
                   >
+                    <MapPin size={16} className="text-gray-500 mr-2" />
                     <span className="mr-2">{suggestion.name}, </span>
                     <span className="text-gray-500 text-sm">{suggestion.country}</span>
                   </div>
@@ -163,19 +182,22 @@ const AirbnbSearchBar = () => {
             >
               <div className="px-2">
                 <div className="text-xs font-bold">Llegada</div>
-                <div className="text-sm text-gray-500">
-                  {dateFrom ? format(dateFrom, "dd MMM") : "Seleccionar fecha"}
+                <div className="flex items-center">
+                  <Calendar size={16} className="text-gray-500 mr-2" />
+                  <div className="text-sm text-gray-500">
+                    {dateFrom ? format(dateFrom, "dd MMM") : "Seleccionar fecha"}
+                  </div>
                 </div>
               </div>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
+            <CalendarComponent
               mode="single"
               selected={dateFrom}
               onSelect={setDateFrom}
               initialFocus
-              className="p-2"
+              className="p-2 pointer-events-auto"
             />
           </PopoverContent>
         </Popover>
@@ -188,19 +210,22 @@ const AirbnbSearchBar = () => {
             >
               <div className="px-2">
                 <div className="text-xs font-bold">Salida</div>
-                <div className="text-sm text-gray-500">
-                  {dateTo ? format(dateTo, "dd MMM") : "Seleccionar fecha"}
+                <div className="flex items-center">
+                  <Calendar size={16} className="text-gray-500 mr-2" />
+                  <div className="text-sm text-gray-500">
+                    {dateTo ? format(dateTo, "dd MMM") : "Seleccionar fecha"}
+                  </div>
                 </div>
               </div>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
+            <CalendarComponent
               mode="single"
               selected={dateTo}
               onSelect={setDateTo}
               initialFocus
-              className="p-2"
+              className="p-2 pointer-events-auto"
             />
           </PopoverContent>
         </Popover>
@@ -208,27 +233,20 @@ const AirbnbSearchBar = () => {
         <Popover>
           <PopoverTrigger asChild>
             <div 
-              className={`p-3 md:p-4 flex-1 flex items-center justify-between cursor-pointer rounded-b-full md:rounded-r-full md:rounded-bl-none ${activeTab === "guests" ? "bg-gray-50" : ""}`}
+              className={`p-3 md:p-4 flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "guests" ? "bg-gray-50" : ""}`}
               onClick={() => setActiveTab("guests")}
             >
-              <div className="px-2">
+              <div className="px-2 flex-1">
                 <div className="text-xs font-bold">Viajeros</div>
-                <div className="text-sm text-gray-500">
-                  {adults + children > 0 
-                    ? `${adults + children} ${adults + children === 1 ? 'viajero' : 'viajeros'}`
-                    : "Añade viajeros"}
+                <div className="flex items-center">
+                  <Users size={16} className="text-gray-500 mr-2" />
+                  <div className="text-sm text-gray-500">
+                    {adults + children > 0 
+                      ? `${adults + children} ${adults + children === 1 ? 'viajero' : 'viajeros'}`
+                      : "Añade viajeros"}
+                  </div>
                 </div>
               </div>
-              <Button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSearch();
-                }}
-                size="icon" 
-                className="bg-familea-primary hover:bg-familea-secondary text-white rounded-full"
-              >
-                <Search size={18} />
-              </Button>
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-72 p-4" align="end">
@@ -243,7 +261,10 @@ const AirbnbSearchBar = () => {
                     variant="outline" 
                     size="icon" 
                     className="h-8 w-8 rounded-full"
-                    onClick={() => setAdults(Math.max(1, adults - 1))}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAdults(Math.max(1, adults - 1));
+                    }}
                     disabled={adults <= 1}
                   >
                     <Minus size={16} />
@@ -253,7 +274,10 @@ const AirbnbSearchBar = () => {
                     variant="outline" 
                     size="icon" 
                     className="h-8 w-8 rounded-full"
-                    onClick={() => setAdults(adults + 1)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAdults(adults + 1);
+                    }}
                   >
                     <Plus size={16} />
                   </Button>
@@ -270,7 +294,10 @@ const AirbnbSearchBar = () => {
                     variant="outline" 
                     size="icon" 
                     className="h-8 w-8 rounded-full"
-                    onClick={() => setChildren(Math.max(0, children - 1))}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChildren(Math.max(0, children - 1));
+                    }}
                     disabled={children <= 0}
                   >
                     <Minus size={16} />
@@ -280,7 +307,10 @@ const AirbnbSearchBar = () => {
                     variant="outline" 
                     size="icon" 
                     className="h-8 w-8 rounded-full"
-                    onClick={() => setChildren(children + 1)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChildren(children + 1);
+                    }}
                   >
                     <Plus size={16} />
                   </Button>
@@ -289,6 +319,17 @@ const AirbnbSearchBar = () => {
             </div>
           </PopoverContent>
         </Popover>
+
+        <div className="p-3 md:p-4">
+          <Button 
+            onClick={handleSearch}
+            size="lg" 
+            className="w-full md:w-auto bg-familea-primary hover:bg-familea-secondary text-white rounded-full"
+          >
+            <Search size={18} className="mr-2" />
+            <span>Buscar</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
