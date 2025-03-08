@@ -31,7 +31,7 @@ const FiltersSection = ({
   };
 
   return (
-    <div className="flex space-x-2 mt-4 sm:mt-0">
+    <div className="flex flex-wrap gap-2 mt-4 sm:mt-0">
       <BookingTypeSelector 
         bookingType={bookingType}
         setBookingType={setBookingType}

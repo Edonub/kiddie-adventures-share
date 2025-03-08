@@ -45,7 +45,12 @@ const FiltersDropdown = ({
           Filtros
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80 p-4" side="bottom" align="end">
+      <DropdownMenuContent 
+        className="w-80 p-4 bg-white" 
+        side="bottom" 
+        align="end"
+        sideOffset={8}
+      >
         <DropdownMenuLabel>Filtros</DropdownMenuLabel>
         <DropdownMenuSeparator />
         
