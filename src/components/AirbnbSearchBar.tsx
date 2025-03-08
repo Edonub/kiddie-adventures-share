@@ -35,6 +35,7 @@ const AirbnbSearchBar = () => {
   }, []);
 
   const handleSearch = () => {
+    console.log("Searching for destination:", destination);
     const params = new URLSearchParams();
     if (destination) params.append("destino", destination);
     
@@ -52,22 +53,56 @@ const AirbnbSearchBar = () => {
     navigate(`/explorar?${params.toString()}`);
   };
 
-  // Improved destination search handler - fetches results as you type
+  // Improved destination search handler
   const handleDestinationChange = async (value: string) => {
     setDestination(value);
     
-    if (value.length > 0) {
-      // Using ilike with pattern at the beginning for prefix search (starts with)
-      const { data, error } = await supabase
-        .from('destinations')
-        .select('name, country')
-        .ilike('name', `${value}%`)
-        .order('popularity', { ascending: false })
-        .limit(5);
+    if (value.length > 1) {
+      try {
+        console.log("Fetching destinations for:", value);
+        // Use Supabase to fetch destinations
+        const { data, error } = await supabase
+          .from('destinations')
+          .select('name, country')
+          .ilike('name', `${value}%`)
+          .order('popularity', { ascending: false })
+          .limit(5);
+          
+        if (error) {
+          console.error("Supabase error:", error);
+          throw error;
+        }
         
-      if (!error && data) {
-        setSuggestions(data);
-        setShowSuggestions(true);
+        console.log("Destination results:", data);
+        if (data && data.length > 0) {
+          setSuggestions(data);
+          setShowSuggestions(true);
+        } else {
+          // If no data from Supabase, use fallback mock data
+          const mockDestinations = [
+            { name: "Madrid", country: "España" },
+            { name: "Barcelona", country: "España" },
+            { name: "Valencia", country: "España" },
+            { name: "Málaga", country: "España" },
+            { name: "Sevilla", country: "España" }
+          ].filter(d => d.name.toLowerCase().startsWith(value.toLowerCase()));
+          
+          setSuggestions(mockDestinations);
+          setShowSuggestions(mockDestinations.length > 0);
+        }
+      } catch (error) {
+        console.error("Error fetching destinations:", error);
+        // Fallback to simple filtering
+        const mockDestinations = [
+          { name: "Madrid", country: "España" },
+          { name: "Barcelona", country: "España" },
+          { name: "Valencia", country: "España" },
+          { name: "Málaga", country: "España" },
+          { name: "Sevilla", country: "España" }
+        ].filter(d => d.name.toLowerCase().startsWith(value.toLowerCase()));
+        
+        setSuggestions(mockDestinations);
+        setShowSuggestions(mockDestinations.length > 0);
       }
     } else {
       setSuggestions([]);
@@ -76,11 +111,9 @@ const AirbnbSearchBar = () => {
   };
 
   const selectSuggestion = (suggestion: string) => {
+    console.log("Selected suggestion:", suggestion);
     setDestination(suggestion);
     setShowSuggestions(false);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
   };
 
   return (
@@ -101,7 +134,7 @@ const AirbnbSearchBar = () => {
               onChange={(e) => handleDestinationChange(e.target.value)}
               onFocus={() => {
                 setActiveTab("destination");
-                if (destination.length > 0) setShowSuggestions(true);
+                if (destination.length > 1) setShowSuggestions(true);
               }}
             />
             
