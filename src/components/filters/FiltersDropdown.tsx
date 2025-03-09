@@ -20,7 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Category } from "@/data/categories";
-import { useMediaQuery } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FiltersDropdownProps {
   categories: Category[];
@@ -40,7 +40,7 @@ const FiltersDropdown = ({
   resetFilters
 }: FiltersDropdownProps) => {
   const [showFilters, setShowFilters] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 640px)");
+  const isMobile = useIsMobile();
   
   // Using Sheet for mobile which allows page scrolling underneath
   if (isMobile) {
@@ -69,22 +69,21 @@ const FiltersDropdown = ({
     );
   }
 
+  // For desktop, use Popover instead of DropdownMenu to allow scrolling of the main page
   return (
-    <DropdownMenu open={showFilters} onOpenChange={setShowFilters}>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-full flex items-center">
-          <Filter className="mr-2 h-4 w-4" />
-          Filtros
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuPortal>
-        <DropdownMenuContent 
-          className="w-80 p-4 bg-white shadow-lg border border-gray-200 rounded-md max-h-[400px] overflow-y-auto" 
-          sideOffset={20}
-          align="start"
-          forceMount={true}
-          side="bottom"
-          avoidCollisions={false}
+    <div className="relative">
+      <Button 
+        variant="outline" 
+        className="rounded-full flex items-center"
+        onClick={() => setShowFilters(!showFilters)}
+      >
+        <Filter className="mr-2 h-4 w-4" />
+        Filtros
+      </Button>
+      
+      {showFilters && (
+        <div 
+          className="absolute left-0 top-[calc(100%+10px)] w-80 p-4 bg-white shadow-lg border border-gray-200 rounded-md max-h-[400px] overflow-y-auto z-50"
         >
           <FiltersContent 
             categories={categories}
@@ -95,9 +94,9 @@ const FiltersDropdown = ({
             resetFilters={resetFilters}
             onClose={() => setShowFilters(false)}
           />
-        </DropdownMenuContent>
-      </DropdownMenuPortal>
-    </DropdownMenu>
+        </div>
+      )}
+    </div>
   );
 };
 
