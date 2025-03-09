@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Filter, Tag, MapPin, Clock, Users, Wallet 
 } from "lucide-react";
@@ -19,7 +18,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Category } from "@/data/categories";
+import { useMediaQuery } from "@/hooks/use-mobile";
 
 interface FiltersDropdownProps {
   categories: Category[];
@@ -39,22 +40,20 @@ const FiltersDropdown = ({
   resetFilters
 }: FiltersDropdownProps) => {
   const [showFilters, setShowFilters] = useState(false);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 640px)");
   
-  // Use Dialog for mobile devices
-  const isMobile = window.innerWidth < 640;
-
+  // Using Sheet for mobile which allows page scrolling underneath
   if (isMobile) {
     return (
-      <Dialog open={showMobileFilters} onOpenChange={setShowMobileFilters}>
-        <DialogTrigger asChild>
+      <Sheet>
+        <SheetTrigger asChild>
           <Button variant="outline" className="rounded-full flex items-center">
             <Filter className="mr-2 h-4 w-4" />
             Filtros
           </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <ScrollArea className="h-[80vh] pr-4">
+        </SheetTrigger>
+        <SheetContent side="bottom" className="h-[80vh] pt-6">
+          <ScrollArea className="h-full pr-4">
             <FiltersContent 
               categories={categories}
               selectedCategories={selectedCategories}
@@ -62,11 +61,11 @@ const FiltersDropdown = ({
               priceRange={priceRange}
               setPriceRange={setPriceRange}
               resetFilters={resetFilters}
-              onClose={() => setShowMobileFilters(false)}
+              onClose={() => {}}
             />
           </ScrollArea>
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
     );
   }
 
@@ -80,24 +79,22 @@ const FiltersDropdown = ({
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
         <DropdownMenuContent 
-          className="w-80 p-4 bg-white shadow-lg border border-gray-200 rounded-md" 
+          className="w-80 p-4 bg-white shadow-lg border border-gray-200 rounded-md max-h-[400px] overflow-y-auto" 
           sideOffset={20}
           align="start"
           forceMount={true}
           side="bottom"
           avoidCollisions={false}
         >
-          <ScrollArea className="h-[80vh] max-h-[400px] pr-4">
-            <FiltersContent 
-              categories={categories}
-              selectedCategories={selectedCategories}
-              toggleCategory={toggleCategory}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-              resetFilters={resetFilters}
-              onClose={() => setShowFilters(false)}
-            />
-          </ScrollArea>
+          <FiltersContent 
+            categories={categories}
+            selectedCategories={selectedCategories}
+            toggleCategory={toggleCategory}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            resetFilters={resetFilters}
+            onClose={() => setShowFilters(false)}
+          />
         </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenu>
