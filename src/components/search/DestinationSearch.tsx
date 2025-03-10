@@ -67,20 +67,18 @@ const DestinationSearch: React.FC<DestinationSearchProps> = ({
       className={`relative h-full flex-1 ${activeTab === "destination" ? "bg-gray-50 rounded-lg" : ""}`}
       onClick={() => setActiveTab("destination")}
     >
-      <div className="h-full px-4 py-2">
-        <SearchInput
-          destination={destination}
-          inputRef={inputRef}
-          isLoading={isLoading}
-          handleDestinationChange={handleDestinationChange}
-          handleClear={handleClear}
-          onFocus={() => {
-            setActiveTab("destination");
-            handleFocus();
-          }}
-          isMobile={false}
-        />
-      </div>
+      <SearchInput
+        destination={destination}
+        inputRef={inputRef}
+        isLoading={isLoading}
+        handleDestinationChange={handleDestinationChange}
+        handleClear={handleClear}
+        onFocus={() => {
+          setActiveTab("destination");
+          handleFocus();
+        }}
+        isMobile={false}
+      />
       
       {(showSuggestions || isLoading) && (
         <LocationSuggestions
