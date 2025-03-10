@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { 
-  Filter, Tag, MapPin, Clock, Users, Wallet 
+  Filter, Tag, MapPin, Clock, Users, Wallet, Plus, X 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -21,6 +22,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Category } from "@/data/categories";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+
+interface Child {
+  id: number;
+  age: number;
+}
 
 interface FiltersDropdownProps {
   categories: Category[];
@@ -29,6 +37,10 @@ interface FiltersDropdownProps {
   priceRange: number[];
   setPriceRange: (range: number[]) => void;
   resetFilters: () => void;
+  adults?: number;
+  setAdults?: (adults: number) => void;
+  childrenDetails?: Child[];
+  setChildrenDetails?: (children: Child[]) => void;
 }
 
 const FiltersDropdown = ({
@@ -37,7 +49,11 @@ const FiltersDropdown = ({
   toggleCategory,
   priceRange,
   setPriceRange,
-  resetFilters
+  resetFilters,
+  adults = 1,
+  setAdults = () => {},
+  childrenDetails = [],
+  setChildrenDetails = () => {}
 }: FiltersDropdownProps) => {
   const [showFilters, setShowFilters] = useState(false);
   const isMobile = useIsMobile();
@@ -62,6 +78,10 @@ const FiltersDropdown = ({
               setPriceRange={setPriceRange}
               resetFilters={resetFilters}
               onClose={() => {}}
+              adults={adults}
+              setAdults={setAdults}
+              childrenDetails={childrenDetails}
+              setChildrenDetails={setChildrenDetails}
             />
           </ScrollArea>
         </SheetContent>
@@ -83,7 +103,7 @@ const FiltersDropdown = ({
       
       {showFilters && (
         <div 
-          className="absolute left-0 top-[calc(100%+10px)] w-80 p-4 bg-white shadow-lg border border-gray-200 rounded-md max-h-[400px] overflow-y-auto z-50"
+          className="absolute left-0 top-[calc(100%+10px)] w-96 p-4 bg-white shadow-lg border border-gray-200 rounded-md max-h-[80vh] overflow-y-auto z-50"
         >
           <FiltersContent 
             categories={categories}
@@ -93,6 +113,10 @@ const FiltersDropdown = ({
             setPriceRange={setPriceRange}
             resetFilters={resetFilters}
             onClose={() => setShowFilters(false)}
+            adults={adults}
+            setAdults={setAdults}
+            childrenDetails={childrenDetails}
+            setChildrenDetails={setChildrenDetails}
           />
         </div>
       )}
@@ -108,8 +132,33 @@ const FiltersContent = ({
   priceRange,
   setPriceRange,
   resetFilters,
-  onClose
+  onClose,
+  adults = 1,
+  setAdults = () => {},
+  childrenDetails = [],
+  setChildrenDetails = () => {}
 }: FiltersDropdownProps & { onClose: () => void }) => {
+  const [childAge, setChildAge] = useState<number>(2);
+  const [nextChildId, setNextChildId] = useState<number>(
+    childrenDetails.length > 0 
+      ? Math.max(...childrenDetails.map(c => c.id)) + 1 
+      : 1
+  );
+
+  const addChild = () => {
+    if (childAge < 0 || childAge > 12) return;
+    
+    const newChild = { id: nextChildId, age: childAge };
+    setChildrenDetails([...childrenDetails, newChild]);
+    setNextChildId(nextChildId + 1);
+    setChildAge(2); // Reset age input for next child
+  };
+
+  const removeChild = (id: number) => {
+    const updatedChildren = childrenDetails.filter(child => child.id !== id);
+    setChildrenDetails(updatedChildren);
+  };
+
   return (
     <div className="space-y-4">
       <DropdownMenuLabel>Filtros</DropdownMenuLabel>
@@ -131,6 +180,95 @@ const FiltersContent = ({
           <div className="flex justify-between text-sm">
             <span>0€</span>
             <span>{priceRange[0]}€</span>
+          </div>
+        </div>
+        
+        <DropdownMenuSeparator />
+        
+        {/* Group Size - Adults and Children */}
+        <div>
+          <h3 className="text-sm font-medium mb-2 flex items-center">
+            <Users className="mr-2 h-4 w-4" /> Viajeros
+          </h3>
+          
+          {/* Adults */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm">Adultos</span>
+            <div className="flex items-center space-x-3">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 rounded-full"
+                onClick={() => setAdults(Math.max(1, adults - 1))}
+                disabled={adults <= 1}
+              >
+                <Minus size={16} />
+              </Button>
+              <span className="w-5 text-center">{adults}</span>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 rounded-full"
+                onClick={() => setAdults(adults + 1)}
+              >
+                <Plus size={16} />
+              </Button>
+            </div>
+          </div>
+          
+          {/* Children with ages */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm">Niños (0-12 años)</span>
+              <span className="text-sm">Total: {childrenDetails.length}</span>
+            </div>
+            
+            {/* List of children */}
+            <div className="space-y-2 mb-3">
+              {childrenDetails.length > 0 ? (
+                childrenDetails.map((child) => (
+                  <div key={child.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                    <Badge variant="outline" className="mr-2">
+                      {child.age} {child.age === 1 ? 'año' : 'años'}
+                    </Badge>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-6 w-6"
+                      onClick={() => removeChild(child.id)}
+                    >
+                      <X size={14} />
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                <div className="text-sm text-gray-500 italic">No hay niños añadidos</div>
+              )}
+            </div>
+            
+            {/* Add new child */}
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <Input
+                  type="number"
+                  min="0"
+                  max="12"
+                  value={childAge}
+                  onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}
+                  className="w-full"
+                  placeholder="Edad"
+                />
+              </div>
+              <Button 
+                variant="outline"
+                onClick={addChild}
+                className="whitespace-nowrap"
+                disabled={childAge < 0 || childAge > 12}
+              >
+                <Plus size={16} className="mr-1" />
+                Añadir
+              </Button>
+            </div>
           </div>
         </div>
         
@@ -189,25 +327,6 @@ const FiltersContent = ({
                 <Checkbox id={`duration-${duration}`} />
                 <Label htmlFor={`duration-${duration}`} className="text-sm">
                   {duration}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        <DropdownMenuSeparator />
-        
-        {/* Group Size */}
-        <div>
-          <h3 className="text-sm font-medium mb-2 flex items-center">
-            <Users className="mr-2 h-4 w-4" /> Tamaño del grupo
-          </h3>
-          <div className="grid grid-cols-2 gap-2">
-            {['Individual', 'Parejas', 'Pequeño grupo', 'Grupo grande'].map(size => (
-              <div key={size} className="flex items-center space-x-2">
-                <Checkbox id={`size-${size}`} />
-                <Label htmlFor={`size-${size}`} className="text-sm">
-                  {size}
                 </Label>
               </div>
             ))}

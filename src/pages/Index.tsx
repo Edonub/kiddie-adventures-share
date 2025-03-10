@@ -8,10 +8,17 @@ import { categories } from "@/data/categories";
 import FiltersSection from "@/components/filters/FiltersSection";
 import PropertyListing from "@/components/properties/PropertyListing";
 
+interface Child {
+  id: number;
+  age: number;
+}
+
 const Index = () => {
   const [bookingType, setBookingType] = useState<"all" | "free" | "paid">("all");
   const [priceRange, setPriceRange] = useState([200]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [adults, setAdults] = useState(1);
+  const [childrenDetails, setChildrenDetails] = useState<Child[]>([]);
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories(prev => 
@@ -43,6 +50,10 @@ const Index = () => {
                 setBookingType={setBookingType}
                 priceRange={priceRange}
                 setPriceRange={setPriceRange}
+                adults={adults}
+                setAdults={setAdults}
+                childrenDetails={childrenDetails}
+                setChildrenDetails={setChildrenDetails}
               />
             </div>
             
@@ -50,6 +61,8 @@ const Index = () => {
               bookingType={bookingType}
               priceRange={priceRange}
               selectedCategories={selectedCategories}
+              adults={adults}
+              childrenDetails={childrenDetails}
             />
           </div>
         </div>

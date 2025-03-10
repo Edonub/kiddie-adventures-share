@@ -8,6 +8,11 @@ import DateSelection from "./search/DateSelection";
 import GuestSelector from "./search/GuestSelector";
 import SearchButton from "./search/SearchButton";
 
+interface Child {
+  id: number;
+  age: number;
+}
+
 const AirbnbSearchBar = () => {
   const navigate = useNavigate();
   const [destination, setDestination] = useState("");
@@ -15,6 +20,7 @@ const AirbnbSearchBar = () => {
   const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+  const [childrenDetails, setChildrenDetails] = useState<Child[]>([]);
   const [activeTab, setActiveTab] = useState<"destination" | "dates" | "guests">("destination");
 
   const handleSearch = () => {
@@ -35,14 +41,25 @@ const AirbnbSearchBar = () => {
       }
     }
     
-    const totalGuests = adults + children;
-    if (totalGuests > 0) params.append("guests", totalGuests.toString());
+    // Agregar información de adultos y niños
+    if (adults > 0) params.append("adults", adults.toString());
+    
+    // Agregar detalles de niños si hay alguno
+    if (childrenDetails.length > 0) {
+      // Guardar cada niño con su edad como un item separado
+      childrenDetails.forEach((child, index) => {
+        params.append(`childAge${index}`, child.age.toString());
+      });
+      params.append("childrenCount", childrenDetails.length.toString());
+    }
     
     localStorage.setItem('lastSearch', JSON.stringify({
       destination,
       dateFrom: dateFrom ? format(dateFrom, "yyyy-MM-dd") : null,
       dateTo: dateTo ? format(dateTo, "yyyy-MM-dd") : null,
-      guests: totalGuests,
+      adults,
+      children: childrenDetails.length,
+      childrenDetails,
       country: "España"
     }));
     
@@ -80,6 +97,8 @@ const AirbnbSearchBar = () => {
             setAdults={setAdults}
             children={children}
             setChildren={setChildren}
+            childrenDetails={childrenDetails}
+            setChildrenDetails={setChildrenDetails}
           />
         </div>
 

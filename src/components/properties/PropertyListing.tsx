@@ -13,18 +13,29 @@ interface Property {
   price: number;
   rating: number;
   images: string[];
+  adults_capacity?: number;
+  children_capacity?: number;
+}
+
+interface Child {
+  id: number;
+  age: number;
 }
 
 interface PropertyListingProps {
   bookingType: "all" | "free" | "paid";
   priceRange: number[];
   selectedCategories: string[];
+  adults?: number;
+  childrenDetails?: Child[];
 }
 
 const PropertyListing = ({
   bookingType,
   priceRange,
-  selectedCategories
+  selectedCategories,
+  adults = 1,
+  childrenDetails = []
 }: PropertyListingProps) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +67,16 @@ const PropertyListing = ({
           query = query.in("category", selectedCategories);
         }
         
+        // Apply adults capacity filter if specified
+        if (adults > 1) {
+          query = query.gte("adults_capacity", adults);
+        }
+        
+        // Apply children capacity filter if any children
+        if (childrenDetails.length > 0) {
+          query = query.gte("children_capacity", childrenDetails.length);
+        }
+        
         const { data, error } = await query;
 
         if (error) throw error;
@@ -69,6 +90,8 @@ const PropertyListing = ({
           dates: "8-13 mar",
           price: item.price || Math.floor(Math.random() * 200) + 100,
           rating: item.rating || (4 + Math.random()),
+          adults_capacity: item.adults_capacity || Math.floor(Math.random() * 6) + 1,
+          children_capacity: item.children_capacity || Math.floor(Math.random() * 4),
           images: [
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2070&q=80",
             "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2075&q=80",
@@ -76,7 +99,21 @@ const PropertyListing = ({
           ]
         }));
         
-        setProperties(transformedData);
+        // Additional client-side filtering for specific children ages
+        let filteredData = transformedData;
+        
+        // If we have children with specific ages, we should filter properties that can accommodate them
+        // This would normally be done in the database, but we're simulating it client-side
+        if (childrenDetails.length > 0) {
+          // For this example, we'll just filter based on the number of children
+          // In a real application, you might have age ranges for each property
+          filteredData = filteredData.filter(property => 
+            property.children_capacity !== undefined && 
+            property.children_capacity >= childrenDetails.length
+          );
+        }
+        
+        setProperties(filteredData);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Error al cargar los datos");
@@ -86,7 +123,7 @@ const PropertyListing = ({
     };
 
     fetchData();
-  }, [bookingType, priceRange, selectedCategories]);
+  }, [bookingType, priceRange, selectedCategories, adults, childrenDetails]);
 
   // Sample properties with better images for illustration if no data is available
   const sampleProperties = [
@@ -98,6 +135,8 @@ const PropertyListing = ({
       dates: "8-13 mar",
       price: 231,
       rating: 4.92,
+      adults_capacity: 4,
+      children_capacity: 2,
       images: [
         "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?auto=format&fit=crop&w=2070&q=80",
         "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=2064&q=80"
@@ -144,7 +183,20 @@ const PropertyListing = ({
     }
   ];
 
-  const displayProperties = properties.length > 0 ? properties : sampleProperties;
+  // Apply filters to sample properties if needed
+  let displayProperties = properties.length > 0 ? properties : sampleProperties.filter(property => {
+    // Apply adult capacity filter
+    if (adults > 1 && (!property.adults_capacity || property.adults_capacity < adults)) {
+      return false;
+    }
+    
+    // Apply children filter
+    if (childrenDetails.length > 0 && (!property.children_capacity || property.children_capacity < childrenDetails.length)) {
+      return false;
+    }
+    
+    return true;
+  });
 
   return (
     <>

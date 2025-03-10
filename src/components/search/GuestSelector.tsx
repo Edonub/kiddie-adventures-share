@@ -1,7 +1,15 @@
 
-import { Users, Plus, Minus } from "lucide-react";
+import { Users, Plus, Minus, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Input } from "../ui/input";
+import { useState } from "react";
+import { Badge } from "../ui/badge";
+
+interface Child {
+  id: number;
+  age: number;
+}
 
 interface GuestSelectorProps {
   activeTab: string;
@@ -10,6 +18,8 @@ interface GuestSelectorProps {
   setAdults: (count: number) => void;
   children: number;
   setChildren: (count: number) => void;
+  childrenDetails?: Child[];
+  setChildrenDetails?: (children: Child[]) => void;
 }
 
 const GuestSelector = ({ 
@@ -17,9 +27,45 @@ const GuestSelector = ({
   setActiveTab, 
   adults, 
   setAdults, 
-  children, 
-  setChildren 
+  children,
+  setChildren,
+  childrenDetails = [],
+  setChildrenDetails = () => {}
 }: GuestSelectorProps) => {
+  const [childAge, setChildAge] = useState<number>(2);
+  const [nextChildId, setNextChildId] = useState<number>(1);
+
+  const addChild = () => {
+    const newChild = { id: nextChildId, age: childAge };
+    setChildrenDetails([...childrenDetails, newChild]);
+    setChildren(childrenDetails.length + 1);
+    setNextChildId(nextChildId + 1);
+    setChildAge(2); // Reset age input for next child
+  };
+
+  const removeChild = (id: number) => {
+    const updatedChildren = childrenDetails.filter(child => child.id !== id);
+    setChildrenDetails(updatedChildren);
+    setChildren(updatedChildren.length);
+  };
+
+  const getChildrenSummary = () => {
+    if (childrenDetails.length === 0) return "";
+    
+    // Group children by age
+    const ageGroups: Record<number, number> = {};
+    childrenDetails.forEach(child => {
+      ageGroups[child.age] = (ageGroups[child.age] || 0) + 1;
+    });
+    
+    // Create summary text
+    const groups = Object.entries(ageGroups).map(([age, count]) => 
+      `${count} de ${age} ${count === 1 ? 'año' : 'años'}`
+    );
+    
+    return groups.join(', ');
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -33,15 +79,16 @@ const GuestSelector = ({
               <Users size={16} className="text-gray-500 mr-2" />
               <div className="text-sm text-gray-500">
                 {adults + children > 0 
-                  ? `${adults + children} ${adults + children === 1 ? 'viajero' : 'viajeros'}`
+                  ? `${adults} ${adults === 1 ? 'adulto' : 'adultos'}${children > 0 ? `, ${children} ${children === 1 ? 'niño' : 'niños'}` : ''}`
                   : "Añade viajeros"}
               </div>
             </div>
           </div>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-72 p-4" align="end">
+      <PopoverContent className="w-80 p-4" align="end">
         <div className="space-y-4">
+          {/* Adultos */}
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium">Adultos</h3>
@@ -75,38 +122,73 @@ const GuestSelector = ({
             </div>
           </div>
           
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-medium">Niños</h3>
-              <p className="text-sm text-gray-500">De 0 a 12 años</p>
+          {/* Niños */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <h3 className="font-medium">Niños</h3>
+                <p className="text-sm text-gray-500">De 0 a 12 años</p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <span className="w-5 text-center">{children}</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-3">
+            
+            {/* Lista de niños con sus edades */}
+            <div className="space-y-2 mt-2">
+              {childrenDetails.map((child) => (
+                <div key={child.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                  <div className="flex items-center">
+                    <Badge variant="outline" className="mr-2">{child.age} {child.age === 1 ? 'año' : 'años'}</Badge>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-6 w-6"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeChild(child.id);
+                    }}
+                  >
+                    <X size={14} />
+                  </Button>
+                </div>
+              ))}
+            </div>
+            
+            {/* Formulario para añadir un niño */}
+            <div className="flex items-center gap-2 mt-3">
+              <div className="flex-1">
+                <Input
+                  type="number"
+                  min="0"
+                  max="12"
+                  value={childAge}
+                  onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}
+                  className="w-full"
+                  placeholder="Edad del niño"
+                />
+              </div>
               <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-8 w-8 rounded-full"
+                variant="outline"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setChildren(Math.max(0, children - 1));
+                  addChild();
                 }}
-                disabled={children <= 0}
+                className="whitespace-nowrap"
               >
-                <Minus size={16} />
-              </Button>
-              <span className="w-5 text-center">{children}</span>
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="h-8 w-8 rounded-full"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setChildren(children + 1);
-                }}
-              >
-                <Plus size={16} />
+                <Plus size={16} className="mr-1" />
+                Añadir niño
               </Button>
             </div>
           </div>
+          
+          {/* Resumen de niños */}
+          {children > 0 && (
+            <div className="bg-gray-50 p-2 rounded text-sm">
+              <p><strong>Resumen:</strong> {getChildrenSummary()}</p>
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>
