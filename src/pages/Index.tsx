@@ -46,32 +46,34 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
-      <main className="flex-1 pt-0 w-full overflow-x-hidden">
-        <div className="px-2 mt-4">
+      <main className="flex-1 pt-2 w-full overflow-x-hidden">
+        <div className="px-2 mt-6">
           <div className="max-w-screen-xl mx-auto">
-            <div className="py-3 px-2 bg-white rounded-xl shadow-sm mb-3">
+            <div className="py-3 px-2 bg-white rounded-xl shadow-sm mb-4">
               <AirbnbSearchBar />
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-2">
+            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-3">
               <div className="w-full overflow-x-auto scrollbar-none mb-2">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-2 justify-between">
-                <FiltersSection 
-                  categories={categories}
-                  selectedCategories={selectedCategories}
-                  toggleCategory={toggleCategory}
-                  bookingType={bookingType}
-                  setBookingType={setBookingType}
-                  priceRange={priceRange}
-                  setPriceRange={setPriceRange}
-                  durationRange={durationRange}
-                  setDurationRange={setDurationRange}
-                />
+              <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
+                <div className="flex-grow">
+                  <FiltersSection 
+                    categories={categories}
+                    selectedCategories={selectedCategories}
+                    toggleCategory={toggleCategory}
+                    bookingType={bookingType}
+                    setBookingType={setBookingType}
+                    priceRange={priceRange}
+                    setPriceRange={setPriceRange}
+                    durationRange={durationRange}
+                    setDurationRange={setDurationRange}
+                  />
+                </div>
                 
-                <div className="ml-auto">
+                <div className="ml-auto mt-2 md:mt-0">
                   <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                 </div>
               </div>
