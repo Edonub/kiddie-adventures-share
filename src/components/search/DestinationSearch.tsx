@@ -44,33 +44,33 @@ const DestinationSearch = ({
   if (isMobile) {
     return (
       <div className="relative w-full">
-        <SearchInput
-          destination={destination}
-          inputRef={inputRef}
-          isLoading={isLoading}
-          handleDestinationChange={handleDestinationChange}
-          handleClear={handleClear}
-          onFocus={handleFocus}
-          isMobile={true}
-        />
+        <div className="bg-white z-10 relative">
+          <SearchInput
+            destination={destination}
+            inputRef={inputRef}
+            isLoading={isLoading}
+            handleDestinationChange={handleDestinationChange}
+            handleClear={handleClear}
+            onFocus={handleFocus}
+            isMobile={true}
+          />
+        </div>
         
         {showSuggestions && (
           <div 
             ref={suggestionsRef}
-            className="fixed inset-0 top-[60px] bg-white z-[200] border-t border-gray-200 h-[calc(100vh-60px)] overflow-y-auto"
+            className="absolute left-0 right-0 top-[100%] bg-white z-[50] border-t border-gray-200 shadow-lg max-h-[300px] overflow-y-auto"
           >
-            <div className="p-2">
-              <LocationSuggestions
-                suggestions={suggestions}
-                searchError={searchError}
-                isLoading={isLoading}
-                onSelectSuggestion={(suggestion) => {
-                  selectSuggestion(suggestion);
-                  setShowSuggestions(false);
-                }}
-                suggestionsRef={suggestionsRef}
-              />
-            </div>
+            <LocationSuggestions
+              suggestions={suggestions}
+              searchError={searchError}
+              isLoading={isLoading}
+              onSelectSuggestion={(suggestion) => {
+                selectSuggestion(suggestion);
+                setShowSuggestions(false);
+              }}
+              suggestionsRef={suggestionsRef}
+            />
           </div>
         )}
       </div>
