@@ -1,6 +1,6 @@
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { SlidersHorizontal } from "lucide-react";
+import { Clock, SlidersHorizontal } from "lucide-react";
 import BookingTypeSelector from "./BookingTypeSelector";
 import FiltersDropdown from "./FiltersDropdown";
 import { Category } from "@/data/categories";
@@ -14,6 +14,8 @@ interface FiltersSectionProps {
   setBookingType: (type: "all" | "free" | "paid") => void;
   priceRange: number[];
   setPriceRange: (range: number[]) => void;
+  durationRange: number[];
+  setDurationRange: (range: number[]) => void;
 }
 
 const FiltersSection = ({
@@ -23,14 +25,17 @@ const FiltersSection = ({
   bookingType,
   setBookingType,
   priceRange,
-  setPriceRange
+  setPriceRange,
+  durationRange,
+  setDurationRange
 }: FiltersSectionProps) => {
   const isMobile = useIsMobile();
   
   const resetFilters = () => {
     setPriceRange([200]);
+    setDurationRange([180]);
     setBookingType("all");
-    // Reset selected categories by passing an empty array to a parent component function
+    // Reset selected categories
     selectedCategories.forEach(cat => toggleCategory(cat));
   };
 
@@ -47,6 +52,8 @@ const FiltersSection = ({
         toggleCategory={toggleCategory}
         priceRange={priceRange}
         setPriceRange={setPriceRange}
+        durationRange={durationRange}
+        setDurationRange={setDurationRange}
         resetFilters={resetFilters}
         isMobile={isMobile}
       />

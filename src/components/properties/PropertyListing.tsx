@@ -3,23 +3,20 @@ import React from "react";
 import { Property } from "@/data/properties";
 import { properties } from "@/data/properties";
 
-interface Child {
-  id: number;
-  age: number;
-}
-
 interface PropertyListingProps {
   bookingType: "all" | "free" | "paid";
   priceRange: number[];
   selectedCategories: string[];
+  durationRange: number[];
   adults?: number;
-  childrenDetails?: Child[];
+  childrenDetails?: { id: number; age: number }[];
 }
 
 const PropertyListing = ({ 
   bookingType, 
   priceRange,
   selectedCategories,
+  durationRange,
   adults = 1,
   childrenDetails = []
 }: PropertyListingProps) => {
@@ -39,16 +36,25 @@ const PropertyListing = ({
         return false;
       }
       
-      // Filter by capacity for adults
-      const adultsCapacity = property.adults_capacity || 2; // Default to 2 if not specified
-      if (adults > adultsCapacity) return false;
-      
-      // Filter by capacity for children
-      const childrenCapacity = property.children_capacity || 0; // Default to 0 if not specified
-      if (childrenDetails.length > childrenCapacity) return false;
+      // Filter by duration (assuming properties have duration in minutes)
+      const propertyDuration = property.duration || 120; // Default to 2h if not specified
+      if (propertyDuration > durationRange[0]) return false;
       
       return true;
     });
+  
+  const formatDuration = (minutes: number) => {
+    if (!minutes) return "Duración no especificada";
+    if (minutes < 60) {
+      return `${minutes} minutos`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return remainingMinutes > 0 
+        ? `${hours}h ${remainingMinutes}min` 
+        : `${hours} horas`;
+    }
+  };
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -58,18 +64,18 @@ const PropertyListing = ({
           <div className="p-4">
             <h3 className="text-lg font-semibold">{property.title}</h3>
             <p className="text-gray-600">{property.location}</p>
-            <div className="mt-2 flex items-center justify-between">
+            <div className="mt-2 flex flex-col gap-1">
               <span className="text-xl font-bold text-familyxp-primary">
-                {property.price === 0 ? "Gratis" : `${property.price}€/noche`}
+                {property.price === 0 ? "Gratis" : `${property.price}€`}
+              </span>
+              <span className="text-sm text-gray-600">
+                {formatDuration(property.duration || 0)}
               </span>
               {property.is_available ? (
-                <span className="text-green-500">Disponible</span>
+                <span className="text-green-500 text-sm">Disponible</span>
               ) : (
-                <span className="text-red-500">No Disponible</span>
+                <span className="text-red-500 text-sm">No Disponible</span>
               )}
-            </div>
-            <div className="mt-2 text-sm text-gray-600">
-              <span>Capacidad: {property.adults_capacity} adultos, {property.children_capacity} niños</span>
             </div>
           </div>
         </div>
@@ -77,7 +83,7 @@ const PropertyListing = ({
       
       {filteredProperties.length === 0 && (
         <div className="col-span-3 text-center py-8">
-          <p className="text-gray-600 text-lg">No se encontraron propiedades que coincidan con tus criterios.</p>
+          <p className="text-gray-600 text-lg">No se encontraron experiencias que coincidan con tus criterios.</p>
         </div>
       )}
     </div>

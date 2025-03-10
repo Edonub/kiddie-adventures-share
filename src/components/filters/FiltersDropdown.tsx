@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { FilterX, SlidersHorizontal } from "lucide-react";
+import { Clock, FilterX, SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Popover,
@@ -18,6 +18,8 @@ interface FiltersDropdownProps {
   toggleCategory: (categoryId: string) => void;
   priceRange: number[];
   setPriceRange: (range: number[]) => void;
+  durationRange: number[];
+  setDurationRange: (range: number[]) => void;
   resetFilters: () => void;
   isMobile?: boolean;
 }
@@ -28,10 +30,24 @@ const FiltersDropdown = ({
   toggleCategory,
   priceRange,
   setPriceRange,
+  durationRange,
+  setDurationRange,
   resetFilters,
   isMobile = false
 }: FiltersDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const formatDuration = (minutes: number) => {
+    if (minutes < 60) {
+      return `${minutes} min`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return remainingMinutes > 0 
+        ? `${hours}h ${remainingMinutes}min` 
+        : `${hours}h`;
+    }
+  };
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -51,9 +67,9 @@ const FiltersDropdown = ({
         <div className="space-y-4">
           {/* Price Range */}
           <div>
-            <h3 className="text-sm font-medium">Precio máximo por noche</h3>
+            <h3 className="text-sm font-medium">Precio máximo</h3>
             <p className="text-xs text-gray-500">
-              Selecciona el precio máximo que estás dispuesto a pagar por noche.
+              Selecciona el precio máximo que estás dispuesto a pagar.
             </p>
             <Slider
               defaultValue={priceRange}
@@ -63,6 +79,25 @@ const FiltersDropdown = ({
             />
             <div className="text-right text-gray-500 text-xs">
               Hasta {priceRange[0]}€
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Duration Range */}
+          <div>
+            <h3 className="text-sm font-medium">Duración máxima</h3>
+            <p className="text-xs text-gray-500">
+              Selecciona la duración máxima de la experiencia.
+            </p>
+            <Slider
+              defaultValue={durationRange}
+              max={480}
+              step={30}
+              onValueChange={(value) => setDurationRange(value)}
+            />
+            <div className="text-right text-gray-500 text-xs">
+              Hasta {formatDuration(durationRange[0])}
             </div>
           </div>
 

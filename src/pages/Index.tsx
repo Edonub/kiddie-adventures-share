@@ -15,6 +15,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const Index = () => {
   const [bookingType, setBookingType] = useState<"all" | "free" | "paid">("all");
   const [priceRange, setPriceRange] = useState([200]);
+  const [durationRange, setDurationRange] = useState([180]); // Default 3 hours max
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const isMobile = useIsMobile();
@@ -27,7 +28,7 @@ const Index = () => {
     );
   };
 
-  // Filter properties (same logic as in PropertyListing component)
+  // Filter properties
   const filteredProperties = properties
     .filter(property => {
       // Filter by booking type (free, paid, all)
@@ -41,6 +42,10 @@ const Index = () => {
       if (selectedCategories.length > 0 && !selectedCategories.includes(property.category)) {
         return false;
       }
+      
+      // Filter by duration (assuming properties have duration in minutes)
+      const propertyDuration = property.duration || 120; // Default to 2h if not specified
+      if (propertyDuration > durationRange[0]) return false;
       
       return true;
     });
@@ -70,6 +75,8 @@ const Index = () => {
                   setBookingType={setBookingType}
                   priceRange={priceRange}
                   setPriceRange={setPriceRange}
+                  durationRange={durationRange}
+                  setDurationRange={setDurationRange}
                 />
                 {isMobile && (
                   <div className="ml-2">
@@ -88,6 +95,7 @@ const Index = () => {
                 bookingType={bookingType}
                 priceRange={priceRange}
                 selectedCategories={selectedCategories}
+                durationRange={durationRange}
               />
             ) : (
               <MapSearch filteredProperties={filteredProperties} />
