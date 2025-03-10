@@ -1,6 +1,7 @@
 
 import { Search } from "lucide-react";
 import { Button } from "../ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SearchButtonProps {
   onClick: () => void;
@@ -9,7 +10,22 @@ interface SearchButtonProps {
 const SearchButton = ({
   onClick
 }: SearchButtonProps) => {
-  return <div className="p-3 md:p-4">
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    return (
+      <Button 
+        onClick={onClick} 
+        size="icon" 
+        className="h-10 w-10 rounded-full bg-familyxp-primary hover:bg-familyxp-secondary flex items-center justify-center text-white"
+      >
+        <Search size={18} />
+      </Button>
+    );
+  }
+  
+  return (
+    <div className="p-3 md:p-4">
       <Button 
         onClick={onClick} 
         size="lg" 
@@ -17,7 +33,8 @@ const SearchButton = ({
       >
         <Search size={20} />
       </Button>
-    </div>;
+    </div>
+  );
 };
 
 export default SearchButton;

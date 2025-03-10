@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface DateSelectionProps {
   activeTab: string;
@@ -24,6 +25,7 @@ const DateSelection = ({
   dateTo, 
   setDateTo 
 }: DateSelectionProps) => {
+  const isMobile = useIsMobile();
   const [date, setDate] = useState<DateRange | undefined>({
     from: dateFrom,
     to: dateTo
@@ -34,6 +36,41 @@ const DateSelection = ({
     setDateFrom(range?.from);
     setDateTo(range?.to);
   };
+
+  if (isMobile) {
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="flex justify-between items-center w-full h-12 px-3 py-2 bg-white">
+            <CalendarIcon size={18} className="text-gray-500 mr-2" />
+            <span className="flex-1 text-left text-sm text-gray-500 truncate">
+              {date?.from ? (
+                date.to ? (
+                  <>
+                    {format(date.from, "dd MMM")} - {format(date.to, "dd MMM")}
+                  </>
+                ) : (
+                  format(date.from, "dd MMM")
+                )
+              ) : (
+                "Fechas"
+              )}
+            </span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="center">
+          <Calendar
+            mode="range"
+            selected={date}
+            onSelect={handleDateSelect}
+            initialFocus
+            className="p-3 pointer-events-auto"
+            numberOfMonths={1}
+          />
+        </PopoverContent>
+      </Popover>
+    );
+  }
 
   return (
     <Popover>

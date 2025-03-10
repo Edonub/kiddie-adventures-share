@@ -1,7 +1,6 @@
 import { Search, MapPin, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface NominatimResult {
   display_name: string;
@@ -23,6 +22,7 @@ const DestinationSearch = ({
   activeTab, 
   setActiveTab 
 }: DestinationSearchProps) => {
+  const isMobile = useIsMobile();
   const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -219,6 +219,73 @@ const DestinationSearch = ({
       
     return { main, secondary };
   };
+
+  if (isMobile) {
+    return (
+      <div className="relative w-full">
+        <div className="flex items-center px-3 py-2">
+          <MapPin size={18} className="text-gray-500 mr-2 flex-shrink-0" />
+          <input 
+            ref={inputRef}
+            type="text" 
+            placeholder="¿A qué localidad de España viajas?" 
+            className="w-full bg-transparent border-none outline-none text-sm placeholder-gray-500"
+            value={destination}
+            onChange={(e) => handleDestinationChange(e.target.value)}
+            onFocus={() => {
+              setActiveTab("destination");
+              if (destination.length > 1) {
+                fetchLocations(destination);
+              }
+            }}
+          />
+          {isLoading && (
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 flex-shrink-0"></div>
+          )}
+          {destination && !isLoading && (
+            <button 
+              onClick={handleClear} 
+              className="p-1 rounded-full hover:bg-gray-100 transition-colors flex-shrink-0"
+            >
+              <X size={16} className="text-gray-500" />
+            </button>
+          )}
+        </div>
+        
+        {showSuggestions && (
+          <div 
+            ref={suggestionsRef}
+            className="absolute left-0 right-0 top-[110%] bg-white rounded-lg shadow-lg z-20 border max-h-60 overflow-y-auto"
+          >
+            {searchError ? (
+              <div className="px-4 py-3 text-gray-500">{searchError}</div>
+            ) : suggestions.length > 0 ? (
+              suggestions.map((suggestion, index) => {
+                const { main, secondary } = formatDisplayName(suggestion.display_name);
+                return (
+                  <div 
+                    key={suggestion.place_id || index}
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center"
+                    onClick={() => selectSuggestion(suggestion)}
+                  >
+                    <MapPin size={18} className="text-gray-500 mr-3 flex-shrink-0" />
+                    <div className="truncate">
+                      <div className="font-medium">{main}</div>
+                      <div className="text-gray-500 text-sm truncate">{secondary}</div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : isLoading ? (
+              <div className="px-4 py-3 text-gray-500">Buscando localidades en España...</div>
+            ) : (
+              <div className="px-4 py-3 text-gray-500">Empieza a escribir para buscar localidades en España</div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div 

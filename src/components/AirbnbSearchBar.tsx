@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 import DestinationSearch from "./search/DestinationSearch";
 import DateSelection from "./search/DateSelection";
 import GuestSelector from "./search/GuestSelector";
@@ -15,6 +16,7 @@ interface Child {
 
 const AirbnbSearchBar = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [destination, setDestination] = useState("");
   const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
   const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
@@ -65,6 +67,53 @@ const AirbnbSearchBar = () => {
     
     navigate(`/explorar?${params.toString()}`);
   };
+
+  if (isMobile) {
+    return (
+      <div className="w-full px-4">
+        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center">
+          <div className="flex-1">
+            <DestinationSearch
+              destination={destination}
+              setDestination={setDestination}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          </div>
+          <div className="pr-1">
+            <SearchButton onClick={handleSearch} />
+          </div>
+        </div>
+        
+        {/* Expanded view for dates and guests as secondary actions */}
+        <div className="mt-3 flex gap-2">
+          <div className="flex-1">
+            <DateSelection
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              dateFrom={dateFrom}
+              setDateFrom={setDateFrom}
+              dateTo={dateTo}
+              setDateTo={setDateTo}
+            />
+          </div>
+          
+          <div className="flex-1">
+            <GuestSelector
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              adults={adults}
+              setAdults={setAdults}
+              children={children}
+              setChildren={setChildren}
+              childrenDetails={childrenDetails}
+              setChildrenDetails={setChildrenDetails}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-full shadow-lg border border-gray-200 relative z-10">
