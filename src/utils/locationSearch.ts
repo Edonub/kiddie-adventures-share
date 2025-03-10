@@ -14,8 +14,8 @@ export interface NominatimResult {
   };
 }
 
-// Lista de provincias españolas para respuesta inmediata
-const popularLocations = [
+// Lista completa de provincias y ciudades importantes españolas
+const allSpanishLocations = [
   { place_id: 1, display_name: "Madrid, Comunidad de Madrid, España", lat: "40.4168", lon: "-3.7038" },
   { place_id: 2, display_name: "Barcelona, Cataluña, España", lat: "41.3851", lon: "2.1734" },
   { place_id: 3, display_name: "Valencia, Comunidad Valenciana, España", lat: "39.4699", lon: "-0.3763" },
@@ -36,7 +36,6 @@ const popularLocations = [
   { place_id: 18, display_name: "Elche, Comunidad Valenciana, España", lat: "38.2655", lon: "-0.6968" },
   { place_id: 19, display_name: "Oviedo, Asturias, España", lat: "43.3614", lon: "-5.8497" },
   { place_id: 20, display_name: "Badalona, Cataluña, España", lat: "41.4399", lon: "2.2474" },
-  // Más ciudades de España
   { place_id: 21, display_name: "Cádiz, Andalucía, España", lat: "36.5298", lon: "-6.2926" },
   { place_id: 22, display_name: "Santander, Cantabria, España", lat: "43.4628", lon: "-3.8044" },
   { place_id: 23, display_name: "Pamplona, Navarra, España", lat: "42.8186", lon: "-1.6442" },
@@ -66,46 +65,44 @@ const popularLocations = [
   { place_id: 47, display_name: "Ávila, Castilla y León, España", lat: "40.6564", lon: "-4.6937" },
   { place_id: 48, display_name: "Segovia, Castilla y León, España", lat: "40.9429", lon: "-4.1088" },
   { place_id: 49, display_name: "Cuenca, Castilla-La Mancha, España", lat: "40.0703", lon: "-2.1374" },
-  { place_id: 50, display_name: "Zamora, Castilla y León, España", lat: "41.5036", lon: "-5.7449" }
+  { place_id: 50, display_name: "Zamora, Castilla y León, España", lat: "41.5036", lon: "-5.7449" },
+  // Más ciudades españolas
+  { place_id: 51, display_name: "Torremolinos, Andalucía, España", lat: "36.6200", lon: "-4.5000" },
+  { place_id: 52, display_name: "Benidorm, Comunidad Valenciana, España", lat: "38.5410", lon: "-0.1224" },
+  { place_id: 53, display_name: "Fuengirola, Andalucía, España", lat: "36.5333", lon: "-4.6167" },
+  { place_id: 54, display_name: "Salou, Cataluña, España", lat: "41.0753", lon: "1.1387" },
+  { place_id: 55, display_name: "Lloret de Mar, Cataluña, España", lat: "41.7000", lon: "2.8333" },
+  { place_id: 56, display_name: "Sitges, Cataluña, España", lat: "41.2333", lon: "1.8167" },
+  { place_id: 57, display_name: "Mijas, Andalucía, España", lat: "36.5954", lon: "-4.6373" },
+  { place_id: 58, display_name: "Estepona, Andalucía, España", lat: "36.4256", lon: "-5.1462" },
+  { place_id: 59, display_name: "San Sebastián de la Gomera, Canarias, España", lat: "28.0920", lon: "-17.1076" },
+  { place_id: 60, display_name: "Arrecife, Canarias, España", lat: "28.9637", lon: "-13.5477" }
 ];
 
-// Función principal de búsqueda de localidades
+/**
+ * Función simplificada que busca localidades españolas localmente sin llamadas API externas
+ */
 export const fetchLocations = async (query: string): Promise<NominatimResult[]> => {
-  if (query.length < 2) return [];
-  
   console.log("Buscando localidades con query:", query);
   
-  // Normalizar la consulta para una mejor búsqueda
-  const normalizedQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // Si la consulta es muy corta, no mostrar sugerencias
+  if (query.length < 2) return [];
   
-  // Buscar primero en la lista local para respuesta inmediata
-  const localResults = popularLocations.filter(location => {
-    const normalizedLocation = location.display_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return normalizedLocation.includes(normalizedQuery);
-  });
-  
-  if (localResults.length > 0) {
-    console.log("Resultados encontrados localmente:", localResults.length);
-    return localResults;
-  }
-  
-  // Si no hay resultados locales, intentar con la API externa
   try {
-    console.log("Consultando API externa...");
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&countrycodes=es&limit=10&q=${encodeURIComponent(query)}`
-    );
+    // Normalizar la consulta (quitar acentos, convertir a minúsculas)
+    const normalizedQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
-    if (!response.ok) {
-      throw new Error(`Error en la respuesta: ${response.statusText}`);
-    }
+    // Buscar en nuestra lista local
+    const results = allSpanishLocations.filter(location => {
+      const normalizedLocation = location.display_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return normalizedLocation.includes(normalizedQuery);
+    });
     
-    const data: NominatimResult[] = await response.json();
-    console.log("Resultados de API:", data.length);
-    return data;
+    console.log("Resultados encontrados localmente:", results.length);
+    return results;
   } catch (error) {
-    console.error("Error en fetchLocations:", error);
-    return []; // Devolver array vacío en caso de error
+    console.error("Error en la búsqueda de localidades:", error);
+    return [];
   }
 };
 

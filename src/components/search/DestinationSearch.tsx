@@ -12,12 +12,12 @@ interface DestinationSearchProps {
   setActiveTab: (tab: "destination" | "dates" | "guests") => void;
 }
 
-const DestinationSearch = ({ 
+const DestinationSearch: React.FC<DestinationSearchProps> = ({ 
   destination, 
   setDestination, 
   activeTab, 
   setActiveTab 
-}: DestinationSearchProps) => {
+}) => {
   const isMobile = useIsMobile();
   const {
     suggestions,
@@ -33,24 +33,10 @@ const DestinationSearch = ({
     handleFocus
   } = useLocationSearch(destination, setDestination);
 
-  // Función para manejar el click en el fondo
-  const handleContainerClick = (e: React.MouseEvent) => {
-    // Si hacemos clic en el contenedor principal
-    if (
-      inputRef.current && 
-      !inputRef.current.contains(e.target as Node) &&
-      suggestionsRef.current && 
-      !suggestionsRef.current.contains(e.target as Node)
-    ) {
-      setActiveTab("destination");
-      setShowSuggestions(false);
-    }
-  };
-
   // Versión móvil
   if (isMobile) {
     return (
-      <div className="relative w-full" onClick={handleContainerClick}>
+      <div className="relative w-full">
         <SearchInput
           destination={destination}
           inputRef={inputRef}
@@ -81,10 +67,8 @@ const DestinationSearch = ({
   return (
     <div 
       className={`relative flex-1 p-2 cursor-pointer ${activeTab === "destination" ? "bg-gray-50 rounded-lg" : ""}`}
-      onClick={(e) => {
+      onClick={() => {
         setActiveTab("destination");
-        // No cerramos las sugerencias al hacer clic en el contenedor principal en desktop
-        e.stopPropagation();
       }}
     >
       <SearchInput

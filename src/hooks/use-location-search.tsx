@@ -19,7 +19,7 @@ export const useLocationSearch = (
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   
-  // Ejecutar búsqueda inmediatamente cuando el usuario escribe
+  // Buscar localidades cuando cambia el texto de búsqueda
   useEffect(() => {
     const searchLocations = async (query: string) => {
       if (query.length < 2) {
@@ -33,7 +33,6 @@ export const useLocationSearch = (
       
       try {
         const data = await fetchLocations(query);
-        console.log("Datos de la API recibidos:", data);
         
         if (data.length === 0) {
           setSuggestions([]);
@@ -42,7 +41,6 @@ export const useLocationSearch = (
           const uniqueResults = removeDuplicateLocations(data);
           setSuggestions(uniqueResults);
           setShowSuggestions(true);
-          console.log("Sugerencias mostradas:", uniqueResults);
         }
       } catch (error) {
         console.error("Error en searchLocations:", error);
@@ -54,7 +52,6 @@ export const useLocationSearch = (
       }
     };
 
-    // Buscar sin debounce para respuesta inmediata
     if (destination.length >= 2) {
       searchLocations(destination);
     } else {
@@ -63,26 +60,17 @@ export const useLocationSearch = (
     }
   }, [destination]);
 
-  // Monitor del estado de sugerencias para debugging
-  useEffect(() => {
-    console.log("Estado de sugerencias:", { 
-      count: suggestions.length, 
-      showSuggestions, 
-      isLoading 
-    });
-  }, [suggestions, showSuggestions, isLoading]);
-
   // Manejar clicks fuera de las sugerencias
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Solo cerramos si las sugerencias están visibles
       if (
-        showSuggestions && // Solo cierra si las sugerencias están visibles
+        showSuggestions && 
         suggestionsRef.current && 
         !suggestionsRef.current.contains(event.target as Node) &&
         inputRef.current && 
         !inputRef.current.contains(event.target as Node)
       ) {
-        console.log("Click fuera de las sugerencias, cerrando");
         setShowSuggestions(false);
       }
     };
@@ -93,17 +81,12 @@ export const useLocationSearch = (
     };
   }, [showSuggestions]);
 
-  // Función simplificada para manejar el cambio en el input
+  // Manejar el cambio en el input
   const handleDestinationChange = (value: string) => {
     setDestination(value);
-    
-    // Si el valor está vacío, limpiar sugerencias
-    if (value.length < 2) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-    }
   };
 
+  // Limpiar el campo de búsqueda
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDestination("");
@@ -114,6 +97,7 @@ export const useLocationSearch = (
     }
   };
 
+  // Seleccionar una sugerencia
   const selectSuggestion = (suggestion: NominatimResult) => {
     const displayParts = suggestion.display_name.split(',');
     const simplified = `${displayParts[0].trim()}, España`;
@@ -125,6 +109,7 @@ export const useLocationSearch = (
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
 
+  // Mostrar sugerencias al enfocar
   const handleFocus = () => {
     if (destination.length >= 2) {
       setShowSuggestions(true);
