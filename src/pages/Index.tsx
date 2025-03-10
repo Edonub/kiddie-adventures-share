@@ -50,21 +50,21 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
-      <main className="flex-1 pt-14 w-full overflow-x-hidden">
-        <div className="py-4 px-4">
+      <main className="flex-1 pt-12 w-full overflow-x-hidden">
+        <div className="py-2 px-3">
           <div className="max-w-screen-xl mx-auto">
             {/* Search Bar */}
-            <div className="py-3 px-4 bg-white rounded-xl shadow-sm mb-4">
+            <div className="py-2 px-3 bg-white rounded-xl shadow-sm mb-2">
               <AirbnbSearchBar />
             </div>
             
             {/* Categories and Filters */}
-            <div className="bg-white rounded-xl shadow-sm px-4 py-5 mb-5">
-              <div className="w-full overflow-x-auto scrollbar-none mb-4">
+            <div className="bg-white rounded-xl shadow-sm px-3 py-3 mb-2">
+              <div className="w-full overflow-x-auto scrollbar-none mb-2">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-3 justify-between">
+              <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-2 justify-between">
                 <FiltersSection 
                   categories={categories}
                   selectedCategories={selectedCategories}
@@ -84,7 +84,7 @@ const Index = () => {
             </div>
             
             {/* Main Content */}
-            <div className="bg-white rounded-xl shadow-sm p-5">
+            <div className="bg-white rounded-xl shadow-sm p-3">
               {viewMode === 'list' ? (
                 <PropertyListing 
                   bookingType={bookingType}
