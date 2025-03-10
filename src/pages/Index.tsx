@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -28,17 +27,13 @@ const Index = () => {
     );
   };
 
-  // Filter properties
   const filteredProperties = properties
     .filter(property => {
-      // Filter by booking type (free, paid, all)
       if (bookingType === 'free' && property.price > 0) return false;
       if (bookingType === 'paid' && property.price === 0) return false;
       
-      // Filter by price range
       if (property.price > priceRange[0]) return false;
       
-      // Filter by categories
       if (selectedCategories.length > 0 && !selectedCategories.includes(property.category)) {
         return false;
       }
@@ -50,15 +45,13 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
-      <main className="flex-1 pt-4 w-full overflow-x-hidden">
-        <div className="px-2">
+      <main className="flex-1 pt-2 w-full overflow-x-hidden">
+        <div className="px-2 mt-3">
           <div className="max-w-screen-xl mx-auto">
-            {/* Search Bar */}
             <div className="py-2 px-2 bg-white rounded-xl shadow-sm mb-1.5">
               <AirbnbSearchBar />
             </div>
             
-            {/* Categories and Filters */}
             <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-1.5">
               <div className="w-full overflow-x-auto scrollbar-none mb-1.5">
                 <CategoryTabs categories={categories} activeCategory="beach" />
@@ -83,7 +76,6 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Main Content */}
             <div className="bg-white rounded-xl shadow-sm p-2">
               {viewMode === 'list' ? (
                 <PropertyListing 

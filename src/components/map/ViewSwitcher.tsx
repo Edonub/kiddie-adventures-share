@@ -15,16 +15,16 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
 
   return (
     <div className="flex items-center">
-      <div className="bg-gray-100 rounded-full flex shadow-sm overflow-hidden">
+      <div className="bg-gray-100 p-0.5 rounded-full flex shadow-sm overflow-hidden">
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            "rounded-l-full transition-all",
-            isMobile ? "px-2.5 py-1 h-8" : "px-3 py-1 h-8",
+            "rounded-full flex items-center transition-all",
+            isMobile ? "px-3 py-1.5 h-8" : "px-3.5 py-1.5 h-8",
             view === 'list' 
               ? "bg-white text-familyxp-primary shadow-sm" 
-              : "text-gray-600 hover:text-familyxp-primary"
+              : "text-gray-600 hover:text-familyxp-primary hover:bg-gray-200"
           )}
           onClick={() => onViewChange('list')}
         >
@@ -35,11 +35,11 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
           variant="ghost"
           size="sm"
           className={cn(
-            "rounded-r-full transition-all",
-            isMobile ? "px-2.5 py-1 h-8" : "px-3 py-1 h-8",
+            "rounded-full flex items-center transition-all",
+            isMobile ? "px-3 py-1.5 h-8" : "px-3.5 py-1.5 h-8",
             view === 'map' 
               ? "bg-white text-familyxp-primary shadow-sm" 
-              : "text-gray-600 hover:text-familyxp-primary"
+              : "text-gray-600 hover:text-familyxp-primary hover:bg-gray-200"
           )}
           onClick={() => onViewChange('map')}
         >
