@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,6 +10,8 @@ import MapSearch from "@/components/map/MapSearch";
 import ViewSwitcher from "@/components/map/ViewSwitcher";
 import { properties } from "@/data/properties";
 import { useIsMobile } from "@/hooks/use-mobile";
+import BookingTypeSelector from "@/components/filters/BookingTypeSelector";
+import FiltersDropdown from "@/components/filters/FiltersDropdown";
 
 const Index = () => {
   const [bookingType, setBookingType] = useState<"all" | "free" | "paid">("all");
