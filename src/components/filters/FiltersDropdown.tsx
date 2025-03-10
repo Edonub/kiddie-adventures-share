@@ -11,6 +11,7 @@ import { Separator } from "../ui/separator";
 import { Slider } from "../ui/slider";
 import { Category } from "@/data/categories";
 import { Badge } from "../ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FiltersDropdownProps {
   categories: Category[];
@@ -36,6 +37,7 @@ const FiltersDropdown = ({
   isMobile = false
 }: FiltersDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isMobileDevice = useIsMobile();
 
   const formatDuration = (minutes: number) => {
     if (minutes < 60) {
@@ -83,9 +85,10 @@ const FiltersDropdown = ({
       </PopoverTrigger>
       <PopoverContent 
         side="bottom" 
-        align="end" 
+        align={isMobileDevice ? "center" : "end"}
+        alignOffset={isMobileDevice ? 0 : undefined}
         sideOffset={5} 
-        className="w-[320px] p-6 bg-white shadow-xl rounded-xl border-none"
+        className={`${isMobileDevice ? "w-[calc(100vw-24px)] max-w-[380px]" : "w-[320px]"} p-6 bg-white shadow-xl rounded-xl border-none z-[999]`}
         avoidCollisions={false}
       >
         <div className="space-y-6">
