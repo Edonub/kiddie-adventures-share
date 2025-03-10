@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
@@ -80,7 +81,13 @@ const FiltersDropdown = ({
           </Button>
         )}
       </PopoverTrigger>
-      <PopoverContent side="bottom" align="end" sideOffset={5} className="w-[320px] p-6 bg-white shadow-xl rounded-xl border-none">
+      <PopoverContent 
+        side="bottom" 
+        align="end" 
+        sideOffset={5} 
+        className="w-[320px] p-6 bg-white shadow-xl rounded-xl border-none"
+        avoidCollisions={false}
+      >
         <div className="space-y-6">
           {/* Price Range */}
           <div className="space-y-3">
