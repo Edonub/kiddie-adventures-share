@@ -76,30 +76,32 @@ const DestinationSearch = ({
       className={`p-3 md:p-4 flex-1 border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer rounded-t-full md:rounded-l-full md:rounded-tr-none ${activeTab === "destination" ? "bg-gray-50" : ""}`}
       onClick={() => setActiveTab("destination")}
     >
-      <SearchInput
-        destination={destination}
-        inputRef={inputRef}
-        isLoading={isLoading}
-        handleDestinationChange={handleDestinationChange}
-        handleClear={handleClear}
-        onFocus={handleFocus}
-        isMobile={false}
-      />
-      
-      {showSuggestions && (
-        <div 
-          ref={suggestionsRef}
-          className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-20 border max-h-60 overflow-y-auto w-full"
-        >
-          <LocationSuggestions
-            suggestions={suggestions}
-            searchError={searchError}
-            isLoading={isLoading}
-            onSelectSuggestion={selectSuggestion}
-            suggestionsRef={suggestionsRef}
-          />
-        </div>
-      )}
+      <div className="relative">
+        <SearchInput
+          destination={destination}
+          inputRef={inputRef}
+          isLoading={isLoading}
+          handleDestinationChange={handleDestinationChange}
+          handleClear={handleClear}
+          onFocus={handleFocus}
+          isMobile={false}
+        />
+        
+        {showSuggestions && (
+          <div 
+            ref={suggestionsRef}
+            className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-20 border max-h-60 overflow-y-auto"
+          >
+            <LocationSuggestions
+              suggestions={suggestions}
+              searchError={searchError}
+              isLoading={isLoading}
+              onSelectSuggestion={selectSuggestion}
+              suggestionsRef={suggestionsRef}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

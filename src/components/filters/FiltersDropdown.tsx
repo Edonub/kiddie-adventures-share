@@ -88,7 +88,7 @@ const FiltersDropdown = ({
         align={isMobileDevice ? "center" : "end"}
         alignOffset={isMobileDevice ? 0 : undefined}
         sideOffset={5} 
-        className={`${isMobileDevice ? "w-[calc(100vw-24px)] max-w-[380px]" : "w-[320px]"} p-6 bg-white shadow-xl rounded-xl border-none z-[999]`}
+        className={`${isMobileDevice ? "w-[calc(100vw-32px)] max-w-[380px]" : "w-[320px]"} p-6 bg-white shadow-xl rounded-xl border-none z-[999]`}
         avoidCollisions={false}
       >
         <div className="space-y-6">
@@ -98,9 +98,11 @@ const FiltersDropdown = ({
               <h3 className="text-base font-semibold text-gray-800">Precio máximo</h3>
               <span className="text-sm font-medium text-familyxp-primary">{priceRange[0]}€</span>
             </div>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Selecciona el precio máximo que estás dispuesto a pagar.
-            </p>
+            {!isMobileDevice && (
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Selecciona el precio máximo que estás dispuesto a pagar.
+              </p>
+            )}
             <Slider
               defaultValue={priceRange}
               max={1000}
@@ -118,9 +120,11 @@ const FiltersDropdown = ({
               <h3 className="text-base font-semibold text-gray-800">Duración máxima</h3>
               <span className="text-sm font-medium text-familyxp-primary">{formatDuration(durationRange[0])}</span>
             </div>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Selecciona la duración máxima de la experiencia.
-            </p>
+            {!isMobileDevice && (
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Selecciona la duración máxima de la experiencia.
+              </p>
+            )}
             <Slider
               defaultValue={durationRange}
               max={480}
