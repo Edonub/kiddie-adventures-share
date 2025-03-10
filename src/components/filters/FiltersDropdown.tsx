@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
@@ -56,12 +57,11 @@ const FiltersDropdown = ({
         {isMobile ? (
           <Button 
             variant="outline" 
-            className="h-10 w-full max-w-[120px] py-2 px-3 rounded-full flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+            className="h-10 w-10 py-2 px-2 rounded-full flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
           >
-            <SlidersHorizontal size={16} className="mr-1.5" />
-            <span className="text-xs font-medium">Filtros</span>
+            <SlidersHorizontal size={16} />
             {hasActiveFilters && (
-              <span className="ml-1.5 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
                 {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0)}
               </span>
             )}
@@ -69,13 +69,12 @@ const FiltersDropdown = ({
         ) : (
           <Button 
             variant="outline" 
-            className={`rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
-            size="sm"
+            className={`rounded-full p-2 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
+            size="icon"
           >
-            <SlidersHorizontal className="mr-2 h-4 w-4" />
-            Filtros
+            <SlidersHorizontal className="h-4 w-4" />
             {hasActiveFilters && (
-              <span className="ml-2 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
                 {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0)}
               </span>
             )}
