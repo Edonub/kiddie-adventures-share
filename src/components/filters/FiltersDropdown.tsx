@@ -57,11 +57,12 @@ const FiltersDropdown = ({
         {isMobile ? (
           <Button 
             variant="outline" 
-            className="h-8 w-8 p-0 rounded-md flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+            className="h-10 w-full max-w-[120px] py-2 px-3 rounded-full flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
           >
-            <SlidersHorizontal size={16} className={hasActiveFilters ? "text-familyxp-primary" : "text-gray-600"} />
+            <SlidersHorizontal size={16} className="mr-1.5" />
+            <span className="text-xs font-medium">Filtros</span>
             {hasActiveFilters && (
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-familyxp-primary text-white text-[10px] flex items-center justify-center">
+              <span className="ml-1.5 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
                 {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0)}
               </span>
             )}

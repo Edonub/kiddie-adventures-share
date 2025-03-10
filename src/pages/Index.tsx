@@ -44,6 +44,13 @@ const Index = () => {
       return true;
     });
 
+  const resetFilters = () => {
+    setPriceRange([200]);
+    setDurationRange([180]);
+    setBookingType("all");
+    selectedCategories.forEach(cat => toggleCategory(cat));
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
@@ -62,17 +69,21 @@ const Index = () => {
               
               <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
                 {isMobile ? (
-                  <div className="flex items-center w-full mt-2">
-                    <div className="flex-shrink-0 mr-3">
-                      <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                  <>
+                    <div className="flex items-center w-full mt-2">
+                      <div className="flex-shrink-0 mr-3">
+                        <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                      </div>
+                      <div className="flex-grow flex justify-center">
+                        <BookingTypeSelector 
+                          bookingType={bookingType}
+                          setBookingType={setBookingType}
+                        />
+                      </div>
                     </div>
-                    <div className="flex-grow flex justify-center">
-                      <BookingTypeSelector 
-                        bookingType={bookingType}
-                        setBookingType={setBookingType}
-                      />
-                    </div>
-                    <div className="flex-shrink-0 ml-3">
+                    
+                    {/* Add separate row for filters on mobile */}
+                    <div className="w-full flex justify-center mt-3">
                       <FiltersDropdown 
                         categories={categories}
                         selectedCategories={selectedCategories}
@@ -81,16 +92,11 @@ const Index = () => {
                         setPriceRange={setPriceRange}
                         durationRange={durationRange}
                         setDurationRange={setDurationRange}
-                        resetFilters={() => {
-                          setPriceRange([200]);
-                          setDurationRange([180]);
-                          setBookingType("all");
-                          selectedCategories.forEach(cat => toggleCategory(cat));
-                        }}
+                        resetFilters={resetFilters}
                         isMobile={isMobile}
                       />
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <>
                     <div className="flex-grow">
