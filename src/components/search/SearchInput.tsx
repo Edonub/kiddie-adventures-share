@@ -30,10 +30,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
             ref={inputRef}
             type="text" 
             placeholder="¿A qué localidad de España viajas?" 
-            className="w-full bg-transparent border-none outline-none text-sm placeholder-gray-500 text-black font-medium"
+            className="w-full bg-transparent border-none outline-none text-base text-black font-medium"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
             onFocus={onFocus}
+            autoComplete="off"
           />
           {isLoading && (
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 flex-shrink-0 ml-1"></div>
@@ -60,6 +61,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
               value={destination}
               onChange={(e) => handleDestinationChange(e.target.value)}
               onFocus={onFocus}
+              autoComplete="off"
             />
             {isLoading && (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 flex-shrink-0 ml-1"></div>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Property } from '@/data/properties';
 import { properties } from '@/data/properties';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from "react-router-dom";
 
 // Define map marker icon
 const customIcon = L.icon({
@@ -27,6 +28,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
   filteredProperties,
   onPropertySelect 
 }) => {
+  const navigate = useNavigate();
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMap = useRef<L.Map | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
@@ -98,13 +100,21 @@ const MapSearch: React.FC<MapSearchProps> = ({
       leafletMap.current.fitBounds(group.getBounds(), { padding: [50, 50] });
     }
   }, [filteredProperties, onPropertySelect]);
+
+  // Handle navigation to property detail
+  const handlePropertyClick = () => {
+    if (selectedProperty) {
+      // Navigate to the property detail page
+      navigate(`/actividad/${selectedProperty.id}`);
+    }
+  };
   
   return (
     <div className="relative w-full h-[500px] rounded-lg overflow-hidden border border-gray-200">
       <div ref={mapRef} className="w-full h-full z-10"></div>
       
       {selectedProperty && (
-        <Card className="absolute bottom-4 left-4 w-64 z-20 bg-white shadow-lg">
+        <Card className="absolute bottom-4 left-4 w-64 z-20 bg-white shadow-lg cursor-pointer hover:shadow-xl transition-shadow" onClick={handlePropertyClick}>
           <CardContent className="p-3">
             <div className="w-full h-32 mb-2 overflow-hidden rounded">
               <img 
@@ -118,6 +128,9 @@ const MapSearch: React.FC<MapSearchProps> = ({
             <p className="font-bold mt-1">
               {selectedProperty.price === 0 ? "Gratis" : `${selectedProperty.price}€/noche`}
             </p>
+            <Button variant="link" className="p-0 h-auto mt-1 text-xs text-blue-600">
+              Ver detalles
+            </Button>
           </CardContent>
         </Card>
       )}
