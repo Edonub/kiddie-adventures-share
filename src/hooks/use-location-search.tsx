@@ -35,7 +35,7 @@ export const useLocationSearch = (
       const uniqueResults = removeDuplicateLocations(data);
       console.log("Filtered location results:", uniqueResults);
       setSuggestions(uniqueResults);
-      setShowSuggestions(uniqueResults.length > 0);
+      setShowSuggestions(true); // Asegura que se muestren las sugerencias
     } catch (error) {
       console.error("Error searching locations:", error);
       setSearchError("Error al buscar localidades. Por favor, inténtelo de nuevo.");
