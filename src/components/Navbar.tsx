@@ -13,22 +13,36 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import FamilyLogo from "./FamilyLogo";
 
 const Navbar = () => {
   const { user, signOut, isAdmin } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const isMobileHook = useIsMobile();
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Ensure correct mobile detection on mount and window resize
+  useEffect(() => {
+    setIsMobile(isMobileHook);
+    
+    // Additional check for initial load on mobile devices
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    console.log("Mobile detection:", isMobile, "Window width:", window.innerWidth);
+  }, [isMobileHook]);
 
   return (
-    <nav className="w-full py-4 px-4 sm:px-8 flex justify-between items-center bg-white border-b border-gray-200">
-      {isMobile && (
-        <div className="md:hidden flex items-center gap-2 w-full">
+    <nav className="fixed top-0 left-0 right-0 z-50 py-3 px-4 sm:px-8 flex justify-between items-center bg-white border-b border-gray-200">
+      {isMobile ? (
+        <div className="flex items-center justify-between w-full">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden p-1">
+              <Button variant="ghost" size="icon" className="p-1">
                 <Menu size={24} />
               </Button>
             </SheetTrigger>
@@ -83,9 +97,9 @@ const Navbar = () => {
             </SheetContent>
           </Sheet>
 
-          <div className="flex-1 flex justify-center">
+          <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link to="/" className="flex items-center">
-              <FamilyLogo showText={true} size="md" variant="default" />
+              <FamilyLogo showText={true} size="sm" variant="default" />
             </Link>
           </div>
 
@@ -165,9 +179,7 @@ const Navbar = () => {
             )}
           </div>
         </div>
-      )}
-
-      {!isMobile && (
+      ) : (
         <>
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center">
