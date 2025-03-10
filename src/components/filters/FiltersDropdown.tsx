@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Clock, FilterX, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Popover,

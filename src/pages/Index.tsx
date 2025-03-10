@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -65,19 +66,17 @@ const Index = () => {
                     <div className="flex-shrink-0 mr-3">
                       <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                     </div>
-                    <div className="flex-shrink-0">
+                    <div className="flex-grow flex justify-center">
                       <BookingTypeSelector 
                         bookingType={bookingType}
                         setBookingType={setBookingType}
                       />
                     </div>
-                    <div className="ml-auto">
+                    <div className="flex-shrink-0 ml-3">
                       <FiltersDropdown 
                         categories={categories}
                         selectedCategories={selectedCategories}
                         toggleCategory={toggleCategory}
-                        bookingType={bookingType}
-                        setBookingType={setBookingType}
                         priceRange={priceRange}
                         setPriceRange={setPriceRange}
                         durationRange={durationRange}
