@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocationSearch } from "@/hooks/use-location-search";
@@ -37,6 +36,7 @@ const DestinationSearch = ({
     setActiveTab("destination");
     if (destination.length > 1) {
       searchLocations(destination);
+      setShowSuggestions(true);
     }
   };
 
@@ -56,13 +56,16 @@ const DestinationSearch = ({
         {showSuggestions && (
           <div 
             ref={suggestionsRef}
-            className="fixed left-0 right-0 top-[60px] mx-2 bg-white rounded-lg shadow-lg z-50 border max-h-60 overflow-y-auto"
+            className="fixed inset-0 top-[60px] bg-white z-50 border-t border-gray-200 h-[calc(100vh-60px)] overflow-y-auto"
           >
             <LocationSuggestions
               suggestions={suggestions}
               searchError={searchError}
               isLoading={isLoading}
-              onSelectSuggestion={selectSuggestion}
+              onSelectSuggestion={(suggestion) => {
+                selectSuggestion(suggestion);
+                setShowSuggestions(false);
+              }}
               suggestionsRef={suggestionsRef}
             />
           </div>

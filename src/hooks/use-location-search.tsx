@@ -50,7 +50,7 @@ export const useLocationSearch = (
     }
   };
 
-  // Debounced search function
+  // Debounced search function with immediate feedback
   const handleDestinationChange = (value: string) => {
     setDestination(value);
     
@@ -59,33 +59,41 @@ export const useLocationSearch = (
       window.clearTimeout(debounceTimerRef.current);
     }
     
-    // Set new timer
-    debounceTimerRef.current = window.setTimeout(() => {
-      searchLocations(value);
-    }, 300); // 300ms debounce
+    if (value.length >= 2) {
+      setShowSuggestions(true);
+      setIsLoading(true);
+      
+      // Set new timer
+      debounceTimerRef.current = window.setTimeout(() => {
+        searchLocations(value);
+      }, 300); // 300ms debounce
+    } else {
+      setShowSuggestions(false);
+      setSuggestions([]);
+    }
   };
 
   // Search for locations
   const searchLocations = async (query: string) => {
     if (query.length < 2) {
       setShowSuggestions(false);
+      setIsLoading(false);
       return;
     }
     
-    setIsLoading(true);
     setSearchError(null);
-    setShowSuggestions(true);
     
     try {
+      console.log("Searching for:", query);
       const data = await fetchLocations(query);
+      console.log("Search results:", data);
       
       if (data && data.length > 0) {
-        // Eliminar duplicados basados en nombres de localidades
         const uniqueResults = removeDuplicateLocations(data);
         setSuggestions(uniqueResults);
+        setShowSuggestions(true);
       } else {
         setSuggestions([]);
-        // Only show no results message if user typed enough characters
         if (query.length > 2) {
           setSearchError("No se encontraron localidades en España");
         }
@@ -93,7 +101,6 @@ export const useLocationSearch = (
     } catch (error) {
       console.error("Error fetching from Nominatim:", error);
       setSearchError("Error al buscar localidades españolas. Intente nuevamente.");
-      // Fallback to mock data in case of API error
       const mockData = getMockDestinations(query);
       if (mockData.length > 0) {
         setSuggestions(mockData as unknown as NominatimResult[]);
@@ -106,7 +113,6 @@ export const useLocationSearch = (
   // Select a suggestion
   const selectSuggestion = (suggestion: NominatimResult) => {
     console.log("Selected suggestion:", suggestion);
-    // Extract the first part of the display name (usually city, country)
     const displayParts = suggestion.display_name.split(',');
     const simplified = displayParts.length > 1 
       ? `${displayParts[0].trim()}, España`
@@ -114,8 +120,6 @@ export const useLocationSearch = (
       
     setDestination(simplified);
     setShowSuggestions(false);
-    
-    // Store the selected location
     storeSelectedLocation(suggestion, simplified);
   };
 
