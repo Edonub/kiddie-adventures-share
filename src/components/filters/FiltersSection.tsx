@@ -1,10 +1,8 @@
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Clock, SlidersHorizontal } from "lucide-react";
 import BookingTypeSelector from "./BookingTypeSelector";
 import FiltersDropdown from "./FiltersDropdown";
 import { Category } from "@/data/categories";
-import { Button } from "@/components/ui/button";
 
 interface FiltersSectionProps {
   categories: Category[];
