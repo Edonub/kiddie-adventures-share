@@ -56,7 +56,7 @@ const DestinationSearch = ({
         {showSuggestions && (
           <div 
             ref={suggestionsRef}
-            className="absolute left-0 right-0 top-[110%] bg-white rounded-lg shadow-lg z-20 border max-h-60 overflow-y-auto"
+            className="absolute left-0 right-0 top-[110%] bg-white rounded-lg shadow-lg z-20 border max-h-60 overflow-y-auto w-full"
           >
             <LocationSuggestions
               suggestions={suggestions}
@@ -89,7 +89,7 @@ const DestinationSearch = ({
       {showSuggestions && (
         <div 
           ref={suggestionsRef}
-          className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-20 border max-h-60 overflow-y-auto"
+          className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-20 border max-h-60 overflow-y-auto w-full"
         >
           <LocationSuggestions
             suggestions={suggestions}
