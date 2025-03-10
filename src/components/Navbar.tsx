@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, Plus, Bookmark } from "lucide-react";
@@ -34,7 +33,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <FamilyLogo className="h-8 w-auto" />
+              <FamilyLogo />
               <span className="ml-2 text-xl font-bold text-familyxp-primary hidden sm:inline">
                 Family<span className="text-familyxp-secondary">XP</span>
               </span>
