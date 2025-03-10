@@ -20,7 +20,10 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
 }) => {
   if (searchError) {
     return (
-      <div ref={suggestionsRef} className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md">
+      <div 
+        ref={suggestionsRef} 
+        className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-50"
+      >
         {searchError}
       </div>
     );
@@ -28,13 +31,16 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
   
   if (suggestions.length > 0) {
     return (
-      <div ref={suggestionsRef} className="bg-white shadow-lg rounded-b-md max-h-[300px] overflow-y-auto">
+      <div 
+        ref={suggestionsRef} 
+        className="bg-white shadow-lg rounded-b-md max-h-[300px] overflow-y-auto border border-gray-200 z-50"
+      >
         {suggestions.map((suggestion, index) => {
           const { main, secondary } = formatDisplayName(suggestion.display_name);
           return (
             <div 
               key={suggestion.place_id || index}
-              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center"
+              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center border-b border-gray-100 last:border-0"
               onClick={() => onSelectSuggestion(suggestion)}
             >
               <MapPin size={18} className="text-gray-500 mr-3 flex-shrink-0" />
@@ -51,14 +57,20 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
   
   if (isLoading) {
     return (
-      <div ref={suggestionsRef} className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md">
+      <div 
+        ref={suggestionsRef} 
+        className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-50"
+      >
         Buscando localidades en España...
       </div>
     );
   }
   
   return (
-    <div ref={suggestionsRef} className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md">
+    <div 
+      ref={suggestionsRef} 
+      className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-50"
+    >
       Empieza a escribir para buscar localidades en España
     </div>
   );

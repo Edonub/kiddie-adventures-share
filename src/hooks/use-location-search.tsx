@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { 
   fetchLocations, 
   removeDuplicateLocations, 
@@ -76,7 +76,7 @@ export const useLocationSearch = (
   };
 
   // Search for locations
-  const searchLocations = async (query: string) => {
+  const searchLocations = useCallback(async (query: string) => {
     if (query.length < 2) {
       setShowSuggestions(false);
       setIsLoading(false);
@@ -84,6 +84,7 @@ export const useLocationSearch = (
     }
     
     setSearchError(null);
+    setIsLoading(true);
     
     try {
       console.log("Searching for:", query);
@@ -106,13 +107,21 @@ export const useLocationSearch = (
       setSearchError("Error al buscar localidades españolas. Intente nuevamente.");
       const mockData = getMockDestinations(query);
       if (mockData.length > 0) {
-        setSuggestions(mockData as unknown as NominatimResult[]);
+        // Convertir los datos mock al formato NominatimResult
+        const mockResults = mockData.map((item, index) => ({
+          place_id: index,
+          display_name: `${item.name}, ${item.country}`,
+          lat: "0",
+          lon: "0"
+        }));
+        
+        setSuggestions(mockResults);
         setShowSuggestions(true);
       }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Select a suggestion
   const selectSuggestion = (suggestion: NominatimResult) => {

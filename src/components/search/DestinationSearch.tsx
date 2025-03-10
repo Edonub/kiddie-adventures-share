@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocationSearch } from "@/hooks/use-location-search";
 import SearchInput from "./SearchInput";
@@ -33,9 +33,21 @@ const DestinationSearch = ({
     searchLocations
   } = useLocationSearch(destination, setDestination);
 
+  // Cuando cambia activeTab, verifica si debemos mostrar sugerencias
+  useEffect(() => {
+    if (activeTab === "destination" && destination.length > 1) {
+      searchLocations(destination);
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  }, [activeTab, destination, searchLocations, setShowSuggestions]);
+
   const handleFocus = () => {
+    console.log("Input focused! Current destination:", destination);
     setActiveTab("destination");
     if (destination.length > 1) {
+      console.log("Searching for locations on focus:", destination);
       searchLocations(destination);
       setShowSuggestions(true);
     }
@@ -57,7 +69,7 @@ const DestinationSearch = ({
         </div>
         
         {showSuggestions && (
-          <div className="absolute left-0 right-0 top-[100%] z-50">
+          <div className="absolute left-0 right-0 top-[100%] z-[100]">
             <LocationSuggestions
               suggestions={suggestions}
               searchError={searchError}
@@ -91,7 +103,7 @@ const DestinationSearch = ({
         />
         
         {showSuggestions && (
-          <div className="absolute left-0 right-0 top-full mt-2 z-50">
+          <div className="absolute left-0 right-0 top-full mt-2 z-[100]">
             <LocationSuggestions
               suggestions={suggestions}
               searchError={searchError}
