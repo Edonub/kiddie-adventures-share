@@ -47,56 +47,54 @@ const Index = () => {
     });
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
       <main className="flex-1 pt-14 w-full overflow-x-hidden">
-        <div className="pb-6 px-4">
+        <div className="pb-8 px-4">
           <div className="max-w-screen-xl mx-auto">
-            <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '3' : '6'}`}>
+            <div className="pt-4 pb-6 bg-white rounded-lg shadow-sm px-4 my-4">
               <AirbnbSearchBar />
             </div>
             
-            <div className="flex flex-wrap items-center justify-between mb-4">
+            <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
               <div className="w-full overflow-x-auto scrollbar-none">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex justify-between items-center mt-2">
-                <FiltersSection 
-                  categories={categories}
-                  selectedCategories={selectedCategories}
-                  toggleCategory={toggleCategory}
-                  bookingType={bookingType}
-                  setBookingType={setBookingType}
-                  priceRange={priceRange}
-                  setPriceRange={setPriceRange}
-                  durationRange={durationRange}
-                  setDurationRange={setDurationRange}
-                />
+              <div className="w-full flex flex-wrap md:flex-nowrap justify-between items-center mt-4 gap-3">
+                <div className="w-full md:w-auto">
+                  <FiltersSection 
+                    categories={categories}
+                    selectedCategories={selectedCategories}
+                    toggleCategory={toggleCategory}
+                    bookingType={bookingType}
+                    setBookingType={setBookingType}
+                    priceRange={priceRange}
+                    setPriceRange={setPriceRange}
+                    durationRange={durationRange}
+                    setDurationRange={setDurationRange}
+                  />
+                </div>
                 
-                {isMobile ? (
-                  <div className="ml-3">
-                    <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
-                  </div>
-                ) : (
-                  <div className="ml-6">
-                    <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
-                  </div>
-                )}
+                <div className="ml-auto">
+                  <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                </div>
               </div>
             </div>
             
-            {viewMode === 'list' ? (
-              <PropertyListing 
-                bookingType={bookingType}
-                priceRange={priceRange}
-                selectedCategories={selectedCategories}
-                durationRange={durationRange}
-              />
-            ) : (
-              <MapSearch filteredProperties={filteredProperties} />
-            )}
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              {viewMode === 'list' ? (
+                <PropertyListing 
+                  bookingType={bookingType}
+                  priceRange={priceRange}
+                  selectedCategories={selectedCategories}
+                  durationRange={durationRange}
+                />
+              ) : (
+                <MapSearch filteredProperties={filteredProperties} />
+              )}
+            </div>
           </div>
         </div>
       </main>
