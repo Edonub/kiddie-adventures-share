@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ForumCategory } from "@/components/forum/ForumCategories";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import AvatarSelector from "@/components/forum/AvatarSelector";
 
 type Comment = {
   id: string;
@@ -33,6 +35,8 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
   const { user } = useAuth();
   const navigate = useNavigate();
   const [newComment, setNewComment] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,11 +53,23 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
     }
     
     try {
+      // If user has selected a new avatar, update their profile
+      if (selectedAvatar) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .update({ avatar_url: selectedAvatar })
+          .eq("id", user.id);
+          
+        if (profileError) throw profileError;
+      }
+      
+      // Now add the comment
       const commentData = {
         content: newComment.trim(),
         user_id: user.id,
         parent_id: replyTo ? replyTo.id : null,
-        // We'll add a metadata column for category in future if needed
+        // Use metadata for category if needed in the future
+        // We could add a metadata column in the future
       };
       
       const { error } = await supabase
@@ -72,21 +88,26 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
     }
   };
 
+  const handleAvatarSelected = (avatarUrl: string) => {
+    setSelectedAvatar(avatarUrl);
+    setIsAvatarDialogOpen(false);
+  };
+
   return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle>Escribe un comentario</CardTitle>
-        <CardDescription>
+    <Card className="mb-8 bg-[#444] border-[#555] text-white">
+      <CardHeader className="border-b border-[#555]">
+        <CardTitle className="text-white">Escribe un comentario</CardTitle>
+        <CardDescription className="text-gray-300">
           Comparte tus experiencias o pregunta sobre actividades en familia
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmitComment}>
-        <CardContent>
+        <CardContent className="pt-6">
           {replyTo && (
-            <div className="mb-4 p-3 bg-gray-100 rounded-lg flex justify-between items-center">
+            <div className="mb-4 p-3 bg-[#333] rounded-lg flex justify-between items-center border border-[#555]">
               <div>
-                <span className="text-sm text-gray-500">Respondiendo a:</span>
-                <p className="text-sm font-medium">
+                <span className="text-sm text-gray-400">Respondiendo a:</span>
+                <p className="text-sm font-medium text-gray-300">
                   {replyTo.profiles?.first_name || "Usuario"}: {replyTo.content.substring(0, 100)}
                   {replyTo.content.length > 100 ? "..." : ""}
                 </p>
@@ -95,6 +116,7 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setReplyTo(null)}
+                className="text-gray-300 hover:text-white hover:bg-[#555]"
               >
                 Cancelar
               </Button>
@@ -108,11 +130,33 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
             }
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="min-h-[120px]"
+            className="min-h-[120px] bg-[#333] border-[#555] text-white placeholder:text-gray-400"
           />
+          
+          <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
+            <DialogTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-4 border-[#555] hover:bg-[#555] text-gray-300 hover:text-white"
+              >
+                Cambiar avatar
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-[#444] border-[#555] text-white">
+              <DialogHeader>
+                <DialogTitle className="text-white">Selecciona un avatar</DialogTitle>
+              </DialogHeader>
+              <AvatarSelector onSelect={handleAvatarSelected} />
+            </DialogContent>
+          </Dialog>
         </CardContent>
-        <CardFooter className="flex justify-end">
-          <Button type="submit" disabled={!newComment.trim()}>
+        <CardFooter className="flex justify-end border-t border-[#555] pt-4">
+          <Button 
+            type="submit" 
+            disabled={!newComment.trim()}
+            className="bg-[#ff4d4d] hover:bg-[#e63939] text-white"
+          >
             {replyTo ? "Responder" : "Publicar comentario"}
           </Button>
         </CardFooter>

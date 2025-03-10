@@ -1,7 +1,6 @@
 
-import { useState } from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { MessageSquare, Home, Compass, Car, Laugh, Tag } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MessageSquare, Home, Compass, Building, Tag, Laugh } from "lucide-react";
 
 export type ForumCategory = "general" | "viajes" | "alojamientos" | "offtopic" | "humor";
 
@@ -14,29 +13,44 @@ const ForumCategories = ({ selectedCategory, onCategoryChange }: ForumCategories
   return (
     <Tabs 
       defaultValue={selectedCategory} 
-      className="w-full mb-6"
+      className="w-full"
       onValueChange={(value) => onCategoryChange(value as ForumCategory)}
     >
-      <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full">
-        <TabsTrigger value="general" className="flex items-center gap-2">
-          <Home size={16} />
-          <span className="hidden sm:inline">General</span>
+      <TabsList className="grid grid-cols-5 w-full h-auto border-0 bg-transparent gap-1 p-0">
+        <TabsTrigger 
+          value="general" 
+          className="flex flex-col items-center gap-1 py-3 rounded bg-[#3a3a3a] data-[state=active]:bg-[#ff4d4d] data-[state=active]:text-white"
+        >
+          <Home size={18} />
+          <span className="text-xs">General</span>
         </TabsTrigger>
-        <TabsTrigger value="viajes" className="flex items-center gap-2">
-          <Compass size={16} />
-          <span className="hidden sm:inline">Viajes</span>
+        <TabsTrigger 
+          value="viajes" 
+          className="flex flex-col items-center gap-1 py-3 rounded bg-[#3a3a3a] data-[state=active]:bg-[#ff4d4d] data-[state=active]:text-white"
+        >
+          <Compass size={18} />
+          <span className="text-xs">Viajes</span>
         </TabsTrigger>
-        <TabsTrigger value="alojamientos" className="flex items-center gap-2">
-          <Home size={16} />
-          <span className="hidden sm:inline">Alojamientos</span>
+        <TabsTrigger 
+          value="alojamientos" 
+          className="flex flex-col items-center gap-1 py-3 rounded bg-[#3a3a3a] data-[state=active]:bg-[#ff4d4d] data-[state=active]:text-white"
+        >
+          <Building size={18} />
+          <span className="text-xs">Hospedaje</span>
         </TabsTrigger>
-        <TabsTrigger value="offtopic" className="flex items-center gap-2">
-          <Tag size={16} />
-          <span className="hidden sm:inline">Offtopic</span>
+        <TabsTrigger 
+          value="offtopic" 
+          className="flex flex-col items-center gap-1 py-3 rounded bg-[#3a3a3a] data-[state=active]:bg-[#ff4d4d] data-[state=active]:text-white"
+        >
+          <Tag size={18} />
+          <span className="text-xs">Offtopic</span>
         </TabsTrigger>
-        <TabsTrigger value="humor" className="flex items-center gap-2">
-          <Laugh size={16} />
-          <span className="hidden sm:inline">Humor</span>
+        <TabsTrigger 
+          value="humor" 
+          className="flex flex-col items-center gap-1 py-3 rounded bg-[#3a3a3a] data-[state=active]:bg-[#ff4d4d] data-[state=active]:text-white"
+        >
+          <Laugh size={18} />
+          <span className="text-xs">Humor</span>
         </TabsTrigger>
       </TabsList>
     </Tabs>

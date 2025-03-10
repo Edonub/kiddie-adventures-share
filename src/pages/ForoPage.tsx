@@ -8,6 +8,7 @@ import CommentForm from "@/components/forum/CommentForm";
 import CommentList from "@/components/forum/CommentList";
 import { Comment } from "@/components/forum/types";
 import ForumCategories, { ForumCategory } from "@/components/forum/ForumCategories";
+import { Card } from "@/components/ui/card";
 
 // Sample comments data with categories
 const sampleComments: (Comment & { category?: ForumCategory })[] = [
@@ -237,35 +238,38 @@ const ForoPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#333] text-white">
       <Navbar />
       
-      <main className="flex-1 py-10 bg-gray-50">
+      <main className="flex-1 py-10">
         <div className="container px-4 mx-auto max-w-4xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Foro de Familea</h1>
-            <p className="text-gray-600">
+            <h1 className="text-3xl font-bold text-white mb-2">Foro de Familea</h1>
+            <p className="text-gray-300">
               Comparte tus preguntas, sugerencias y experiencias con la comunidad de Familea.
             </p>
             {showSampleData && (
-              <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                <p className="text-amber-700 text-sm">
+              <div className="mt-4 p-4 bg-[#444] border border-[#555] rounded-lg">
+                <p className="text-amber-300 text-sm">
                   <strong>Nota:</strong> Estás viendo contenido de ejemplo. Los comentarios que añadas se guardarán en la base de datos.
                 </p>
               </div>
             )}
           </div>
           
-          {/* Add the category selector */}
-          <ForumCategories 
-            selectedCategory={selectedCategory} 
-            onCategoryChange={setSelectedCategory} 
-          />
+          <Card className="bg-[#444] border-[#555] p-4 mb-6">
+            {/* Add the category selector */}
+            <ForumCategories 
+              selectedCategory={selectedCategory} 
+              onCategoryChange={setSelectedCategory} 
+            />
+          </Card>
           
           <CommentForm 
             replyTo={replyTo} 
             setReplyTo={setReplyTo} 
-            onCommentSubmitted={handleCommentSubmitted} 
+            onCommentSubmitted={handleCommentSubmitted}
+            category={selectedCategory}
           />
           
           <CommentList 
