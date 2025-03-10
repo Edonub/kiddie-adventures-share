@@ -12,17 +12,10 @@ import ViewSwitcher from "@/components/map/ViewSwitcher";
 import { properties } from "@/data/properties";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-interface Child {
-  id: number;
-  age: number;
-}
-
 const Index = () => {
   const [bookingType, setBookingType] = useState<"all" | "free" | "paid">("all");
   const [priceRange, setPriceRange] = useState([200]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [adults, setAdults] = useState(1);
-  const [childrenDetails, setChildrenDetails] = useState<Child[]>([]);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const isMobile = useIsMobile();
 
@@ -48,14 +41,6 @@ const Index = () => {
       if (selectedCategories.length > 0 && !selectedCategories.includes(property.category)) {
         return false;
       }
-      
-      // Filter by capacity for adults
-      const adultsCapacity = property.adults_capacity || 2;
-      if (adults > adultsCapacity) return false;
-      
-      // Filter by capacity for children
-      const childrenCapacity = property.children_capacity || 0;
-      if (childrenDetails.length > childrenCapacity) return false;
       
       return true;
     });
@@ -85,10 +70,6 @@ const Index = () => {
                   setBookingType={setBookingType}
                   priceRange={priceRange}
                   setPriceRange={setPriceRange}
-                  adults={adults}
-                  setAdults={setAdults}
-                  childrenDetails={childrenDetails}
-                  setChildrenDetails={setChildrenDetails}
                 />
                 {isMobile && (
                   <div className="ml-2">
@@ -107,8 +88,6 @@ const Index = () => {
                 bookingType={bookingType}
                 priceRange={priceRange}
                 selectedCategories={selectedCategories}
-                adults={adults}
-                childrenDetails={childrenDetails}
               />
             ) : (
               <MapSearch filteredProperties={filteredProperties} />
