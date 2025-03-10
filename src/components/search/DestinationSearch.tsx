@@ -37,7 +37,7 @@ const DestinationSearch = ({
     if (activeTab === "destination" && destination.length > 1) {
       searchLocations(destination);
       setShowSuggestions(true);
-    } else {
+    } else if (activeTab !== "destination") {
       setShowSuggestions(false);
     }
   }, [activeTab, destination, searchLocations, setShowSuggestions]);
@@ -63,7 +63,7 @@ const DestinationSearch = ({
           isMobile={true}
         />
         
-        {showSuggestions && (
+        {(showSuggestions || isLoading) && (
           <LocationSuggestions
             suggestions={suggestions}
             searchError={searchError}
@@ -91,7 +91,7 @@ const DestinationSearch = ({
         isMobile={false}
       />
       
-      {showSuggestions && (
+      {(showSuggestions || isLoading) && (
         <LocationSuggestions
           suggestions={suggestions}
           searchError={searchError}

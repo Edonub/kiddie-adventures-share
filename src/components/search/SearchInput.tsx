@@ -41,6 +41,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             <button 
               onClick={handleClear} 
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              type="button"
             >
               <X size={18} className="text-gray-500" />
             </button>
@@ -68,6 +69,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
               <button 
                 onClick={handleClear} 
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                type="button"
               >
                 <X size={16} className="text-gray-500" />
               </button>

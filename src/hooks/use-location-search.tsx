@@ -1,5 +1,5 @@
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { 
   fetchLocations, 
   removeDuplicateLocations,
@@ -33,8 +33,9 @@ export const useLocationSearch = (
     try {
       const data = await fetchLocations(query);
       const uniqueResults = removeDuplicateLocations(data);
+      console.log("Filtered location results:", uniqueResults);
       setSuggestions(uniqueResults);
-      setShowSuggestions(true);
+      setShowSuggestions(uniqueResults.length > 0);
     } catch (error) {
       console.error("Error searching locations:", error);
       setSearchError("Error al buscar localidades. Por favor, inténtelo de nuevo.");
@@ -59,6 +60,7 @@ export const useLocationSearch = (
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+      setIsLoading(false);
     }
   };
 
@@ -81,6 +83,21 @@ export const useLocationSearch = (
     storeSelectedLocation(suggestion, simplified);
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) && 
+          inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return {
     suggestions,

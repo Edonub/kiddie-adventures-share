@@ -22,9 +22,20 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
     return (
       <div 
         ref={suggestionsRef} 
-        className="absolute left-0 right-0 mt-2 px-4 py-3 text-sm bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
+        className="absolute left-0 right-0 top-full mt-1 px-4 py-3 text-sm bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
       >
         <span className="text-red-500">{searchError}</span>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div 
+        ref={suggestionsRef} 
+        className="absolute left-0 right-0 top-full mt-1 px-4 py-3 text-sm text-gray-500 bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
+      >
+        Buscando localidades en España...
       </div>
     );
   }
@@ -33,7 +44,7 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
     return (
       <div 
         ref={suggestionsRef} 
-        className="absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-lg max-h-[300px] overflow-y-auto border border-gray-200 z-[100] divide-y divide-gray-100"
+        className="absolute left-0 right-0 top-full mt-1 bg-white shadow-lg rounded-lg max-h-[300px] overflow-y-auto border border-gray-200 z-[100] divide-y divide-gray-100"
       >
         {suggestions.map((suggestion) => {
           const { main, secondary } = formatDisplayName(suggestion.display_name);
@@ -51,17 +62,6 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
             </button>
           );
         })}
-      </div>
-    );
-  }
-  
-  if (isLoading) {
-    return (
-      <div 
-        ref={suggestionsRef} 
-        className="absolute left-0 right-0 mt-2 px-4 py-3 text-sm text-gray-500 bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
-      >
-        Buscando localidades en España...
       </div>
     );
   }
