@@ -67,10 +67,14 @@ export const useLocationSearch = (
 
   // Search for locations
   const searchLocations = async (query: string) => {
-    if (query.length < 2) return;
+    if (query.length < 2) {
+      setShowSuggestions(false);
+      return;
+    }
     
     setIsLoading(true);
     setSearchError(null);
+    setShowSuggestions(true);
     
     try {
       const data = await fetchLocations(query);
@@ -79,15 +83,11 @@ export const useLocationSearch = (
         // Eliminar duplicados basados en nombres de localidades
         const uniqueResults = removeDuplicateLocations(data);
         setSuggestions(uniqueResults);
-        setShowSuggestions(true);
       } else {
         setSuggestions([]);
         // Only show no results message if user typed enough characters
         if (query.length > 2) {
           setSearchError("No se encontraron localidades en España");
-          setShowSuggestions(true);
-        } else {
-          setShowSuggestions(false);
         }
       }
     } catch (error) {
@@ -97,7 +97,6 @@ export const useLocationSearch = (
       const mockData = getMockDestinations(query);
       if (mockData.length > 0) {
         setSuggestions(mockData as unknown as NominatimResult[]);
-        setShowSuggestions(true);
       }
     } finally {
       setIsLoading(false);
