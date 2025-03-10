@@ -46,8 +46,8 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
-      <main className="flex-1 pt-2 w-full overflow-x-hidden">
-        <div className="px-2 mt-6">
+      <main className="flex-1 pt-4 w-full overflow-x-hidden">
+        <div className="px-2 mt-8">
           <div className="max-w-screen-xl mx-auto">
             <div className="py-3 px-2 bg-white rounded-xl shadow-sm mb-4">
               <AirbnbSearchBar />
