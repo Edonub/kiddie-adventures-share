@@ -24,18 +24,17 @@ const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <>
       {isMobile ? (
-        <div className="flex items-center px-3 py-2 relative bg-white">
+        <div className="flex items-center px-3 py-2 relative bg-white rounded-md">
           <MapPin size={18} className="text-gray-500 mr-2 flex-shrink-0" />
           <input 
             ref={inputRef}
             type="text" 
             placeholder="¿A qué localidad de España viajas?" 
-            className="w-full bg-white border-none outline-none text-base text-black font-medium placeholder:text-gray-400"
+            className="w-full bg-white border-none outline-none text-base text-black placeholder:text-gray-400"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
             onFocus={onFocus}
             autoComplete="off"
-            style={{ color: '#000000', display: 'inline-block' }} // Force visible text
           />
           {isLoading && (
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 flex-shrink-0 ml-1"></div>
@@ -63,7 +62,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
               onChange={(e) => handleDestinationChange(e.target.value)}
               onFocus={onFocus}
               autoComplete="off"
-              style={{ color: '#000000', display: 'inline-block' }} // Force visible text
             />
             {isLoading && (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500 flex-shrink-0 ml-1"></div>

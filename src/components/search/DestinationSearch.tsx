@@ -44,7 +44,7 @@ const DestinationSearch = ({
   if (isMobile) {
     return (
       <div className="relative w-full">
-        <div className="bg-white z-10 relative">
+        <div className="bg-white rounded-t-md z-20 relative">
           <SearchInput
             destination={destination}
             inputRef={inputRef}
@@ -57,10 +57,7 @@ const DestinationSearch = ({
         </div>
         
         {showSuggestions && (
-          <div 
-            ref={suggestionsRef}
-            className="absolute left-0 right-0 top-[100%] bg-white z-[50] border-t border-gray-200 shadow-lg max-h-[300px] overflow-y-auto"
-          >
+          <div className="absolute left-0 right-0 top-[100%] z-50">
             <LocationSuggestions
               suggestions={suggestions}
               searchError={searchError}
@@ -94,10 +91,7 @@ const DestinationSearch = ({
         />
         
         {showSuggestions && (
-          <div 
-            ref={suggestionsRef}
-            className="absolute left-0 right-0 top-full mt-2 bg-white rounded-md shadow-lg z-50 border max-h-60 overflow-y-auto"
-          >
+          <div className="absolute left-0 right-0 top-full mt-2 z-50">
             <LocationSuggestions
               suggestions={suggestions}
               searchError={searchError}
