@@ -34,25 +34,39 @@ export const useLocationSearch = (
     
     setSearchError(null);
     setIsLoading(true);
+    console.log("Buscando localidades para:", query);
     
     try {
       const data = await fetchLocations(query);
       console.log("Datos recibidos de la API:", data); // Verificar datos de API
-      const uniqueResults = removeDuplicateLocations(data);
-      console.log("Filtered location results:", uniqueResults);
-      setSuggestions(uniqueResults);
-      setShowSuggestions(true); // Aseguramos que las sugerencias se muestren
+      
+      if (!data || data.length === 0) {
+        console.log("No se encontraron resultados para:", query);
+        setSuggestions([]);
+        setShowSuggestions(false);
+      } else {
+        const uniqueResults = removeDuplicateLocations(data);
+        console.log("Resultados filtrados:", uniqueResults);
+        
+        // Primero actualizamos las sugerencias
+        setSuggestions(uniqueResults);
+        // Luego aseguramos que se muestren
+        setShowSuggestions(true);
+        console.log("ShowSuggestions establecido a true");
+      }
     } catch (error) {
       console.error("Error searching locations:", error);
       setSearchError("Error al buscar localidades. Por favor, inténtelo de nuevo.");
       setSuggestions([]);
     } finally {
       setIsLoading(false);
+      console.log("isLoading establecido a false");
     }
   }, []);
 
   const handleDestinationChange = (value: string) => {
     setDestination(value);
+    console.log("Texto de búsqueda cambiado a:", value);
     
     if (debounceTimerRef.current) {
       window.clearTimeout(debounceTimerRef.current);
@@ -99,6 +113,7 @@ export const useLocationSearch = (
         suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) && 
         inputRef.current && !inputRef.current.contains(event.target as Node)
       ) {
+        console.log("Cerrando sugerencias por clic fuera");
         setShowSuggestions(false);
       }
     };

@@ -27,7 +27,7 @@ export const fetchLocations = async (query: string): Promise<NominatimResult[]> 
     }
     
     const data: NominatimResult[] = await response.json();
-    console.log("Nominatim results for Spain:", data);
+    console.log("Nominatim API raw data:", data); // Log para ver datos crudos de la API
     return data;
   } catch (error) {
     console.error("Error fetching from Nominatim:", error);

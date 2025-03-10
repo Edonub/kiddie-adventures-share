@@ -35,6 +35,7 @@ const DestinationSearch = ({
 
   useEffect(() => {
     if (activeTab === "destination" && destination.length > 1) {
+      console.log("Tab activo y texto suficiente, buscando...");
       searchLocations(destination);
       setShowSuggestions(true);
     } else if (activeTab !== "destination") {
@@ -45,6 +46,7 @@ const DestinationSearch = ({
   const handleFocus = () => {
     setActiveTab("destination");
     if (destination.length > 1) {
+      console.log("Focus en input, buscando...");
       searchLocations(destination);
       setShowSuggestions(true);
     }
