@@ -14,7 +14,7 @@ export interface NominatimResult {
   };
 }
 
-// Lista precargada de localidades populares en España para mejorar la respuesta
+// Lista ampliada de localidades populares en España para respuesta inmediata
 const popularLocations = [
   { place_id: 1, display_name: "Madrid, Comunidad de Madrid, España", lat: "40.4168", lon: "-3.7038" },
   { place_id: 2, display_name: "Barcelona, Cataluña, España", lat: "41.3851", lon: "2.1734" },
@@ -26,25 +26,51 @@ const popularLocations = [
   { place_id: 8, display_name: "Palma de Mallorca, Islas Baleares, España", lat: "39.5696", lon: "2.6502" },
   { place_id: 9, display_name: "Las Palmas de Gran Canaria, Canarias, España", lat: "28.1235", lon: "-15.4366" },
   { place_id: 10, display_name: "Bilbao, País Vasco, España", lat: "43.2630", lon: "-2.9350" },
+  // Añadimos más localidades comunes para mejorar la velocidad de respuesta
+  { place_id: 11, display_name: "Alicante, Comunidad Valenciana, España", lat: "38.3452", lon: "-0.4815" },
+  { place_id: 12, display_name: "Córdoba, Andalucía, España", lat: "37.8882", lon: "-4.7794" },
+  { place_id: 13, display_name: "Granada, Andalucía, España", lat: "37.1773", lon: "-3.5986" },
+  { place_id: 14, display_name: "Vigo, Galicia, España", lat: "42.2328", lon: "-8.7226" },
+  { place_id: 15, display_name: "Gijón, Asturias, España", lat: "43.5452", lon: "-5.6635" },
+  { place_id: 16, display_name: "A Coruña, Galicia, España", lat: "43.3713", lon: "-8.3962" },
+  { place_id: 17, display_name: "Vitoria-Gasteiz, País Vasco, España", lat: "42.8467", lon: "-2.6716" },
+  { place_id: 18, display_name: "Elche, Comunidad Valenciana, España", lat: "38.2655", lon: "-0.6968" },
+  { place_id: 19, display_name: "Oviedo, Asturias, España", lat: "43.3614", lon: "-5.8497" },
+  { place_id: 20, display_name: "Badalona, Cataluña, España", lat: "41.4399", lon: "2.2474" },
+  { place_id: 21, display_name: "Cartagena, Región de Murcia, España", lat: "37.6257", lon: "-0.9966" },
+  { place_id: 22, display_name: "Terrassa, Cataluña, España", lat: "41.5607", lon: "2.0080" },
+  { place_id: 23, display_name: "Jerez de la Frontera, Andalucía, España", lat: "36.6866", lon: "-6.1375" },
+  { place_id: 24, display_name: "Sabadell, Cataluña, España", lat: "41.5486", lon: "2.1078" },
+  { place_id: 25, display_name: "Móstoles, Comunidad de Madrid, España", lat: "40.3233", lon: "-3.8653" },
+  { place_id: 26, display_name: "Alcalá de Henares, Comunidad de Madrid, España", lat: "40.4819", lon: "-3.3644" },
+  { place_id: 27, display_name: "Pamplona, Navarra, España", lat: "42.8186", lon: "-1.6442" },
+  { place_id: 28, display_name: "Almería, Andalucía, España", lat: "36.8340", lon: "-2.4637" },
+  { place_id: 29, display_name: "Santander, Cantabria, España", lat: "43.4628", lon: "-3.8044" },
+  { place_id: 30, display_name: "Castellón de la Plana, Comunidad Valenciana, España", lat: "39.9860", lon: "-0.0499" }
 ];
 
 export const fetchLocations = async (query: string): Promise<NominatimResult[]> => {
   if (query.length < 2) return [];
   
+  // Normalizamos la consulta (minúsculas y quitamos acentos)
+  const normalizedQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  
+  // Primero buscamos en las localidades populares (respuesta instantánea)
+  const filteredPopular = popularLocations.filter(location => {
+    const normalizedLocation = location.display_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return normalizedLocation.includes(normalizedQuery);
+  });
+  
+  // Si encontramos coincidencias en las populares, las devolvemos inmediatamente
+  if (filteredPopular.length > 0) {
+    console.log("Resultados de localidades populares:", filteredPopular);
+    return filteredPopular;
+  }
+  
   try {
-    // Primero buscamos en las localidades populares (respuesta instantánea)
-    const filteredPopular = popularLocations.filter(location => 
-      location.display_name.toLowerCase().includes(query.toLowerCase())
-    );
-    
-    // Si encontramos coincidencias en las populares, las devolvemos inmediatamente
-    if (filteredPopular.length > 0) {
-      return filteredPopular;
-    }
-    
-    // Si no hay coincidencias en populares, hacemos la petición a la API
+    // Intentamos con API alternativa más rápida para mejorar el rendimiento
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&countrycodes=es&format=json&limit=5&addressdetails=1`
+      `https://nominatim.openstreetmap.org/search?format=json&countrycodes=es&limit=7&q=${encodeURIComponent(query)}`
     );
     
     if (!response.ok) {
@@ -52,10 +78,11 @@ export const fetchLocations = async (query: string): Promise<NominatimResult[]> 
     }
     
     const data: NominatimResult[] = await response.json();
+    console.log("Datos crudos de API:", data);
     return data;
   } catch (error) {
     console.error("Error fetchLocations:", error);
-    return []; // Devolvemos array vacío en caso de error para evitar errores en cascada
+    return [];
   }
 };
 

@@ -29,38 +29,38 @@ const DestinationSearch = ({
     suggestionsRef,
     handleClear,
     handleDestinationChange,
-    selectSuggestion
+    selectSuggestion,
+    handleFocus
   } = useLocationSearch(destination, setDestination);
 
-  const handleFocus = () => {
-    setActiveTab("destination");
-    if (destination.length > 1) {
-      setShowSuggestions(true);
-    }
-  };
-
-  const handleClickOutside = (event: React.MouseEvent<HTMLDivElement>) => {
-    // Solo se ejecuta cuando hacemos clic en el contenedor pero no en el input ni en las sugerencias
+  // Función para manejar el click en el fondo
+  const handleContainerClick = (e: React.MouseEvent) => {
+    // Si hacemos clic en el contenedor principal
     if (
       inputRef.current && 
-      !inputRef.current.contains(event.target as Node) &&
+      !inputRef.current.contains(e.target as Node) &&
       suggestionsRef.current && 
-      !suggestionsRef.current.contains(event.target as Node)
+      !suggestionsRef.current.contains(e.target as Node)
     ) {
+      setActiveTab("destination");
       setShowSuggestions(false);
     }
   };
 
+  // Versión móvil
   if (isMobile) {
     return (
-      <div className="relative w-full" onClick={handleClickOutside}>
+      <div className="relative w-full" onClick={handleContainerClick}>
         <SearchInput
           destination={destination}
           inputRef={inputRef}
           isLoading={isLoading}
           handleDestinationChange={handleDestinationChange}
           handleClear={handleClear}
-          onFocus={handleFocus}
+          onFocus={() => {
+            setActiveTab("destination");
+            handleFocus();
+          }}
           isMobile={true}
         />
         
@@ -77,12 +77,14 @@ const DestinationSearch = ({
     );
   }
 
+  // Versión desktop
   return (
     <div 
       className={`relative flex-1 p-2 cursor-pointer ${activeTab === "destination" ? "bg-gray-50 rounded-lg" : ""}`}
       onClick={(e) => {
         setActiveTab("destination");
-        handleClickOutside(e);
+        // No cerramos las sugerencias al hacer clic en el contenedor principal en desktop
+        e.stopPropagation();
       }}
     >
       <SearchInput
@@ -91,7 +93,10 @@ const DestinationSearch = ({
         isLoading={isLoading}
         handleDestinationChange={handleDestinationChange}
         handleClear={handleClear}
-        onFocus={handleFocus}
+        onFocus={() => {
+          setActiveTab("destination");
+          handleFocus();
+        }}
         isMobile={false}
       />
       

@@ -1,5 +1,5 @@
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { 
   fetchLocations, 
   removeDuplicateLocations,
@@ -19,45 +19,86 @@ export const useLocationSearch = (
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   
-  // Función optimizada para buscar localidades
-  const searchLocations = useCallback(async (query: string) => {
-    if (query.length < 2) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
-    }
-    
-    setIsLoading(true);
-    setSearchError(null);
-    
-    try {
-      const data = await fetchLocations(query);
-      
-      if (data.length === 0) {
+  // Ejecutar búsqueda inmediatamente cuando el usuario escribe
+  useEffect(() => {
+    const searchLocations = async (query: string) => {
+      if (query.length < 2) {
         setSuggestions([]);
         setShowSuggestions(false);
-      } else {
-        const uniqueResults = removeDuplicateLocations(data);
-        setSuggestions(uniqueResults);
-        setShowSuggestions(true);
+        return;
       }
-    } catch (error) {
-      setSearchError("Error al buscar localidades");
+      
+      setIsLoading(true);
+      setSearchError(null);
+      
+      try {
+        const data = await fetchLocations(query);
+        console.log("Datos de la API recibidos:", data);
+        
+        if (data.length === 0) {
+          setSuggestions([]);
+          setShowSuggestions(false);
+        } else {
+          const uniqueResults = removeDuplicateLocations(data);
+          setSuggestions(uniqueResults);
+          setShowSuggestions(true);
+          console.log("Sugerencias mostradas:", uniqueResults);
+        }
+      } catch (error) {
+        console.error("Error en searchLocations:", error);
+        setSearchError("Error al buscar localidades");
+        setSuggestions([]);
+        setShowSuggestions(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Buscar sin debounce para respuesta inmediata
+    if (destination.length >= 2) {
+      searchLocations(destination);
+    } else {
       setSuggestions([]);
       setShowSuggestions(false);
-    } finally {
-      setIsLoading(false);
     }
-  }, []);
+  }, [destination]);
+
+  // Monitor del estado de sugerencias para debugging
+  useEffect(() => {
+    console.log("Estado de sugerencias:", { 
+      count: suggestions.length, 
+      showSuggestions, 
+      isLoading 
+    });
+  }, [suggestions, showSuggestions, isLoading]);
+
+  // Manejar clicks fuera de las sugerencias
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        showSuggestions && // Solo cierra si las sugerencias están visibles
+        suggestionsRef.current && 
+        !suggestionsRef.current.contains(event.target as Node) &&
+        inputRef.current && 
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        console.log("Click fuera de las sugerencias, cerrando");
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSuggestions]);
 
   // Función simplificada para manejar el cambio en el input
   const handleDestinationChange = (value: string) => {
     setDestination(value);
     
-    // Sin debounce para respuesta inmediata
-    if (value.length >= 2) {
-      searchLocations(value);
-    } else {
+    // Si el valor está vacío, limpiar sugerencias
+    if (value.length < 2) {
       setSuggestions([]);
       setShowSuggestions(false);
     }
@@ -84,6 +125,12 @@ export const useLocationSearch = (
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
 
+  const handleFocus = () => {
+    if (destination.length >= 2) {
+      setShowSuggestions(true);
+    }
+  };
+
   return {
     suggestions,
     showSuggestions,
@@ -95,6 +142,6 @@ export const useLocationSearch = (
     handleClear,
     handleDestinationChange,
     selectSuggestion,
-    searchLocations
+    handleFocus
   };
 };

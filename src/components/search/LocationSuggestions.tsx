@@ -45,6 +45,7 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
       <div 
         ref={suggestionsRef} 
         className="absolute left-0 right-0 top-full mt-1 bg-white shadow-lg rounded-lg max-h-[300px] overflow-y-auto border border-gray-200 z-[100] divide-y divide-gray-100"
+        onClick={e => e.stopPropagation()} // Evitar que clicks dentro cierren el menú
       >
         {suggestions.map((suggestion) => {
           const { main, secondary } = formatDisplayName(suggestion.display_name);
@@ -52,7 +53,10 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
             <button 
               key={suggestion.place_id}
               className="w-full px-4 py-3 hover:bg-gray-50 flex items-start text-left transition-colors"
-              onClick={() => onSelectSuggestion(suggestion)}
+              onClick={() => {
+                console.log("Sugerencia seleccionada:", suggestion);
+                onSelectSuggestion(suggestion);
+              }}
               type="button"
             >
               <MapPin size={18} className="text-gray-400 mr-3 mt-1 flex-shrink-0" />
