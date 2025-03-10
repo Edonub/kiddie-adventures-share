@@ -1,6 +1,6 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessagesSquare, Home, Map, Hotel, Coffee, Users } from "lucide-react";
+import { Heart, Baby, Palmtree, Home, School, PartyPopper } from "lucide-react";
 
 export type ForumCategory = "general" | "viajes" | "alojamientos" | "offtopic" | "humor";
 
@@ -31,28 +31,28 @@ const ForumCategories = ({ selectedCategory, onCategoryChange }: ForumCategories
           value="viajes" 
           className="flex flex-col items-center justify-center gap-1 py-3 px-0 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
         >
-          <Map size={20} color={selectedCategory === "viajes" ? "white" : iconColor} />
+          <Palmtree size={20} color={selectedCategory === "viajes" ? "white" : iconColor} />
           <span className="text-xs">Viajes</span>
         </TabsTrigger>
         <TabsTrigger 
           value="alojamientos" 
           className="flex flex-col items-center justify-center gap-1 py-3 px-0 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
         >
-          <Hotel size={20} color={selectedCategory === "alojamientos" ? "white" : iconColor} />
+          <Heart size={20} color={selectedCategory === "alojamientos" ? "white" : iconColor} />
           <span className="text-xs">Hospedaje</span>
         </TabsTrigger>
         <TabsTrigger 
           value="offtopic" 
           className="flex flex-col items-center justify-center gap-1 py-3 px-0 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
         >
-          <Coffee size={20} color={selectedCategory === "offtopic" ? "white" : iconColor} />
+          <School size={20} color={selectedCategory === "offtopic" ? "white" : iconColor} />
           <span className="text-xs">Offtopic</span>
         </TabsTrigger>
         <TabsTrigger 
           value="humor" 
           className="flex flex-col items-center justify-center gap-1 py-3 px-0 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
         >
-          <Users size={20} color={selectedCategory === "humor" ? "white" : iconColor} />
+          <PartyPopper size={20} color={selectedCategory === "humor" ? "white" : iconColor} />
           <span className="text-xs">Humor</span>
         </TabsTrigger>
       </TabsList>
