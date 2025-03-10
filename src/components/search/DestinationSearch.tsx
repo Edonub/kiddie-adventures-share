@@ -33,7 +33,6 @@ const DestinationSearch: React.FC<DestinationSearchProps> = ({
     handleFocus
   } = useLocationSearch(destination, setDestination);
 
-  // Versión móvil
   if (isMobile) {
     return (
       <div className="relative w-full">
@@ -63,26 +62,25 @@ const DestinationSearch: React.FC<DestinationSearchProps> = ({
     );
   }
 
-  // Versión desktop
   return (
     <div 
-      className={`relative flex-1 p-2 cursor-pointer ${activeTab === "destination" ? "bg-gray-50 rounded-lg" : ""}`}
-      onClick={() => {
-        setActiveTab("destination");
-      }}
+      className={`relative h-full flex-1 ${activeTab === "destination" ? "bg-gray-50 rounded-lg" : ""}`}
+      onClick={() => setActiveTab("destination")}
     >
-      <SearchInput
-        destination={destination}
-        inputRef={inputRef}
-        isLoading={isLoading}
-        handleDestinationChange={handleDestinationChange}
-        handleClear={handleClear}
-        onFocus={() => {
-          setActiveTab("destination");
-          handleFocus();
-        }}
-        isMobile={false}
-      />
+      <div className="h-full px-4 py-2">
+        <SearchInput
+          destination={destination}
+          inputRef={inputRef}
+          isLoading={isLoading}
+          handleDestinationChange={handleDestinationChange}
+          handleClear={handleClear}
+          onFocus={() => {
+            setActiveTab("destination");
+            handleFocus();
+          }}
+          isMobile={false}
+        />
+      </div>
       
       {(showSuggestions || isLoading) && (
         <LocationSuggestions
