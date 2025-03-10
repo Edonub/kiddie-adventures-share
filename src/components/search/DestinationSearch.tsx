@@ -64,7 +64,7 @@ const DestinationSearch: React.FC<DestinationSearchProps> = ({
 
   return (
     <div 
-      className={`relative h-full flex-1 ${activeTab === "destination" ? "bg-white rounded-lg" : ""}`}
+      className={`relative h-full flex-1 ${activeTab === "destination" ? "bg-white rounded-l-lg" : ""}`}
       onClick={() => setActiveTab("destination")}
     >
       <SearchInput

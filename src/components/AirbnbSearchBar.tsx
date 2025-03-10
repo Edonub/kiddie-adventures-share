@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -69,7 +70,7 @@ const AirbnbSearchBar = () => {
 
   if (isMobile) {
     return (
-      <div className="w-full mt-2"> {/* Reduced top margin */}
+      <div className="w-full mt-2">
         <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center overflow-hidden"> 
           <div className="flex-1 min-w-0"> 
             <DestinationSearch
@@ -84,8 +85,7 @@ const AirbnbSearchBar = () => {
           </div>
         </div>
         
-        {/* Expanded view for dates and guests as secondary actions */}
-        <div className="mt-2 flex gap-2"> {/* Reduced margin-top */}
+        <div className="mt-2 flex gap-2">
           <div className="flex-1 min-w-0"> 
             <DateSelection
               activeTab={activeTab}

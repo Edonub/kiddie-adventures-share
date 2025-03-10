@@ -25,7 +25,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   if (isMobile) {
     return (
       <div className="flex items-center px-4 py-3 relative bg-white rounded-lg shadow-sm">
-        <MapPin size={20} className="text-gray-500 mr-3 flex-shrink-0" />
+        <MapPin size={20} className="text-familyxp-primary mr-3 flex-shrink-0" />
         <Input
           ref={inputRef}
           type="text" 
@@ -46,7 +46,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           </button>
         )}
         {isLoading && (
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-500" />
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-familyxp-primary" />
         )}
       </div>
     );
@@ -55,9 +55,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <div className="p-3 md:p-4 flex-1">
       <div className="flex flex-col bg-transparent">
-        <div className="text-xs font-bold text-gray-700">Localidad</div>
+        <div className="text-xs font-bold text-familyxp-primary">Localidad</div>
         <div className="flex items-center mt-1">
-          <MapPin size={16} className="text-gray-500 mr-2 flex-shrink-0" />
+          <MapPin size={16} className="text-familyxp-primary mr-2 flex-shrink-0" />
           <Input
             ref={inputRef}
             type="text" 
@@ -78,7 +78,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             </button>
           )}
           {isLoading && (
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500" />
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-familyxp-primary" />
           )}
         </div>
       </div>
