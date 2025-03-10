@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
@@ -83,12 +82,15 @@ const FiltersDropdown = ({
           </Button>
         )}
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-4">
-        <div className="space-y-4">
+      <PopoverContent className="w-[320px] p-6 bg-white shadow-xl rounded-xl border-none">
+        <div className="space-y-6">
           {/* Price Range */}
-          <div>
-            <h3 className="text-sm font-medium">Precio máximo</h3>
-            <p className="text-xs text-gray-500">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold text-gray-800">Precio máximo</h3>
+              <span className="text-sm font-medium text-familyxp-primary">{priceRange[0]}€</span>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
               Selecciona el precio máximo que estás dispuesto a pagar.
             </p>
             <Slider
@@ -96,18 +98,19 @@ const FiltersDropdown = ({
               max={1000}
               step={10}
               onValueChange={(value) => setPriceRange(value)}
+              className="mt-2"
             />
-            <div className="text-right text-gray-500 text-xs">
-              Hasta {priceRange[0]}€
-            </div>
           </div>
 
-          <Separator />
+          <Separator className="bg-gray-100" />
 
           {/* Duration Range */}
-          <div>
-            <h3 className="text-sm font-medium">Duración máxima</h3>
-            <p className="text-xs text-gray-500">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold text-gray-800">Duración máxima</h3>
+              <span className="text-sm font-medium text-familyxp-primary">{formatDuration(durationRange[0])}</span>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed">
               Selecciona la duración máxima de la experiencia.
             </p>
             <Slider
@@ -115,24 +118,26 @@ const FiltersDropdown = ({
               max={480}
               step={30}
               onValueChange={(value) => setDurationRange(value)}
+              className="mt-2"
             />
-            <div className="text-right text-gray-500 text-xs">
-              Hasta {formatDuration(durationRange[0])}
-            </div>
           </div>
 
-          <Separator />
+          <Separator className="bg-gray-100" />
 
           {/* Categories */}
-          <div>
-            <h3 className="text-sm font-medium">Categorías</h3>
-            <div className="flex flex-wrap gap-1 mt-2">
+          <div className="space-y-3">
+            <h3 className="text-base font-semibold text-gray-800">Categorías</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
               {categories.map((category) => (
                 <Badge
                   key={category.id}
                   variant={selectedCategories.includes(category.id) ? "default" : "secondary"}
                   onClick={() => toggleCategory(category.id)}
-                  className="cursor-pointer"
+                  className={`cursor-pointer transition-all duration-200 px-3 py-1.5 text-sm ${
+                    selectedCategories.includes(category.id)
+                      ? "bg-familyxp-primary text-white hover:bg-familyxp-primary/90"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
                 >
                   {category.name}
                 </Badge>
@@ -140,17 +145,24 @@ const FiltersDropdown = ({
             </div>
           </div>
 
-          <Separator />
+          <Separator className="bg-gray-100" />
 
           {/* Reset and Apply buttons */}
-          <div className="flex justify-between">
-            <Button variant="ghost" onClick={() => {
-              resetFilters();
-              setIsOpen(false);
-            }}>
+          <div className="flex items-center justify-between pt-2">
+            <Button 
+              variant="ghost" 
+              onClick={() => {
+                resetFilters();
+                setIsOpen(false);
+              }}
+              className="text-gray-600 hover:text-gray-800"
+            >
               Borrar filtros
             </Button>
-            <Button onClick={() => setIsOpen(false)}>
+            <Button 
+              onClick={() => setIsOpen(false)}
+              className="bg-familyxp-primary hover:bg-familyxp-primary/90"
+            >
               Aplicar filtros
             </Button>
           </div>
