@@ -11,11 +11,8 @@ interface ForumCategoriesProps {
 }
 
 const ForumCategories = ({ selectedCategory, onCategoryChange }: ForumCategoriesProps) => {
-  // Use the main blue color from the design system
-  const iconColor = "#0077b6"; // familyxp-primary color
+  const iconColor = "#0077b6";
   const isMobile = useIsMobile();
-  
-  // Determine icon size based on screen size
   const iconSize = isMobile ? 20 : 24;
 
   return (
@@ -24,41 +21,41 @@ const ForumCategories = ({ selectedCategory, onCategoryChange }: ForumCategories
       className="w-full"
       onValueChange={(value) => onCategoryChange(value as ForumCategory)}
     >
-      <TabsList className="grid grid-cols-5 w-full h-auto border-0 bg-transparent gap-1 p-0">
+      <TabsList className="grid w-full grid-cols-5 gap-1 h-auto border-0 bg-transparent p-0">
         <TabsTrigger 
           value="general" 
-          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
+          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 w-full"
         >
           <Home size={iconSize} color={selectedCategory === "general" ? "white" : iconColor} />
-          <span className="text-xs truncate w-full text-center">General</span>
+          <span className="text-xs w-full text-center truncate">General</span>
         </TabsTrigger>
         <TabsTrigger 
           value="viajes" 
-          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
+          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 w-full"
         >
           <Palmtree size={iconSize} color={selectedCategory === "viajes" ? "white" : iconColor} />
-          <span className="text-xs truncate w-full text-center">Viajes</span>
+          <span className="text-xs w-full text-center truncate">Viajes</span>
         </TabsTrigger>
         <TabsTrigger 
           value="alojamientos" 
-          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
+          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 w-full"
         >
           <Heart size={iconSize} color={selectedCategory === "alojamientos" ? "white" : iconColor} />
-          <span className="text-xs truncate w-full text-center">Hospedaje</span>
+          <span className="text-xs w-full text-center truncate">Hospedaje</span>
         </TabsTrigger>
         <TabsTrigger 
           value="offtopic" 
-          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
+          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 w-full"
         >
           <School size={iconSize} color={selectedCategory === "offtopic" ? "white" : iconColor} />
-          <span className="text-xs truncate w-full text-center">Offtopic</span>
+          <span className="text-xs w-full text-center truncate">Offtopic</span>
         </TabsTrigger>
         <TabsTrigger 
           value="humor" 
-          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 flex-1"
+          className="flex flex-col items-center justify-center gap-1 py-3 px-1 rounded bg-white border border-gray-200 data-[state=active]:bg-familyxp-primary data-[state=active]:text-white hover:bg-gray-50 w-full"
         >
           <PartyPopper size={iconSize} color={selectedCategory === "humor" ? "white" : iconColor} />
-          <span className="text-xs truncate w-full text-center">Humor</span>
+          <span className="text-xs w-full text-center truncate">Humor</span>
         </TabsTrigger>
       </TabsList>
     </Tabs>
