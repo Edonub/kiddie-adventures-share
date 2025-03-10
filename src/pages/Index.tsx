@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -45,19 +46,19 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
-      <main className="flex-1 pt-2 w-full overflow-x-hidden">
-        <div className="px-2 mt-3">
+      <main className="flex-1 pt-0 w-full overflow-x-hidden">
+        <div className="px-2 mt-4">
           <div className="max-w-screen-xl mx-auto">
-            <div className="py-2 px-2 bg-white rounded-xl shadow-sm mb-1.5">
+            <div className="py-3 px-2 bg-white rounded-xl shadow-sm mb-3">
               <AirbnbSearchBar />
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-1.5">
-              <div className="w-full overflow-x-auto scrollbar-none mb-1.5">
+            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-2">
+              <div className="w-full overflow-x-auto scrollbar-none mb-2">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-1 justify-between">
+              <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-2 justify-between">
                 <FiltersSection 
                   categories={categories}
                   selectedCategories={selectedCategories}
