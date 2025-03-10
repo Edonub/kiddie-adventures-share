@@ -1,5 +1,7 @@
 
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { SlidersHorizontal } from "lucide-react";
 import BookingTypeSelector from "./BookingTypeSelector";
 import FiltersDropdown from "./FiltersDropdown";
 import { Category } from "@/data/categories";
@@ -36,6 +38,8 @@ const FiltersSection = ({
   childrenDetails = [],
   setChildrenDetails = () => {}
 }: FiltersSectionProps) => {
+  const isMobile = useIsMobile();
+  
   const resetFilters = () => {
     setPriceRange([200]);
     setBookingType("all");
@@ -63,6 +67,7 @@ const FiltersSection = ({
         setAdults={setAdults}
         childrenDetails={childrenDetails}
         setChildrenDetails={setChildrenDetails}
+        isMobile={isMobile}
       />
     </div>
   );

@@ -64,19 +64,19 @@ const Index = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       
-      <main className="flex-1 pt-14 w-full overflow-x-hidden"> {/* Added overflow-x-hidden to prevent horizontal scroll */}
-        <div className="pb-8 px-4">
+      <main className="flex-1 pt-14 w-full overflow-x-hidden"> {/* Keep overflow-x-hidden to prevent horizontal scroll */}
+        <div className="pb-6 px-4">
           <div className="max-w-screen-xl mx-auto">
-            <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '4' : '8'}`}>
+            <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '3' : '6'}`}>
               <AirbnbSearchBar />
             </div>
             
-            <div className="flex flex-wrap items-center justify-between mb-6">
-              <div className="w-full overflow-x-auto scrollbar-none pb-2"> {/* Added width control and hidden scrollbar */}
+            <div className="flex flex-wrap items-center justify-between mb-4">
+              <div className="w-full overflow-x-auto scrollbar-none"> {/* Keep scrollbar-none for smooth scrolling */}
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full mt-2"> {/* Added width control */}
+              <div className="w-full flex justify-between items-center mt-1"> {/* Added justify-between for better spacing */}
                 <FiltersSection 
                   categories={categories}
                   selectedCategories={selectedCategories}
@@ -90,10 +90,17 @@ const Index = () => {
                   childrenDetails={childrenDetails}
                   setChildrenDetails={setChildrenDetails}
                 />
+                {isMobile && (
+                  <div className="ml-2">
+                    <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                  </div>
+                )}
               </div>
+              
+              {!isMobile && (
+                <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+              )}
             </div>
-            
-            <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
             
             {viewMode === 'list' ? (
               <PropertyListing 

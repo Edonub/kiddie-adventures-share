@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { FilterX, Plus, Minus } from "lucide-react";
+import { FilterX, Plus, Minus, SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Popover,
@@ -17,18 +18,18 @@ interface Child {
   age: number;
 }
 
-interface FiltersSectionProps {
+interface FiltersDropdownProps {
   categories: Category[];
   selectedCategories: string[];
   toggleCategory: (categoryId: string) => void;
-  bookingType: "all" | "free" | "paid";
-  setBookingType: (type: "all" | "free" | "paid") => void;
   priceRange: number[];
   setPriceRange: (range: number[]) => void;
+  resetFilters: () => void;
   adults?: number;
   setAdults?: (adults: number) => void;
   childrenDetails?: Child[];
   setChildrenDetails?: (children: Child[]) => void;
+  isMobile?: boolean;
 }
 
 const FiltersDropdown = ({
@@ -41,19 +42,9 @@ const FiltersDropdown = ({
   adults = 1,
   setAdults = () => {},
   childrenDetails = [],
-  setChildrenDetails = () => {}
-}: {
-  categories: Category[];
-  selectedCategories: string[];
-  toggleCategory: (categoryId: string) => void;
-  priceRange: number[];
-  setPriceRange: (range: number[]) => void;
-  resetFilters: () => void;
-  adults?: number;
-  setAdults?: (adults: number) => void;
-  childrenDetails?: Child[];
-  setChildrenDetails?: (children: Child[]) => void;
-}) => {
+  setChildrenDetails = () => {},
+  isMobile = false
+}: FiltersDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [adultsCount, setAdultsCount] = useState(adults);
   const [childAge, setChildAge] = useState<number>(2);
@@ -82,10 +73,16 @@ const FiltersDropdown = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline">
-          <FilterX className="mr-2 h-4 w-4" />
-          Filtros
-        </Button>
+        {isMobile ? (
+          <Button variant="outline" className="h-10 w-10 rounded-full p-0 flex items-center justify-center">
+            <SlidersHorizontal size={16} />
+          </Button>
+        ) : (
+          <Button variant="outline">
+            <FilterX className="mr-2 h-4 w-4" />
+            Filtros
+          </Button>
+        )}
       </PopoverTrigger>
       <PopoverContent className="w-80 p-4">
         <div className="space-y-4">
