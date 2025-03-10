@@ -79,6 +79,7 @@ export const useLocationSearch = (
     const simplified = `${displayParts[0].trim()}, España`;
     
     setDestination(simplified);
+    setSuggestions([]);
     setShowSuggestions(false);
     storeSelectedLocation(suggestion, simplified);
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
