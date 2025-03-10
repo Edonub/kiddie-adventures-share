@@ -68,6 +68,14 @@ const GuestSelector = ({
     return groups.join(', ');
   };
 
+  // Handle the input change to prevent leading zeros
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Parse to number and back to string to remove leading zeros
+    const ageValue = parseInt(value) || 0;
+    setChildAge(ageValue);
+  };
+
   if (isMobile) {
     return (
       <Popover>
@@ -159,7 +167,7 @@ const GuestSelector = ({
                     min="0"
                     max="12"
                     value={childAge}
-                    onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}
+                    onChange={handleAgeChange}
                     className="w-full"
                     placeholder="Edad del niño"
                   />
@@ -288,7 +296,7 @@ const GuestSelector = ({
                   min="0"
                   max="12"
                   value={childAge}
-                  onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}
+                  onChange={handleAgeChange}
                   className="w-full"
                   placeholder="Edad del niño"
                 />
