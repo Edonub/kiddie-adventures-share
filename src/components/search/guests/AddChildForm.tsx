@@ -11,12 +11,13 @@ interface AddChildFormProps {
 const AddChildForm = ({ addChild }: AddChildFormProps) => {
   const [childAge, setChildAge] = useState<number>(2);
 
-  // Handle the input change to prevent leading zeros
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Parse to number and back to string to remove leading zeros
-    const ageValue = parseInt(value) || 0;
-    setChildAge(ageValue);
+    let value = e.target.value;
+    // Remove leading zeros
+    value = value.replace(/^0+/, '');
+    // Convert to number, default to empty string if NaN
+    const numberValue = value === '' ? 0 : parseInt(value);
+    setChildAge(numberValue);
   };
 
   const handleAddChild = (e: React.MouseEvent) => {
@@ -32,7 +33,7 @@ const AddChildForm = ({ addChild }: AddChildFormProps) => {
           type="number"
           min="0"
           max="12"
-          value={childAge}
+          value={childAge || ''}
           onChange={handleAgeChange}
           className="w-full"
           placeholder="Edad del niño"
