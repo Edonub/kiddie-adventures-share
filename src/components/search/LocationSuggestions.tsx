@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MapPin } from 'lucide-react';
 import { NominatimResult, formatDisplayName } from '@/utils/locationSearch';
 
@@ -18,6 +18,15 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
   onSelectSuggestion,
   suggestionsRef
 }) => {
+  // Log para depuración
+  useEffect(() => {
+    console.log("LocationSuggestions rendered with:", { 
+      suggestionsCount: suggestions.length,
+      hasError: !!searchError,
+      isLoading
+    });
+  }, [suggestions, searchError, isLoading]);
+
   if (searchError) {
     return (
       <div 

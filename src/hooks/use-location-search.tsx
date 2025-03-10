@@ -20,6 +20,11 @@ export const useLocationSearch = (
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<number | null>(null);
 
+  // Debugging useEffect para verificar cambios en suggestions
+  useEffect(() => {
+    console.log("Sugerencias actualizadas:", suggestions);
+  }, [suggestions]);
+
   const searchLocations = useCallback(async (query: string) => {
     if (query.length < 2) {
       setSuggestions([]);
@@ -32,10 +37,11 @@ export const useLocationSearch = (
     
     try {
       const data = await fetchLocations(query);
+      console.log("Datos recibidos de la API:", data); // Verificar datos de API
       const uniqueResults = removeDuplicateLocations(data);
       console.log("Filtered location results:", uniqueResults);
       setSuggestions(uniqueResults);
-      setShowSuggestions(true); // Asegura que se muestren las sugerencias
+      setShowSuggestions(true); // Aseguramos que las sugerencias se muestren
     } catch (error) {
       console.error("Error searching locations:", error);
       setSearchError("Error al buscar localidades. Por favor, inténtelo de nuevo.");
@@ -56,7 +62,7 @@ export const useLocationSearch = (
       setIsLoading(true);
       debounceTimerRef.current = window.setTimeout(() => {
         searchLocations(value);
-      }, 300);
+      }, 150); // Reducido a 150ms para mayor rapidez
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
@@ -85,11 +91,14 @@ export const useLocationSearch = (
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
 
-  // Close suggestions when clicking outside
+  // Close suggestions when clicking outside - mejorado
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) && 
-          inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      if (
+        showSuggestions && // Solo cierra si realmente están visibles
+        suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) && 
+        inputRef.current && !inputRef.current.contains(event.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     };
@@ -98,7 +107,7 @@ export const useLocationSearch = (
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [showSuggestions]);
 
   return {
     suggestions,

@@ -50,6 +50,14 @@ const DestinationSearch = ({
     }
   };
 
+  // Mostrar indicadores de depuración
+  console.log("Renderizando DestinationSearch:", { 
+    showSuggestions, 
+    isLoading, 
+    suggestionsCount: suggestions.length,
+    activeTab
+  });
+
   if (isMobile) {
     return (
       <div className="relative w-full">
