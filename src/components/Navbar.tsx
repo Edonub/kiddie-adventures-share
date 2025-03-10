@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, Plus, Bookmark } from "lucide-react";
@@ -34,16 +35,13 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <FamilyLogo />
-              <span className="ml-2 text-xl font-bold text-familyxp-primary hidden sm:inline">
-                Family<span className="text-familyxp-secondary">XP</span>
-              </span>
             </Link>
           </div>
 
           {/* Desktop navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/" className="text-gray-700 hover:text-familyxp-primary font-medium">
-              Inicio
+              Experiencias
             </Link>
             <Link
               to="/blog"
@@ -56,12 +54,6 @@ const Navbar = () => {
               className="text-gray-700 hover:text-familyxp-primary font-medium"
             >
               Foro
-            </Link>
-            <Link
-              to="/como-funciona"
-              className="text-gray-700 hover:text-familyxp-primary font-medium"
-            >
-              Cómo funciona
             </Link>
             {user ? (
               <DropdownMenu>
@@ -148,7 +140,7 @@ const Navbar = () => {
                 className="text-gray-700 hover:text-familyxp-primary font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Inicio
+                Experiencias
               </Link>
               <Link
                 to="/blog"
@@ -163,13 +155,6 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Foro
-              </Link>
-              <Link
-                to="/como-funciona"
-                className="text-gray-700 hover:text-familyxp-primary font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Cómo funciona
               </Link>
               {user ? (
                 <>

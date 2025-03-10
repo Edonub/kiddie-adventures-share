@@ -17,7 +17,6 @@ import TerminosPage from "./pages/TerminosPage";
 import PrivacidadPage from "./pages/PrivacidadPage";
 import ContactoPage from "./pages/ContactoPage";
 import CentroAyudaPage from "./pages/CentroAyudaPage";
-import ComoFuncionaPage from "./pages/ComoFuncionaPage";
 import GruposPage from "./pages/GruposPage";
 import ForoCochesPage from "./pages/ForoCochesPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -50,7 +49,6 @@ function App() {
               <Route path="/privacidad" element={<PrivacidadPage />} />
               <Route path="/contacto" element={<ContactoPage />} />
               <Route path="/centro-ayuda" element={<CentroAyudaPage />} />
-              <Route path="/como-funciona" element={<ComoFuncionaPage />} />
               <Route path="/grupos" element={<GruposPage />} />
               <Route path="/forocoches" element={<ForoCochesPage />} />
               

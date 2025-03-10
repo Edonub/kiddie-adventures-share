@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, X } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -61,7 +62,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             ref={inputRef}
             type="text" 
             placeholder="¿A qué localidad de España viajas?" 
-            className="flex-1 bg-transparent border-0 shadow-none text-sm font-normal text-gray-900 placeholder:text-gray-500 focus-visible:ring-0 p-0 h-auto"
+            className="flex-1 bg-transparent border-0 shadow-none text-sm font-normal text-black placeholder:text-gray-500 focus-visible:ring-0 p-0 h-auto"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
             onFocus={onFocus}
