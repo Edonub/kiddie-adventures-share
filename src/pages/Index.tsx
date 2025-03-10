@@ -50,17 +50,17 @@ const Index = () => {
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       
-      <main className="flex-1 pt-2 w-full overflow-x-hidden">
+      <main className="flex-1 pt-4 w-full overflow-x-hidden">
         <div className="px-2">
           <div className="max-w-screen-xl mx-auto">
             {/* Search Bar */}
-            <div className="py-2 px-2 bg-white rounded-xl shadow-sm mb-1">
+            <div className="py-2 px-2 bg-white rounded-xl shadow-sm mb-1.5">
               <AirbnbSearchBar />
             </div>
             
             {/* Categories and Filters */}
-            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-1">
-              <div className="w-full overflow-x-auto scrollbar-none mb-1">
+            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-1.5">
+              <div className="w-full overflow-x-auto scrollbar-none mb-1.5">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
