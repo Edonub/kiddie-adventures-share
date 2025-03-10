@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -52,12 +53,7 @@ const Navbar = () => {
                   >
                     Blog
                   </Link>
-                  <Link 
-                    to="/crear-actividad" 
-                    className="text-lg font-medium py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    Crear Experiencia
-                  </Link>
+                  {/* Removed standalone "Crear Experiencia" link from mobile menu */}
                   {!user && (
                     <>
                       <Link 
@@ -122,7 +118,8 @@ const Navbar = () => {
                   <DropdownMenuItem asChild>
                     <Link to="/mis-actividades">Mis Experiencias</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="md:hidden" asChild>
+                  {/* Added "Crear Experiencia" as a prominent option in the user dropdown */}
+                  <DropdownMenuItem asChild className="font-medium text-familea-primary">
                     <Link to="/crear-actividad">Crear Experiencia</Link>
                   </DropdownMenuItem>
                   {isAdmin && (
@@ -161,9 +158,6 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/crear-actividad">Crear Experiencia</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
                     <Link to="/centro-ayuda">Centro de ayuda</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -188,11 +182,7 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center gap-2 md:gap-3">
-            <Link to="/crear-actividad" className="hidden md:block">
-              <Button variant="ghost" className="hidden md:flex items-center gap-1 rounded-full">
-                <span>Crear Experiencia</span>
-              </Button>
-            </Link>
+            {/* Removed standalone "Crear Experiencia" button from desktop view */}
             
             <Button variant="ghost" size="icon" className="hidden md:flex rounded-full">
               <Globe size={20} />
@@ -221,7 +211,8 @@ const Navbar = () => {
                   <DropdownMenuItem asChild>
                     <Link to="/mis-actividades">Mis Experiencias</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="md:hidden" asChild>
+                  {/* Added "Crear Experiencia" as a prominent option in the user dropdown */}
+                  <DropdownMenuItem asChild className="font-medium text-familea-primary">
                     <Link to="/crear-actividad">Crear Experiencia</Link>
                   </DropdownMenuItem>
                   {isAdmin && (
@@ -260,9 +251,6 @@ const Navbar = () => {
                     <Link to="/auth?signup=true">Registrarse</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/crear-actividad">Crear Experiencia</Link>
-                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/centro-ayuda">Centro de ayuda</Link>
                   </DropdownMenuItem>
