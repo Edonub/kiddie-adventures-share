@@ -8,17 +8,13 @@ interface PropertyListingProps {
   priceRange: number[];
   selectedCategories: string[];
   durationRange: number[];
-  adults?: number;
-  childrenDetails?: { id: number; age: number }[];
 }
 
 const PropertyListing = ({ 
   bookingType, 
   priceRange,
   selectedCategories,
-  durationRange,
-  adults = 1,
-  childrenDetails = []
+  durationRange
 }: PropertyListingProps) => {
   
   // Filter properties
@@ -36,14 +32,17 @@ const PropertyListing = ({
         return false;
       }
       
-      // Filter by duration (assuming properties have duration in minutes)
-      const propertyDuration = property.duration || 120; // Default to 2h if not specified
+      // Duration filtering - assume default duration if not specified
+      // Note: This is a temporary fix - the Property type should be updated 
+      // to include duration as a proper field
+      const propertyDuration = 
+        'duration' in property ? (property as any).duration : 120; // Default to 2h if not specified
       if (propertyDuration > durationRange[0]) return false;
       
       return true;
     });
   
-  const formatDuration = (minutes: number) => {
+  const formatDuration = (minutes: number | undefined) => {
     if (!minutes) return "Duración no especificada";
     if (minutes < 60) {
       return `${minutes} minutos`;
@@ -69,7 +68,7 @@ const PropertyListing = ({
                 {property.price === 0 ? "Gratis" : `${property.price}€`}
               </span>
               <span className="text-sm text-gray-600">
-                {formatDuration(property.duration || 0)}
+                {formatDuration('duration' in property ? (property as any).duration : undefined)}
               </span>
               {property.is_available ? (
                 <span className="text-green-500 text-sm">Disponible</span>

@@ -43,10 +43,6 @@ const Index = () => {
         return false;
       }
       
-      // Filter by duration (assuming properties have duration in minutes)
-      const propertyDuration = property.duration || 120; // Default to 2h if not specified
-      if (propertyDuration > durationRange[0]) return false;
-      
       return true;
     });
 
@@ -66,7 +62,7 @@ const Index = () => {
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex justify-between items-center mt-1">
+              <div className="w-full flex justify-between items-center mt-2">
                 <FiltersSection 
                   categories={categories}
                   selectedCategories={selectedCategories}
@@ -78,16 +74,17 @@ const Index = () => {
                   durationRange={durationRange}
                   setDurationRange={setDurationRange}
                 />
-                {isMobile && (
-                  <div className="ml-2">
+                
+                {isMobile ? (
+                  <div className="ml-3">
+                    <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                  </div>
+                ) : (
+                  <div className="ml-6">
                     <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                   </div>
                 )}
               </div>
-              
-              {!isMobile && (
-                <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
-              )}
             </div>
             
             {viewMode === 'list' ? (
