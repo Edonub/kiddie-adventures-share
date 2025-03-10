@@ -2,8 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { 
   fetchLocations, 
-  removeDuplicateLocations, 
-  getMockDestinations, 
+  removeDuplicateLocations,
   storeSelectedLocation,
   NominatimResult 
 } from "@/utils/locationSearch";
@@ -21,7 +20,6 @@ export const useLocationSearch = (
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<number | null>(null);
 
-  // Handle click outside suggestions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -40,7 +38,6 @@ export const useLocationSearch = (
     };
   }, []);
 
-  // Clear destination input handler
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
     setDestination("");
@@ -51,31 +48,6 @@ export const useLocationSearch = (
     }
   };
 
-  // Debounced search function with immediate feedback
-  const handleDestinationChange = (value: string) => {
-    setDestination(value);
-    
-    // Clear previous timer
-    if (debounceTimerRef.current) {
-      window.clearTimeout(debounceTimerRef.current);
-    }
-    
-    if (value.length >= 2) {
-      setIsLoading(true);
-      setShowSuggestions(true);
-      
-      // Set new timer
-      debounceTimerRef.current = window.setTimeout(() => {
-        searchLocations(value);
-      }, 300); // 300ms debounce
-    } else {
-      setShowSuggestions(false);
-      setSuggestions([]);
-      setIsLoading(false);
-    }
-  };
-
-  // Search for locations
   const searchLocations = useCallback(async (query: string) => {
     if (query.length < 2) {
       setShowSuggestions(false);
@@ -99,43 +71,46 @@ export const useLocationSearch = (
         setSuggestions([]);
         if (query.length > 2) {
           setSearchError("No se encontraron localidades en España");
-          setShowSuggestions(true); // Keep showing the panel with an error message
+          setShowSuggestions(true);
         }
       }
     } catch (error) {
-      console.error("Error fetching from Nominatim:", error);
-      setSearchError("Error al buscar localidades españolas. Intente nuevamente.");
-      const mockData = getMockDestinations(query);
-      if (mockData.length > 0) {
-        // Convertir los datos mock al formato NominatimResult
-        const mockResults = mockData.map((item, index) => ({
-          place_id: index,
-          display_name: `${item.name}, ${item.country}`,
-          lat: "0",
-          lon: "0"
-        }));
-        
-        setSuggestions(mockResults);
-        setShowSuggestions(true);
-      }
+      console.error("Error searching locations:", error);
+      setSearchError("Error al buscar localidades. Por favor, inténtelo de nuevo.");
+      setSuggestions([]);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  // Select a suggestion
-  const selectSuggestion = (suggestion: NominatimResult) => {
-    console.log("Selected suggestion:", suggestion);
-    const displayParts = suggestion.display_name.split(',');
-    const simplified = displayParts.length > 1 
-      ? `${displayParts[0].trim()}, España`
-      : `${suggestion.display_name}, España`;
+  const handleDestinationChange = (value: string) => {
+    setDestination(value);
+    
+    if (debounceTimerRef.current) {
+      window.clearTimeout(debounceTimerRef.current);
+    }
+    
+    if (value.length >= 2) {
+      setIsLoading(true);
+      setShowSuggestions(true);
       
+      debounceTimerRef.current = window.setTimeout(() => {
+        searchLocations(value);
+      }, 300);
+    } else {
+      setShowSuggestions(false);
+      setSuggestions([]);
+      setIsLoading(false);
+    }
+  };
+
+  const selectSuggestion = (suggestion: NominatimResult) => {
+    const displayParts = suggestion.display_name.split(',');
+    const simplified = `${displayParts[0].trim()}, España`;
+    
     setDestination(simplified);
     setShowSuggestions(false);
     storeSelectedLocation(suggestion, simplified);
-    
-    // Notify the user about successful selection
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
 

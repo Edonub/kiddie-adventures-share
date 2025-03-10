@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { MapPin, X } from 'lucide-react';
+import { Input } from "@/components/ui/input";
 
 interface SearchInputProps {
   destination: string;
@@ -26,11 +27,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
       {isMobile ? (
         <div className="flex items-center px-3 py-2 relative bg-white rounded-md">
           <MapPin size={18} className="text-gray-500 mr-2 flex-shrink-0" />
-          <input 
+          <Input
             ref={inputRef}
             type="text" 
             placeholder="¿A qué localidad de España viajas?" 
-            className="w-full bg-white border-none outline-none text-base text-black placeholder:text-gray-400"
+            className="w-full bg-white border-none shadow-none text-base text-black placeholder:text-gray-400"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
             onFocus={onFocus}
@@ -53,11 +54,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
           <div className="text-xs font-bold">Localidad</div>
           <div className="flex items-center">
             <MapPin size={16} className="text-gray-500 mr-2 flex-shrink-0" />
-            <input 
+            <Input
               ref={inputRef}
               type="text" 
               placeholder="¿A qué localidad de España viajas?" 
-              className="w-full bg-white border-none outline-none text-sm text-black font-medium placeholder:text-gray-400"
+              className="w-full bg-white border-none shadow-none text-sm text-black font-medium placeholder:text-gray-400"
               value={destination}
               onChange={(e) => handleDestinationChange(e.target.value)}
               onFocus={onFocus}

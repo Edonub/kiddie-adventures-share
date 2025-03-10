@@ -22,7 +22,7 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
     return (
       <div 
         ref={suggestionsRef} 
-        className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-50"
+        className="absolute left-0 right-0 px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-[100]"
       >
         {searchError}
       </div>
@@ -33,13 +33,13 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
     return (
       <div 
         ref={suggestionsRef} 
-        className="bg-white shadow-lg rounded-b-md max-h-[300px] overflow-y-auto border border-gray-200 z-50"
+        className="absolute left-0 right-0 bg-white shadow-lg rounded-b-md max-h-[300px] overflow-y-auto border border-gray-200 z-[100]"
       >
-        {suggestions.map((suggestion, index) => {
+        {suggestions.map((suggestion) => {
           const { main, secondary } = formatDisplayName(suggestion.display_name);
           return (
             <div 
-              key={suggestion.place_id || index}
+              key={suggestion.place_id}
               className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center border-b border-gray-100 last:border-0"
               onClick={() => onSelectSuggestion(suggestion)}
             >
@@ -59,7 +59,7 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
     return (
       <div 
         ref={suggestionsRef} 
-        className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-50"
+        className="absolute left-0 right-0 px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-[100]"
       >
         Buscando localidades en España...
       </div>
@@ -69,7 +69,7 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
   return (
     <div 
       ref={suggestionsRef} 
-      className="px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-50"
+      className="absolute left-0 right-0 px-4 py-3 text-gray-500 text-sm bg-white shadow-lg rounded-b-md border border-gray-200 z-[100]"
     >
       Empieza a escribir para buscar localidades en España
     </div>
