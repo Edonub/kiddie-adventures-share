@@ -53,34 +53,32 @@ const SearchInput: React.FC<SearchInputProps> = ({
   }
 
   return (
-    <div className="p-3 md:p-4 h-full flex items-center">
-      <div className="flex flex-col h-full justify-center">
-        <div className="text-xs font-bold text-gray-500 mb-1">Localidad</div>
-        <div className="flex items-center">
-          <MapPin size={16} className="text-familyxp-primary mr-2 flex-shrink-0" />
-          <Input
-            ref={inputRef}
-            type="text" 
-            placeholder="¿A qué localidad de España viajas?" 
-            className="flex-1 bg-transparent border-0 shadow-none text-sm font-normal text-black placeholder:text-gray-500 focus-visible:ring-0 p-0 h-auto"
-            value={destination}
-            onChange={(e) => handleDestinationChange(e.target.value)}
-            onFocus={onFocus}
-            autoComplete="off"
-          />
-          {destination && !isLoading && (
-            <button 
-              onClick={handleClear} 
-              className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
-              type="button"
-            >
-              <X size={16} className="text-gray-500" />
-            </button>
-          )}
-          {isLoading && (
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-familyxp-primary" />
-          )}
-        </div>
+    <div className="px-2">
+      <div className="text-xs font-bold text-gray-500">Localidad</div>
+      <div className="flex items-center">
+        <MapPin size={16} className="text-familyxp-primary mr-2 flex-shrink-0" />
+        <Input
+          ref={inputRef}
+          type="text" 
+          placeholder="¿A qué localidad de España viajas?" 
+          className="flex-1 bg-transparent border-0 shadow-none text-sm font-normal text-black placeholder:text-gray-500 focus-visible:ring-0 p-0 h-auto"
+          value={destination}
+          onChange={(e) => handleDestinationChange(e.target.value)}
+          onFocus={onFocus}
+          autoComplete="off"
+        />
+        {destination && !isLoading && (
+          <button 
+            onClick={handleClear} 
+            className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+            type="button"
+          >
+            <X size={16} className="text-gray-500" />
+          </button>
+        )}
+        {isLoading && (
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-familyxp-primary" />
+        )}
       </div>
     </div>
   );

@@ -64,7 +64,7 @@ const DestinationSearch: React.FC<DestinationSearchProps> = ({
 
   return (
     <div 
-      className="relative h-full flex-1"
+      className={`relative h-full flex-1 cursor-pointer ${activeTab === "destination" ? "bg-gray-50" : ""}`}
       onClick={() => setActiveTab("destination")}
     >
       <SearchInput
