@@ -7,6 +7,7 @@ import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "../ui/button";
 
 interface DateSelectionProps {
   activeTab: string;
