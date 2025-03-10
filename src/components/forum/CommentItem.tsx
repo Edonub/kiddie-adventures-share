@@ -1,5 +1,5 @@
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Reply, ThumbsUp, Flag } from "lucide-react";
@@ -59,7 +59,7 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
         <div className="flex items-center gap-3">
           <Avatar className="border-2 border-familyxp-primary">
             {comment.profiles?.avatar_url ? (
-              <img src={comment.profiles.avatar_url} alt="Avatar" />
+              <AvatarImage src={comment.profiles.avatar_url} alt="Avatar" />
             ) : (
               <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(comment)}</AvatarFallback>
             )}
@@ -112,7 +112,7 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
               <div className="flex items-center gap-2 mb-2">
                 <Avatar className="h-8 w-8 border-2 border-familyxp-primary">
                   {reply.profiles?.avatar_url ? (
-                    <img src={reply.profiles.avatar_url} alt="Avatar" />
+                    <AvatarImage src={reply.profiles.avatar_url} alt="Avatar" />
                   ) : (
                     <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(reply)}</AvatarFallback>
                   )}
