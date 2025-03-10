@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { 
   fetchLocations, 
   removeDuplicateLocations,
@@ -20,38 +20,10 @@ export const useLocationSearch = (
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        inputRef.current && 
-        !inputRef.current.contains(event.target as Node) && 
-        suggestionsRef.current && 
-        !suggestionsRef.current.contains(event.target as Node)
-      ) {
-        setShowSuggestions(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDestination("");
-    setSuggestions([]);
-    setShowSuggestions(false);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
-
   const searchLocations = useCallback(async (query: string) => {
     if (query.length < 2) {
+      setSuggestions([]);
       setShowSuggestions(false);
-      setIsLoading(false);
       return;
     }
     
@@ -59,21 +31,10 @@ export const useLocationSearch = (
     setIsLoading(true);
     
     try {
-      console.log("Searching for:", query);
       const data = await fetchLocations(query);
-      console.log("Search results:", data);
-      
-      if (data && data.length > 0) {
-        const uniqueResults = removeDuplicateLocations(data);
-        setSuggestions(uniqueResults);
-        setShowSuggestions(true);
-      } else {
-        setSuggestions([]);
-        if (query.length > 2) {
-          setSearchError("No se encontraron localidades en España");
-          setShowSuggestions(true);
-        }
-      }
+      const uniqueResults = removeDuplicateLocations(data);
+      setSuggestions(uniqueResults);
+      setShowSuggestions(true);
     } catch (error) {
       console.error("Error searching locations:", error);
       setSearchError("Error al buscar localidades. Por favor, inténtelo de nuevo.");
@@ -92,15 +53,22 @@ export const useLocationSearch = (
     
     if (value.length >= 2) {
       setIsLoading(true);
-      setShowSuggestions(true);
-      
       debounceTimerRef.current = window.setTimeout(() => {
         searchLocations(value);
       }, 300);
     } else {
-      setShowSuggestions(false);
       setSuggestions([]);
-      setIsLoading(false);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDestination("");
+    setSuggestions([]);
+    setShowSuggestions(false);
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   };
 
