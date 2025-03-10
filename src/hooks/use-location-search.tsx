@@ -7,6 +7,7 @@ import {
   storeSelectedLocation,
   NominatimResult 
 } from "@/utils/locationSearch";
+import { toast } from "sonner";
 
 export const useLocationSearch = (
   destination: string, 
@@ -60,8 +61,8 @@ export const useLocationSearch = (
     }
     
     if (value.length >= 2) {
-      setShowSuggestions(true);
       setIsLoading(true);
+      setShowSuggestions(true);
       
       // Set new timer
       debounceTimerRef.current = window.setTimeout(() => {
@@ -70,6 +71,7 @@ export const useLocationSearch = (
     } else {
       setShowSuggestions(false);
       setSuggestions([]);
+      setIsLoading(false);
     }
   };
 
@@ -121,6 +123,9 @@ export const useLocationSearch = (
     setDestination(simplified);
     setShowSuggestions(false);
     storeSelectedLocation(suggestion, simplified);
+    
+    // Notificar al usuario que la selección fue exitosa
+    toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
 
   return {

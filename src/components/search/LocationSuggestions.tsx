@@ -27,22 +27,24 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
   if (suggestions.length > 0) {
     return (
       <>
-        {suggestions.map((suggestion, index) => {
-          const { main, secondary } = formatDisplayName(suggestion.display_name);
-          return (
-            <div 
-              key={suggestion.place_id || index}
-              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center"
-              onClick={() => onSelectSuggestion(suggestion)}
-            >
-              <MapPin size={18} className="text-gray-500 mr-3 flex-shrink-0" />
-              <div className="w-full overflow-hidden">
-                <div className="font-medium truncate">{main}</div>
-                <div className="text-gray-500 text-sm truncate">{secondary}</div>
+        <div className="p-2">
+          {suggestions.map((suggestion, index) => {
+            const { main, secondary } = formatDisplayName(suggestion.display_name);
+            return (
+              <div 
+                key={suggestion.place_id || index}
+                className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center rounded-md"
+                onClick={() => onSelectSuggestion(suggestion)}
+              >
+                <MapPin size={18} className="text-gray-500 mr-3 flex-shrink-0" />
+                <div className="w-full overflow-hidden">
+                  <div className="font-medium truncate">{main}</div>
+                  <div className="text-gray-500 text-sm truncate">{secondary}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </>
     );
   }

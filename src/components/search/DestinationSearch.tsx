@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocationSearch } from "@/hooks/use-location-search";
@@ -56,18 +57,20 @@ const DestinationSearch = ({
         {showSuggestions && (
           <div 
             ref={suggestionsRef}
-            className="fixed inset-0 top-[60px] bg-white z-50 border-t border-gray-200 h-[calc(100vh-60px)] overflow-y-auto"
+            className="fixed inset-0 top-[60px] bg-white z-[100] border-t border-gray-200 h-[calc(100vh-60px)] overflow-y-auto"
           >
-            <LocationSuggestions
-              suggestions={suggestions}
-              searchError={searchError}
-              isLoading={isLoading}
-              onSelectSuggestion={(suggestion) => {
-                selectSuggestion(suggestion);
-                setShowSuggestions(false);
-              }}
-              suggestionsRef={suggestionsRef}
-            />
+            <div className="p-2">
+              <LocationSuggestions
+                suggestions={suggestions}
+                searchError={searchError}
+                isLoading={isLoading}
+                onSelectSuggestion={(suggestion) => {
+                  selectSuggestion(suggestion);
+                  setShowSuggestions(false);
+                }}
+                suggestionsRef={suggestionsRef}
+              />
+            </div>
           </div>
         )}
       </div>
