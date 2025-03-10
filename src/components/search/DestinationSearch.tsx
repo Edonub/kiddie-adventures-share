@@ -1,4 +1,3 @@
-
 import { Search, MapPin, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,7 +82,9 @@ const DestinationSearch = ({
       console.log("Nominatim results for Spain:", data);
       
       if (data && data.length > 0) {
-        setSuggestions(data);
+        // Eliminar duplicados basados en nombres de localidades
+        const uniqueResults = removeDuplicateLocations(data);
+        setSuggestions(uniqueResults);
         setShowSuggestions(true);
       } else {
         setSuggestions([]);
@@ -107,6 +108,25 @@ const DestinationSearch = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Eliminar resultados duplicados basados en la localidad principal
+  const removeDuplicateLocations = (results: NominatimResult[]): NominatimResult[] => {
+    const seen = new Set<string>();
+    return results.filter(result => {
+      // Obtener la localidad principal (primera parte del display_name)
+      const mainLocation = result.display_name.split(',')[0].trim();
+      const key = `${mainLocation}`;
+      
+      // Si ya hemos visto esta localidad, es un duplicado
+      if (seen.has(key)) {
+        return false;
+      }
+      
+      // Añadir la localidad al conjunto de vistas
+      seen.add(key);
+      return true;
+    });
   };
 
   // Debounced search
@@ -147,10 +167,18 @@ const DestinationSearch = ({
       { name: "Córdoba", country: "España" }
     ];
     
-    return allDestinations.filter(d => 
+    // Filtrar destinos y eliminar duplicados
+    const filteredDestinations = allDestinations.filter(d => 
       d.name.toLowerCase().includes(lowerValue) || 
       d.country.toLowerCase().includes(lowerValue)
-    ).slice(0, 5);
+    );
+    
+    // Eliminar duplicados para datos mockeados
+    const uniqueDestinations = filteredDestinations.filter((destination, index, self) =>
+      index === self.findIndex(d => d.name.split(',')[0] === destination.name.split(',')[0])
+    );
+    
+    return uniqueDestinations.slice(0, 5);
   };
 
   const selectSuggestion = (suggestion: NominatimResult) => {
