@@ -53,6 +53,7 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
               key={suggestion.place_id}
               className="w-full px-4 py-3 hover:bg-gray-50 flex items-start text-left transition-colors"
               onClick={() => onSelectSuggestion(suggestion)}
+              type="button"
             >
               <MapPin size={18} className="text-gray-400 mr-3 mt-1 flex-shrink-0" />
               <div className="flex-1 min-w-0">
