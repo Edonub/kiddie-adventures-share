@@ -14,7 +14,7 @@ export interface NominatimResult {
   };
 }
 
-// Lista ampliada de localidades populares en España para respuesta inmediata
+// Lista de provincias españolas para respuesta inmediata
 const popularLocations = [
   { place_id: 1, display_name: "Madrid, Comunidad de Madrid, España", lat: "40.4168", lon: "-3.7038" },
   { place_id: 2, display_name: "Barcelona, Cataluña, España", lat: "41.3851", lon: "2.1734" },
@@ -26,7 +26,6 @@ const popularLocations = [
   { place_id: 8, display_name: "Palma de Mallorca, Islas Baleares, España", lat: "39.5696", lon: "2.6502" },
   { place_id: 9, display_name: "Las Palmas de Gran Canaria, Canarias, España", lat: "28.1235", lon: "-15.4366" },
   { place_id: 10, display_name: "Bilbao, País Vasco, España", lat: "43.2630", lon: "-2.9350" },
-  // Añadimos más localidades comunes para mejorar la velocidad de respuesta
   { place_id: 11, display_name: "Alicante, Comunidad Valenciana, España", lat: "38.3452", lon: "-0.4815" },
   { place_id: 12, display_name: "Córdoba, Andalucía, España", lat: "37.8882", lon: "-4.7794" },
   { place_id: 13, display_name: "Granada, Andalucía, España", lat: "37.1773", lon: "-3.5986" },
@@ -37,52 +36,76 @@ const popularLocations = [
   { place_id: 18, display_name: "Elche, Comunidad Valenciana, España", lat: "38.2655", lon: "-0.6968" },
   { place_id: 19, display_name: "Oviedo, Asturias, España", lat: "43.3614", lon: "-5.8497" },
   { place_id: 20, display_name: "Badalona, Cataluña, España", lat: "41.4399", lon: "2.2474" },
-  { place_id: 21, display_name: "Cartagena, Región de Murcia, España", lat: "37.6257", lon: "-0.9966" },
-  { place_id: 22, display_name: "Terrassa, Cataluña, España", lat: "41.5607", lon: "2.0080" },
-  { place_id: 23, display_name: "Jerez de la Frontera, Andalucía, España", lat: "36.6866", lon: "-6.1375" },
-  { place_id: 24, display_name: "Sabadell, Cataluña, España", lat: "41.5486", lon: "2.1078" },
-  { place_id: 25, display_name: "Móstoles, Comunidad de Madrid, España", lat: "40.3233", lon: "-3.8653" },
-  { place_id: 26, display_name: "Alcalá de Henares, Comunidad de Madrid, España", lat: "40.4819", lon: "-3.3644" },
-  { place_id: 27, display_name: "Pamplona, Navarra, España", lat: "42.8186", lon: "-1.6442" },
-  { place_id: 28, display_name: "Almería, Andalucía, España", lat: "36.8340", lon: "-2.4637" },
-  { place_id: 29, display_name: "Santander, Cantabria, España", lat: "43.4628", lon: "-3.8044" },
-  { place_id: 30, display_name: "Castellón de la Plana, Comunidad Valenciana, España", lat: "39.9860", lon: "-0.0499" }
+  // Más ciudades de España
+  { place_id: 21, display_name: "Cádiz, Andalucía, España", lat: "36.5298", lon: "-6.2926" },
+  { place_id: 22, display_name: "Santander, Cantabria, España", lat: "43.4628", lon: "-3.8044" },
+  { place_id: 23, display_name: "Pamplona, Navarra, España", lat: "42.8186", lon: "-1.6442" },
+  { place_id: 24, display_name: "Toledo, Castilla-La Mancha, España", lat: "39.8628", lon: "-4.0273" },
+  { place_id: 25, display_name: "Salamanca, Castilla y León, España", lat: "40.9701", lon: "-5.6635" },
+  { place_id: 26, display_name: "Burgos, Castilla y León, España", lat: "42.3404", lon: "-3.6997" },
+  { place_id: 27, display_name: "Albacete, Castilla-La Mancha, España", lat: "38.9945", lon: "-1.8555" },
+  { place_id: 28, display_name: "Logroño, La Rioja, España", lat: "42.4650", lon: "-2.4506" },
+  { place_id: 29, display_name: "Huelva, Andalucía, España", lat: "37.2614", lon: "-6.9447" },
+  { place_id: 30, display_name: "Tarragona, Cataluña, España", lat: "41.1188", lon: "1.2455" },
+  { place_id: 31, display_name: "León, Castilla y León, España", lat: "42.5987", lon: "-5.5671" },
+  { place_id: 32, display_name: "Castellón, Comunidad Valenciana, España", lat: "39.9859", lon: "-0.0499" },
+  { place_id: 33, display_name: "Badajoz, Extremadura, España", lat: "38.8786", lon: "-6.9705" },
+  { place_id: 34, display_name: "Almería, Andalucía, España", lat: "36.8340", lon: "-2.4637" },
+  { place_id: 35, display_name: "Girona, Cataluña, España", lat: "41.9818", lon: "2.8237" },
+  { place_id: 36, display_name: "Jaén, Andalucía, España", lat: "37.7795", lon: "-3.7829" },
+  { place_id: 37, display_name: "Cáceres, Extremadura, España", lat: "39.4753", lon: "-6.3724" },
+  { place_id: 38, display_name: "Ourense, Galicia, España", lat: "42.3359", lon: "-7.8642" },
+  { place_id: 39, display_name: "Lleida, Cataluña, España", lat: "41.6175", lon: "0.6200" },
+  { place_id: 40, display_name: "Donostia-San Sebastián, País Vasco, España", lat: "43.3224", lon: "-1.9846" },
+  { place_id: 41, display_name: "Cartagena, Región de Murcia, España", lat: "37.6257", lon: "-0.9966" },
+  { place_id: 42, display_name: "Marbella, Andalucía, España", lat: "36.5103", lon: "-4.8845" },
+  { place_id: 43, display_name: "Jerez de la Frontera, Andalucía, España", lat: "36.6866", lon: "-6.1375" },
+  { place_id: 44, display_name: "Valladolid, Castilla y León, España", lat: "41.6521", lon: "-4.7286" },
+  { place_id: 45, display_name: "Palencia, Castilla y León, España", lat: "42.0096", lon: "-4.5288" },
+  { place_id: 46, display_name: "Lugo, Galicia, España", lat: "43.0097", lon: "-7.5567" },
+  { place_id: 47, display_name: "Ávila, Castilla y León, España", lat: "40.6564", lon: "-4.6937" },
+  { place_id: 48, display_name: "Segovia, Castilla y León, España", lat: "40.9429", lon: "-4.1088" },
+  { place_id: 49, display_name: "Cuenca, Castilla-La Mancha, España", lat: "40.0703", lon: "-2.1374" },
+  { place_id: 50, display_name: "Zamora, Castilla y León, España", lat: "41.5036", lon: "-5.7449" }
 ];
 
+// Función principal de búsqueda de localidades
 export const fetchLocations = async (query: string): Promise<NominatimResult[]> => {
   if (query.length < 2) return [];
   
-  // Normalizamos la consulta (minúsculas y quitamos acentos)
+  console.log("Buscando localidades con query:", query);
+  
+  // Normalizar la consulta para una mejor búsqueda
   const normalizedQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   
-  // Primero buscamos en las localidades populares (respuesta instantánea)
-  const filteredPopular = popularLocations.filter(location => {
+  // Buscar primero en la lista local para respuesta inmediata
+  const localResults = popularLocations.filter(location => {
     const normalizedLocation = location.display_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     return normalizedLocation.includes(normalizedQuery);
   });
   
-  // Si encontramos coincidencias en las populares, las devolvemos inmediatamente
-  if (filteredPopular.length > 0) {
-    console.log("Resultados de localidades populares:", filteredPopular);
-    return filteredPopular;
+  if (localResults.length > 0) {
+    console.log("Resultados encontrados localmente:", localResults.length);
+    return localResults;
   }
   
+  // Si no hay resultados locales, intentar con la API externa
   try {
-    // Intentamos con API alternativa más rápida para mejorar el rendimiento
+    console.log("Consultando API externa...");
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&countrycodes=es&limit=7&q=${encodeURIComponent(query)}`
+      `https://nominatim.openstreetmap.org/search?format=json&countrycodes=es&limit=10&q=${encodeURIComponent(query)}`
     );
     
     if (!response.ok) {
-      throw new Error(`Error en la búsqueda: ${response.statusText}`);
+      throw new Error(`Error en la respuesta: ${response.statusText}`);
     }
     
     const data: NominatimResult[] = await response.json();
-    console.log("Datos crudos de API:", data);
+    console.log("Resultados de API:", data.length);
     return data;
   } catch (error) {
-    console.error("Error fetchLocations:", error);
-    return [];
+    console.error("Error en fetchLocations:", error);
+    return []; // Devolver array vacío en caso de error
   }
 };
 
