@@ -24,13 +24,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <>
       {isMobile ? (
-        <div className="flex items-center px-3 py-2">
+        <div className="flex items-center px-3 py-2 relative">
           <MapPin size={18} className="text-gray-500 mr-2 flex-shrink-0" />
           <input 
             ref={inputRef}
             type="text" 
             placeholder="¿A qué localidad de España viajas?" 
-            className="w-full bg-transparent border-none outline-none text-sm placeholder-gray-500 truncate"
+            className="w-full bg-transparent border-none outline-none text-sm placeholder-gray-500 text-black font-medium"
             value={destination}
             onChange={(e) => handleDestinationChange(e.target.value)}
             onFocus={onFocus}
@@ -56,7 +56,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
               ref={inputRef}
               type="text" 
               placeholder="¿A qué localidad de España viajas?" 
-              className="w-full bg-transparent border-none outline-none text-sm truncate"
+              className="w-full bg-transparent border-none outline-none text-sm text-black font-medium"
               value={destination}
               onChange={(e) => handleDestinationChange(e.target.value)}
               onFocus={onFocus}

@@ -57,7 +57,7 @@ const DestinationSearch = ({
         {showSuggestions && (
           <div 
             ref={suggestionsRef}
-            className="fixed inset-0 top-[60px] bg-white z-[100] border-t border-gray-200 h-[calc(100vh-60px)] overflow-y-auto"
+            className="fixed inset-0 top-[60px] bg-white z-[200] border-t border-gray-200 h-[calc(100vh-60px)] overflow-y-auto"
           >
             <div className="p-2">
               <LocationSuggestions

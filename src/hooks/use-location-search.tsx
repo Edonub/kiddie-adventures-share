@@ -98,6 +98,7 @@ export const useLocationSearch = (
         setSuggestions([]);
         if (query.length > 2) {
           setSearchError("No se encontraron localidades en España");
+          setShowSuggestions(true); // Keep showing the panel with an error message
         }
       }
     } catch (error) {
@@ -106,6 +107,7 @@ export const useLocationSearch = (
       const mockData = getMockDestinations(query);
       if (mockData.length > 0) {
         setSuggestions(mockData as unknown as NominatimResult[]);
+        setShowSuggestions(true);
       }
     } finally {
       setIsLoading(false);
@@ -124,7 +126,7 @@ export const useLocationSearch = (
     setShowSuggestions(false);
     storeSelectedLocation(suggestion, simplified);
     
-    // Notificar al usuario que la selección fue exitosa
+    // Notify the user about successful selection
     toast.success(`Localidad seleccionada: ${displayParts[0].trim()}`);
   };
 
