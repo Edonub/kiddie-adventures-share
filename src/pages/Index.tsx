@@ -7,6 +7,9 @@ import AirbnbSearchBar from "@/components/AirbnbSearchBar";
 import { categories } from "@/data/categories";
 import FiltersSection from "@/components/filters/FiltersSection";
 import PropertyListing from "@/components/properties/PropertyListing";
+import MapSearch from "@/components/map/MapSearch";
+import ViewSwitcher from "@/components/map/ViewSwitcher";
+import { properties } from "@/data/properties";
 
 interface Child {
   id: number;
@@ -19,6 +22,7 @@ const Index = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [adults, setAdults] = useState(1);
   const [childrenDetails, setChildrenDetails] = useState<Child[]>([]);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories(prev => 
@@ -27,6 +31,32 @@ const Index = () => {
         : [...prev, categoryId]
     );
   };
+
+  // Filter properties (same logic as in PropertyListing component)
+  const filteredProperties = properties
+    .filter(property => {
+      // Filter by booking type (free, paid, all)
+      if (bookingType === 'free' && property.price > 0) return false;
+      if (bookingType === 'paid' && property.price === 0) return false;
+      
+      // Filter by price range
+      if (property.price > priceRange[0]) return false;
+      
+      // Filter by categories
+      if (selectedCategories.length > 0 && !selectedCategories.includes(property.category)) {
+        return false;
+      }
+      
+      // Filter by capacity for adults
+      const adultsCapacity = property.adults_capacity || 2;
+      if (adults > adultsCapacity) return false;
+      
+      // Filter by capacity for children
+      const childrenCapacity = property.children_capacity || 0;
+      if (childrenDetails.length > childrenCapacity) return false;
+      
+      return true;
+    });
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -57,13 +87,19 @@ const Index = () => {
               />
             </div>
             
-            <PropertyListing 
-              bookingType={bookingType}
-              priceRange={priceRange}
-              selectedCategories={selectedCategories}
-              adults={adults}
-              childrenDetails={childrenDetails}
-            />
+            <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+            
+            {viewMode === 'list' ? (
+              <PropertyListing 
+                bookingType={bookingType}
+                priceRange={priceRange}
+                selectedCategories={selectedCategories}
+                adults={adults}
+                childrenDetails={childrenDetails}
+              />
+            ) : (
+              <MapSearch filteredProperties={filteredProperties} />
+            )}
           </div>
         </div>
       </main>
