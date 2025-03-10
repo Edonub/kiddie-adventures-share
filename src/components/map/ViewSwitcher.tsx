@@ -13,6 +13,41 @@ interface ViewSwitcherProps {
 const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
   const isMobile = useIsMobile();
 
+  if (isMobile) {
+    return (
+      <div className="flex items-center">
+        <div className="bg-gray-100 rounded-lg flex shadow-sm overflow-hidden">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "transition-all p-2 h-8 w-8 flex items-center justify-center",
+              view === 'list' 
+                ? "bg-white text-familyxp-primary font-medium shadow-sm" 
+                : "text-gray-600 hover:text-familyxp-primary"
+            )}
+            onClick={() => onViewChange('list')}
+          >
+            <List className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "transition-all p-2 h-8 w-8 flex items-center justify-center",
+              view === 'map' 
+                ? "bg-white text-familyxp-primary font-medium shadow-sm" 
+                : "text-gray-600 hover:text-familyxp-primary"
+            )}
+            onClick={() => onViewChange('map')}
+          >
+            <Map className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center">
       <div className="bg-white border border-familyxp-light rounded-lg flex shadow-sm overflow-hidden">
@@ -28,7 +63,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
           onClick={() => onViewChange('list')}
         >
           <List className="w-4 h-4" />
-          {!isMobile && <span className="text-xs font-medium ml-1.5">Lista</span>}
+          <span className="text-xs font-medium ml-1.5">Lista</span>
         </Button>
         <Button
           variant="ghost"
@@ -42,7 +77,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
           onClick={() => onViewChange('map')}
         >
           <Map className="w-4 h-4" />
-          {!isMobile && <span className="text-xs font-medium ml-1.5">Mapa</span>}
+          <span className="text-xs font-medium ml-1.5">Mapa</span>
         </Button>
       </div>
     </div>

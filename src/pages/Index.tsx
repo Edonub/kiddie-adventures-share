@@ -59,23 +59,44 @@ const Index = () => {
               </div>
               
               <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
-                <div className="flex-grow">
-                  <FiltersSection 
-                    categories={categories}
-                    selectedCategories={selectedCategories}
-                    toggleCategory={toggleCategory}
-                    bookingType={bookingType}
-                    setBookingType={setBookingType}
-                    priceRange={priceRange}
-                    setPriceRange={setPriceRange}
-                    durationRange={durationRange}
-                    setDurationRange={setDurationRange}
-                  />
-                </div>
-                
-                <div className="ml-auto mt-2 md:mt-0 md:ml-4">
-                  <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
-                </div>
+                {isMobile ? (
+                  <div className="flex items-center gap-2 w-full">
+                    <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                    <div className="flex-grow">
+                      <FiltersSection 
+                        categories={categories}
+                        selectedCategories={selectedCategories}
+                        toggleCategory={toggleCategory}
+                        bookingType={bookingType}
+                        setBookingType={setBookingType}
+                        priceRange={priceRange}
+                        setPriceRange={setPriceRange}
+                        durationRange={durationRange}
+                        setDurationRange={setDurationRange}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex-grow">
+                      <FiltersSection 
+                        categories={categories}
+                        selectedCategories={selectedCategories}
+                        toggleCategory={toggleCategory}
+                        bookingType={bookingType}
+                        setBookingType={setBookingType}
+                        priceRange={priceRange}
+                        setPriceRange={setPriceRange}
+                        durationRange={durationRange}
+                        setDurationRange={setDurationRange}
+                      />
+                    </div>
+                    
+                    <div className="ml-auto mt-2 md:mt-0 md:ml-4">
+                      <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
             
