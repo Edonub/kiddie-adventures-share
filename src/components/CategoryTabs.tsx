@@ -24,7 +24,7 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
         <ScrollArea className="w-full pb-2">
           <div className={isMobile 
             ? "flex overflow-x-auto py-2 w-full gap-1" 
-            : "grid grid-cols-5 py-2 w-full gap-4"
+            : "flex justify-between py-2 w-full"
           }>
             {categories.map((category) => (
               <Link 
@@ -34,7 +34,7 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
                   activeCategory === category.id 
                     ? 'bg-primary/10 text-primary border border-primary/20' 
                     : 'text-gray-600 hover:bg-gray-100'
-                } ${isMobile ? 'flex-shrink-0' : 'w-full'}`}
+                } ${isMobile ? 'flex-shrink-0' : ''}`}
                 style={{ minWidth: isMobile ? '80px' : 'auto' }}
               >
                 <div className={`rounded-full bg-gray-100 p-2 mb-1 ${
