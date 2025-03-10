@@ -22,17 +22,20 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
     <div className="border-b border-gray-200 mb-3 w-full">
       <div className="relative w-full">
         <ScrollArea className="w-full pb-2">
-          <div className={`flex ${isMobile ? 'overflow-x-auto' : 'justify-between'} py-2 w-full`}>
+          <div className={isMobile 
+            ? "flex overflow-x-auto py-2 w-full gap-1" 
+            : "grid grid-cols-5 py-2 w-full gap-4"
+          }>
             {categories.map((category) => (
               <Link 
                 key={category.id} 
                 to={`/explorar?categoria=${category.slug}`}
-                className={`flex flex-col items-center justify-center px-3 py-2 mx-1 rounded-lg transition-colors ${
+                className={`flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-colors ${
                   activeCategory === category.id 
                     ? 'bg-primary/10 text-primary border border-primary/20' 
                     : 'text-gray-600 hover:bg-gray-100'
-                }`}
-                style={{ minWidth: isMobile ? '80px' : '0' }}
+                } ${isMobile ? 'flex-shrink-0' : 'w-full'}`}
+                style={{ minWidth: isMobile ? '80px' : 'auto' }}
               >
                 <div className={`rounded-full bg-gray-100 p-2 mb-1 ${
                   activeCategory === category.id ? 'bg-primary/20' : ''
