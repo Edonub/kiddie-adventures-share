@@ -2,8 +2,9 @@
 import React from "react";
 import { Property } from "@/data/properties";
 import { properties } from "@/data/properties";
-import { MapPin, Clock, ArrowRight } from "lucide-react";
+import { MapPin, Clock, ArrowRight, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface PropertyListingProps {
   bookingType: "all" | "free" | "paid";
@@ -58,34 +59,44 @@ const PropertyListing = ({
   };
   
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {filteredProperties.map(property => (
-        <div key={property.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow">
+        <Card key={property.id} className="group overflow-hidden border-none shadow-md hover:shadow-lg transition-all duration-300">
           <div className="relative">
-            <img className="w-full h-48 object-cover" src={property.image} alt={property.title} />
+            <img 
+              className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" 
+              src={property.image} 
+              alt={property.title} 
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <Badge className="absolute top-3 left-3 bg-white/90 text-familyxp-primary hover:bg-white">
               {property.category}
             </Badge>
             {property.price === 0 && (
-              <Badge className="absolute top-3 right-3 bg-familyxp-success text-white">
+              <Badge className="absolute top-3 right-3 bg-familyxp-success hover:bg-familyxp-success/90 text-white">
                 Gratis
               </Badge>
             )}
+            <button className="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white text-gray-500 hover:text-red-500 transition-colors">
+              <Heart size={18} className="transition-transform hover:scale-110" />
+            </button>
           </div>
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-1">{property.title}</h3>
+          <CardContent className="p-4">
+            <h3 className="text-lg font-semibold text-gray-800 mb-1 line-clamp-1">{property.title}</h3>
             <div className="flex items-center text-gray-600 mb-3">
-              <MapPin size={14} className="mr-1" />
-              <p className="text-sm">{property.location}</p>
+              <MapPin size={14} className="mr-1 text-familyxp-primary" />
+              <p className="text-sm line-clamp-1">{property.location}</p>
             </div>
             <div className="flex justify-between items-center">
               <div>
-                {property.price > 0 && (
+                {property.price > 0 ? (
                   <span className="text-xl font-bold text-familyxp-primary">{property.price}€</span>
+                ) : (
+                  <span className="text-familyxp-success text-sm font-medium">Experiencia gratuita</span>
                 )}
               </div>
               <div className="flex items-center text-sm text-gray-600">
-                <Clock size={14} className="mr-1" />
+                <Clock size={14} className="mr-1 text-familyxp-primary" />
                 {formatDuration('duration' in property ? (property as any).duration : undefined)}
               </div>
             </div>
@@ -95,12 +106,13 @@ const PropertyListing = ({
               ) : (
                 <Badge variant="outline" className="text-red-500 border-red-200 bg-red-50">No Disponible</Badge>
               )}
-              <button className="text-familyxp-primary hover:text-familyxp-secondary font-medium text-sm flex items-center">
-                Ver detalles <ArrowRight size={14} className="ml-1" />
+              <button className="text-familyxp-primary hover:text-familyxp-secondary font-medium text-sm flex items-center group">
+                Ver detalles 
+                <ArrowRight size={14} className="ml-1 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       ))}
       
       {filteredProperties.length === 0 && (

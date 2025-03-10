@@ -51,31 +51,31 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-1 pt-14 w-full overflow-x-hidden">
-        <div className="pb-8 px-4">
+        <div className="py-4 px-4">
           <div className="max-w-screen-xl mx-auto">
-            <div className="pt-4 pb-6 bg-white rounded-lg shadow-sm px-4 my-4">
+            {/* Search Bar */}
+            <div className="py-3 px-4 bg-white rounded-xl shadow-sm mb-4">
               <AirbnbSearchBar />
             </div>
             
-            <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-              <div className="w-full overflow-x-auto scrollbar-none">
+            {/* Categories and Filters */}
+            <div className="bg-white rounded-xl shadow-sm px-4 py-5 mb-5">
+              <div className="w-full overflow-x-auto scrollbar-none mb-4">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex flex-wrap md:flex-nowrap justify-between items-center mt-4 gap-3">
-                <div className="w-full md:w-auto">
-                  <FiltersSection 
-                    categories={categories}
-                    selectedCategories={selectedCategories}
-                    toggleCategory={toggleCategory}
-                    bookingType={bookingType}
-                    setBookingType={setBookingType}
-                    priceRange={priceRange}
-                    setPriceRange={setPriceRange}
-                    durationRange={durationRange}
-                    setDurationRange={setDurationRange}
-                  />
-                </div>
+              <div className="w-full flex flex-wrap md:flex-nowrap items-center gap-3 justify-between">
+                <FiltersSection 
+                  categories={categories}
+                  selectedCategories={selectedCategories}
+                  toggleCategory={toggleCategory}
+                  bookingType={bookingType}
+                  setBookingType={setBookingType}
+                  priceRange={priceRange}
+                  setPriceRange={setPriceRange}
+                  durationRange={durationRange}
+                  setDurationRange={setDurationRange}
+                />
                 
                 <div className="ml-auto">
                   <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
@@ -83,7 +83,8 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            {/* Main Content */}
+            <div className="bg-white rounded-xl shadow-sm p-5">
               {viewMode === 'list' ? (
                 <PropertyListing 
                   bookingType={bookingType}
