@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { ForumCategory } from "@/components/forum/ForumCategories";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import AvatarSelector from "@/components/forum/AvatarSelector";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 type Comment = {
   id: string;
@@ -94,20 +95,20 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
   };
 
   return (
-    <Card className="mb-8 bg-[#444] border-[#555] text-white">
-      <CardHeader className="border-b border-[#555]">
-        <CardTitle className="text-white">Escribe un comentario</CardTitle>
-        <CardDescription className="text-gray-300">
+    <Card className="mb-8 bg-white border-gray-200">
+      <CardHeader className="border-b border-gray-100">
+        <CardTitle>Escribe un comentario</CardTitle>
+        <CardDescription>
           Comparte tus experiencias o pregunta sobre actividades en familia
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmitComment}>
         <CardContent className="pt-6">
           {replyTo && (
-            <div className="mb-4 p-3 bg-[#333] rounded-lg flex justify-between items-center border border-[#555]">
+            <div className="mb-4 p-3 bg-gray-50 rounded-lg flex justify-between items-center border border-gray-200">
               <div>
-                <span className="text-sm text-gray-400">Respondiendo a:</span>
-                <p className="text-sm font-medium text-gray-300">
+                <span className="text-sm text-gray-500">Respondiendo a:</span>
+                <p className="text-sm font-medium text-gray-700">
                   {replyTo.profiles?.first_name || "Usuario"}: {replyTo.content.substring(0, 100)}
                   {replyTo.content.length > 100 ? "..." : ""}
                 </p>
@@ -116,7 +117,7 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setReplyTo(null)}
-                className="text-gray-300 hover:text-white hover:bg-[#555]"
+                className="text-gray-500 hover:text-gray-700 hover:bg-gray-100"
               >
                 Cancelar
               </Button>
@@ -130,32 +131,45 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category = "gene
             }
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="min-h-[120px] bg-[#333] border-[#555] text-white placeholder:text-gray-400"
+            className="min-h-[120px] bg-white border-gray-200 placeholder:text-gray-400"
           />
           
-          <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-4 border-[#555] hover:bg-[#555] text-gray-300 hover:text-white"
-              >
-                Cambiar avatar
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-[#444] border-[#555] text-white">
-              <DialogHeader>
-                <DialogTitle className="text-white">Selecciona un avatar</DialogTitle>
-              </DialogHeader>
-              <AvatarSelector onSelect={handleAvatarSelected} />
-            </DialogContent>
-          </Dialog>
+          <div className="mt-4 flex items-center gap-3">
+            <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  size="sm" 
+                  className="flex items-center gap-2 border-gray-200 hover:bg-familyxp-light hover:text-familyxp-primary hover:border-familyxp-primary"
+                >
+                  {selectedAvatar ? (
+                    <>
+                      <Avatar className="w-6 h-6">
+                        <AvatarImage src={selectedAvatar} alt="Selected avatar" />
+                        <AvatarFallback>U</AvatarFallback>
+                      </Avatar>
+                      Cambiar avatar
+                    </>
+                  ) : (
+                    <>Elegir avatar</>
+                  )}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-white">
+                <DialogHeader>
+                  <DialogTitle>Selecciona un avatar</DialogTitle>
+                </DialogHeader>
+                <AvatarSelector onSelect={handleAvatarSelected} selectedAvatar={selectedAvatar || undefined} />
+              </DialogContent>
+            </Dialog>
+          </div>
         </CardContent>
-        <CardFooter className="flex justify-end border-t border-[#555] pt-4">
+        <CardFooter className="flex justify-end border-t border-gray-100 pt-4">
           <Button 
             type="submit" 
             disabled={!newComment.trim()}
-            className="bg-[#ff4d4d] hover:bg-[#e63939] text-white"
+            className="bg-familyxp-primary hover:bg-familyxp-primary/90 text-white"
           >
             {replyTo ? "Responder" : "Publicar comentario"}
           </Button>
