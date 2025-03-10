@@ -20,6 +20,8 @@ import CentroAyudaPage from "./pages/CentroAyudaPage";
 import ComoFuncionaPage from "./pages/ComoFuncionaPage";
 import GruposPage from "./pages/GruposPage";
 import ForoCochesPage from "./pages/ForoCochesPage";
+import ProfilePage from "./pages/ProfilePage";
+import MyExperiencesPage from "./pages/MyExperiencesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +42,8 @@ function App() {
               <Route path="/super-admin" element={<SuperAdminPage />} />
               <Route path="/crear-actividad" element={<CrearActividadPage />} />
               <Route path="/actividad/:id" element={<ActividadDetailPage />} />
+              <Route path="/perfil" element={<ProfilePage />} />
+              <Route path="/mis-experiencias" element={<MyExperiencesPage />} />
               
               {/* Nuevas rutas para el footer */}
               <Route path="/terminos" element={<TerminosPage />} />
