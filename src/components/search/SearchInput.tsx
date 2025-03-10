@@ -24,7 +24,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   if (isMobile) {
     return (
-      <div className="flex items-center px-4 py-3 relative bg-white rounded-lg shadow-sm">
+      <div className="flex items-center px-4 py-3 relative rounded-lg shadow-sm">
         <MapPin size={20} className="text-familyxp-primary mr-3 flex-shrink-0" />
         <Input
           ref={inputRef}
