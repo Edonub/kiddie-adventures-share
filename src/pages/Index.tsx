@@ -64,7 +64,7 @@ const Index = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       
-      <main className="flex-1 pt-14 w-full overflow-x-hidden"> {/* Keep overflow-x-hidden to prevent horizontal scroll */}
+      <main className="flex-1 pt-14 w-full overflow-x-hidden">
         <div className="pb-6 px-4">
           <div className="max-w-screen-xl mx-auto">
             <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '3' : '6'}`}>
@@ -72,11 +72,11 @@ const Index = () => {
             </div>
             
             <div className="flex flex-wrap items-center justify-between mb-4">
-              <div className="w-full overflow-x-auto scrollbar-none"> {/* Keep scrollbar-none for smooth scrolling */}
+              <div className="w-full overflow-x-auto scrollbar-none">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
-              <div className="w-full flex justify-between items-center mt-1"> {/* Added justify-between for better spacing */}
+              <div className="w-full flex justify-between items-center mt-1">
                 <FiltersSection 
                   categories={categories}
                   selectedCategories={selectedCategories}

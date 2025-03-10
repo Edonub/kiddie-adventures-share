@@ -1,7 +1,5 @@
 
 import { Link } from "react-router-dom";
-import { Filter } from "lucide-react";
-import { Button } from "./ui/button";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -41,21 +39,6 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
                 <span className="text-xs whitespace-nowrap">{category.name}</span>
               </Link>
             ))}
-            {/* Only show filter button with text on desktop */}
-            {isMobile ? (
-              <div className="border-l border-gray-200 pl-4">
-                <Button variant="outline" size="sm" className="flex items-center rounded-full border border-gray-300 w-10 h-10 p-0 justify-center">
-                  <Filter size={16} />
-                </Button>
-              </div>
-            ) : (
-              <div className="border-l border-gray-200 pl-6">
-                <Button variant="outline" size="sm" className="flex items-center gap-2 rounded-full border border-gray-300">
-                  <Filter size={16} />
-                  <span>Filtros</span>
-                </Button>
-              </div>
-            )}
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
