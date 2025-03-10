@@ -60,12 +60,18 @@ const Index = () => {
               
               <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
                 {isMobile ? (
-                  <div className="flex items-center gap-2 w-full mt-2">
-                    <div className="flex-shrink-0">
+                  <div className="flex items-center w-full mt-2">
+                    <div className="flex-shrink-0 mr-3">
                       <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                     </div>
-                    <div className="flex-grow">
-                      <FiltersSection 
+                    <div className="flex-shrink-0">
+                      <BookingTypeSelector 
+                        bookingType={bookingType}
+                        setBookingType={setBookingType}
+                      />
+                    </div>
+                    <div className="ml-auto">
+                      <FiltersDropdown 
                         categories={categories}
                         selectedCategories={selectedCategories}
                         toggleCategory={toggleCategory}
@@ -75,6 +81,13 @@ const Index = () => {
                         setPriceRange={setPriceRange}
                         durationRange={durationRange}
                         setDurationRange={setDurationRange}
+                        resetFilters={() => {
+                          setPriceRange([200]);
+                          setDurationRange([180]);
+                          setBookingType("all");
+                          selectedCategories.forEach(cat => toggleCategory(cat));
+                        }}
+                        isMobile={isMobile}
                       />
                     </div>
                   </div>
