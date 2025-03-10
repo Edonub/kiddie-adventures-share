@@ -116,8 +116,8 @@ const AirbnbSearchBar = () => {
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-full shadow-lg border border-gray-200 relative z-10">
-      <div className="flex flex-col md:flex-row md:items-center">
-        <div className="w-full md:w-[33%]">
+      <div className="flex items-center h-16">
+        <div className="w-1/3 border-r border-gray-200">
           <DestinationSearch 
             destination={destination}
             setDestination={setDestination}
@@ -126,7 +126,7 @@ const AirbnbSearchBar = () => {
           />
         </div>
         
-        <div className="w-full md:w-[28%]">
+        <div className="w-1/4 border-r border-gray-200">
           <DateSelection 
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -137,7 +137,7 @@ const AirbnbSearchBar = () => {
           />
         </div>
         
-        <div className="w-full md:w-[28%]">
+        <div className="w-1/4 border-r border-gray-200">
           <GuestSelector 
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -150,7 +150,7 @@ const AirbnbSearchBar = () => {
           />
         </div>
 
-        <div className="w-full md:w-[11%]">
+        <div className="w-1/6 pl-2 pr-2">
           <SearchButton onClick={handleSearch} />
         </div>
       </div>

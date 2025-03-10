@@ -53,10 +53,10 @@ const SearchInput: React.FC<SearchInputProps> = ({
   }
 
   return (
-    <div className="p-3 md:p-4 flex-1">
-      <div className="flex flex-col bg-transparent">
-        <div className="text-xs font-bold text-familyxp-primary">Localidad</div>
-        <div className="flex items-center mt-1">
+    <div className="p-3 md:p-4 h-full flex items-center">
+      <div className="flex flex-col h-full justify-center">
+        <div className="text-xs font-bold text-familyxp-primary mb-1">Localidad</div>
+        <div className="flex items-center">
           <MapPin size={16} className="text-familyxp-primary mr-2 flex-shrink-0" />
           <Input
             ref={inputRef}
