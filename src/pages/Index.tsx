@@ -10,6 +10,7 @@ import PropertyListing from "@/components/properties/PropertyListing";
 import MapSearch from "@/components/map/MapSearch";
 import ViewSwitcher from "@/components/map/ViewSwitcher";
 import { properties } from "@/data/properties";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Child {
   id: number;
@@ -23,6 +24,7 @@ const Index = () => {
   const [adults, setAdults] = useState(1);
   const [childrenDetails, setChildrenDetails] = useState<Child[]>([]);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const isMobile = useIsMobile();
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories(prev => 
@@ -62,10 +64,10 @@ const Index = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       
-      <main className="flex-1 pt-14"> {/* Added padding-top to account for fixed navbar */}
-        <div className="pt-4 pb-8 px-4">
+      <main className="flex-1 pt-14"> {/* Keep padding-top for navbar space */}
+        <div className={`pt-${isMobile ? '1' : '4'} pb-8 px-4`}> {/* Reduced top padding on mobile */}
           <div className="max-w-screen-xl mx-auto">
-            <div className="pt-4 pb-8">
+            <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '4' : '8'}`}> {/* Reduced padding on mobile */}
               <AirbnbSearchBar />
             </div>
             

@@ -70,7 +70,7 @@ const AirbnbSearchBar = () => {
 
   if (isMobile) {
     return (
-      <div className="w-full px-4 mt-16"> {/* Added margin-top to account for fixed navbar */}
+      <div className="w-full px-4 mt-4"> {/* Changed from mt-16 to mt-4 to reduce space */}
         <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center">
           <div className="flex-1">
             <DestinationSearch
