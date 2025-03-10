@@ -53,7 +53,7 @@ const Index = () => {
               <AirbnbSearchBar />
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-3">
+            <div className="bg-white rounded-xl shadow-sm px-2 py-3 mb-3">
               <div className="w-full overflow-x-auto scrollbar-none mb-2">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
@@ -73,7 +73,7 @@ const Index = () => {
                   />
                 </div>
                 
-                <div className="ml-auto mt-2 md:mt-0">
+                <div className="ml-auto mt-2 md:mt-0 md:ml-4">
                   <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                 </div>
               </div>

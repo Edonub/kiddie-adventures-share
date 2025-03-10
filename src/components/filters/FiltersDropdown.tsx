@@ -49,17 +49,31 @@ const FiltersDropdown = ({
     }
   };
 
+  const hasActiveFilters = selectedCategories.length > 0 || priceRange[0] < 200 || durationRange[0] < 180;
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         {isMobile ? (
-          <Button variant="outline" className="h-10 w-10 rounded-full p-0 flex items-center justify-center">
-            <SlidersHorizontal size={16} />
+          <Button 
+            variant="outline" 
+            className="h-10 w-10 rounded-full p-0 flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+          >
+            <SlidersHorizontal size={16} className={hasActiveFilters ? "text-familyxp-primary" : "text-gray-600"} />
           </Button>
         ) : (
-          <Button variant="outline">
-            <FilterX className="mr-2 h-4 w-4" />
+          <Button 
+            variant="outline" 
+            className={`rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
+            size="sm"
+          >
+            <SlidersHorizontal className="mr-2 h-4 w-4" />
             Filtros
+            {hasActiveFilters && (
+              <span className="ml-2 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
+                {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0)}
+              </span>
+            )}
           </Button>
         )}
       </PopoverTrigger>
