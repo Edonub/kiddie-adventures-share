@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Property } from "@/data/properties";
 import { properties } from "@/data/properties";
@@ -30,7 +31,7 @@ const PropertyListing = ({
       if (bookingType === 'free' && property.price > 0) return false;
       if (bookingType === 'paid' && property.price === 0) return false;
       
-      // Filter by price
+      // Filter by price range
       if (property.price > priceRange[0]) return false;
       
       // Filter by categories
@@ -38,14 +39,12 @@ const PropertyListing = ({
         return false;
       }
       
-      // Filter by capacity for adults and children
-      // For properties that might not have these fields, we'll assume minimum capacity
+      // Filter by capacity for adults
       const adultsCapacity = property.adults_capacity || 2; // Default to 2 if not specified
-      const childrenCapacity = property.children_capacity || 0; // Default to 0 if not specified
-      
       if (adults > adultsCapacity) return false;
       
-      // Check if property has enough capacity for all children
+      // Filter by capacity for children
+      const childrenCapacity = property.children_capacity || 0; // Default to 0 if not specified
       if (childrenDetails.length > childrenCapacity) return false;
       
       return true;
@@ -60,16 +59,27 @@ const PropertyListing = ({
             <h3 className="text-lg font-semibold">{property.title}</h3>
             <p className="text-gray-600">{property.location}</p>
             <div className="mt-2 flex items-center justify-between">
-              <span className="text-xl font-bold text-familyxp-primary">${property.price}</span>
+              <span className="text-xl font-bold text-familyxp-primary">
+                {property.price === 0 ? "Gratis" : `${property.price}€/noche`}
+              </span>
               {property.is_available ? (
-                <span className="text-green-500">Available</span>
+                <span className="text-green-500">Disponible</span>
               ) : (
-                <span className="text-red-500">Not Available</span>
+                <span className="text-red-500">No Disponible</span>
               )}
+            </div>
+            <div className="mt-2 text-sm text-gray-600">
+              <span>Capacidad: {property.adults_capacity} adultos, {property.children_capacity} niños</span>
             </div>
           </div>
         </div>
       ))}
+      
+      {filteredProperties.length === 0 && (
+        <div className="col-span-3 text-center py-8">
+          <p className="text-gray-600 text-lg">No se encontraron propiedades que coincidan con tus criterios.</p>
+        </div>
+      )}
     </div>
   );
 };
