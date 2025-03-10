@@ -104,6 +104,15 @@
   }
 }
 
+/* Custom scrollbar hide utility */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
 /* Date Range Picker Custom Styles */
 .day-range-start:not(.day-range-end) {
   border-top-right-radius: 0 !important;

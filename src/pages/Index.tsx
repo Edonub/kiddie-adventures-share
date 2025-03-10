@@ -64,29 +64,33 @@ const Index = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       
-      <main className="flex-1 pt-14"> {/* Keep padding-top for navbar space */}
-        <div className={`pt-${isMobile ? '1' : '4'} pb-8 px-4`}> {/* Reduced top padding on mobile */}
+      <main className="flex-1 pt-14 w-full overflow-x-hidden"> {/* Added overflow-x-hidden to prevent horizontal scroll */}
+        <div className="pb-8 px-4">
           <div className="max-w-screen-xl mx-auto">
-            <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '4' : '8'}`}> {/* Reduced padding on mobile */}
+            <div className={`pt-${isMobile ? '1' : '4'} pb-${isMobile ? '4' : '8'}`}>
               <AirbnbSearchBar />
             </div>
             
             <div className="flex flex-wrap items-center justify-between mb-6">
-              <CategoryTabs categories={categories} activeCategory="beach" />
+              <div className="w-full overflow-x-auto scrollbar-none pb-2"> {/* Added width control and hidden scrollbar */}
+                <CategoryTabs categories={categories} activeCategory="beach" />
+              </div>
               
-              <FiltersSection 
-                categories={categories}
-                selectedCategories={selectedCategories}
-                toggleCategory={toggleCategory}
-                bookingType={bookingType}
-                setBookingType={setBookingType}
-                priceRange={priceRange}
-                setPriceRange={setPriceRange}
-                adults={adults}
-                setAdults={setAdults}
-                childrenDetails={childrenDetails}
-                setChildrenDetails={setChildrenDetails}
-              />
+              <div className="w-full mt-2"> {/* Added width control */}
+                <FiltersSection 
+                  categories={categories}
+                  selectedCategories={selectedCategories}
+                  toggleCategory={toggleCategory}
+                  bookingType={bookingType}
+                  setBookingType={setBookingType}
+                  priceRange={priceRange}
+                  setPriceRange={setPriceRange}
+                  adults={adults}
+                  setAdults={setAdults}
+                  childrenDetails={childrenDetails}
+                  setChildrenDetails={setChildrenDetails}
+                />
+              </div>
             </div>
             
             <ViewSwitcher view={viewMode} onViewChange={setViewMode} />

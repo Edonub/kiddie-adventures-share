@@ -70,9 +70,9 @@ const AirbnbSearchBar = () => {
 
   if (isMobile) {
     return (
-      <div className="w-full px-4 mt-4"> {/* Changed from mt-16 to mt-4 to reduce space */}
-        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center">
-          <div className="flex-1">
+      <div className="w-full mt-4"> {/* Removed px-4 to prevent double padding */}
+        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center overflow-hidden"> {/* Added overflow-hidden */}
+          <div className="flex-1 min-w-0"> {/* Added min-w-0 to prevent flex item from expanding */}
             <DestinationSearch
               destination={destination}
               setDestination={setDestination}
@@ -80,14 +80,14 @@ const AirbnbSearchBar = () => {
               setActiveTab={setActiveTab}
             />
           </div>
-          <div className="pr-1">
+          <div className="pr-1 flex-shrink-0"> {/* Added flex-shrink-0 to prevent button from shrinking */}
             <SearchButton onClick={handleSearch} />
           </div>
         </div>
         
         {/* Expanded view for dates and guests as secondary actions */}
         <div className="mt-3 flex gap-2">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0"> {/* Added min-w-0 to prevent overflow */}
             <DateSelection
               activeTab={activeTab}
               setActiveTab={setActiveTab}
@@ -98,7 +98,7 @@ const AirbnbSearchBar = () => {
             />
           </div>
           
-          <div className="flex-1">
+          <div className="flex-1 min-w-0"> {/* Added min-w-0 to prevent overflow */}
             <GuestSelector
               activeTab={activeTab}
               setActiveTab={setActiveTab}
