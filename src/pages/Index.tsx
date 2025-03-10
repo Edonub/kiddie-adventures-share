@@ -60,7 +60,7 @@ const Index = () => {
               
               <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
                 {isMobile ? (
-                  <div className="flex items-center gap-2 w-full">
+                  <div className="flex items-center gap-2 w-full mt-2">
                     <div className="flex-shrink-0">
                       <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                     </div>
