@@ -1,8 +1,11 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { Session, User } from "@supabase/supabase-js";
+import { Session, User as SupabaseUser } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+// Export the User type so it can be imported by other components
+export type User = SupabaseUser;
 
 type AuthContextType = {
   session: Session | null;
