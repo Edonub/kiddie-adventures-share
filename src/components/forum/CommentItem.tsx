@@ -54,35 +54,35 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
   };
 
   return (
-    <Card key={comment.id} id={comment.id} className="bg-[#444] border-[#555] text-white">
-      <CardHeader className="pb-3 border-b border-[#555]">
+    <Card key={comment.id} id={comment.id} className="bg-white border-gray-200 text-gray-900 shadow-sm">
+      <CardHeader className="pb-3 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <Avatar className="border-2 border-[#ff4d4d]">
+          <Avatar className="border-2 border-familyxp-primary">
             {comment.profiles?.avatar_url ? (
               <img src={comment.profiles.avatar_url} alt="Avatar" />
             ) : (
-              <AvatarFallback className="bg-[#666]">{getInitials(comment)}</AvatarFallback>
+              <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(comment)}</AvatarFallback>
             )}
           </Avatar>
           <div>
-            <p className="font-medium text-white">
+            <p className="font-medium text-gray-900">
               {comment.profiles?.first_name || "Usuario"}{" "}
               {comment.profiles?.last_name || ""}
             </p>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500">
               {formatDate(comment.created_at)}
             </p>
           </div>
         </div>
       </CardHeader>
       <CardContent className="pb-3 pt-4">
-        <p className="whitespace-pre-line text-gray-200">{comment.content}</p>
+        <p className="whitespace-pre-line text-gray-700">{comment.content}</p>
       </CardContent>
-      <CardFooter className="flex gap-4 pt-0 text-sm text-gray-400 border-t border-[#555] py-3">
+      <CardFooter className="flex gap-4 pt-0 text-sm text-gray-500 border-t border-gray-100 py-3">
         <Button
           variant="ghost"
           size="sm"
-          className="p-0 h-auto hover:text-white hover:bg-transparent"
+          className="p-0 h-auto hover:text-familyxp-primary hover:bg-transparent"
           onClick={() => onReply(comment)}
         >
           <Reply size={16} className="mr-1" /> Responder
@@ -90,7 +90,7 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="p-0 h-auto hover:text-white hover:bg-transparent"
+          className="p-0 h-auto hover:text-familyxp-primary hover:bg-transparent"
           onClick={handleLike}
         >
           <ThumbsUp size={16} className="mr-1" /> {likes}
@@ -98,7 +98,7 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="p-0 h-auto hover:text-white hover:bg-transparent ml-auto"
+          className="p-0 h-auto hover:text-familyxp-primary hover:bg-transparent ml-auto"
         >
           <Flag size={16} className="mr-1" /> Reportar
         </Button>
@@ -106,28 +106,28 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
 
       {/* Replies */}
       {comment.replies && comment.replies.length > 0 && (
-        <div className="ml-6 pl-6 pr-4 pb-4 border-l-2 border-[#555] bg-[#3a3a3a]">
+        <div className="ml-6 pl-6 pr-4 pb-4 border-l-2 border-gray-100 bg-gray-50">
           {comment.replies.map((reply) => (
             <div key={reply.id} className="mt-4">
               <div className="flex items-center gap-2 mb-2">
-                <Avatar className="h-8 w-8 border-2 border-[#ff4d4d]">
+                <Avatar className="h-8 w-8 border-2 border-familyxp-primary">
                   {reply.profiles?.avatar_url ? (
                     <img src={reply.profiles.avatar_url} alt="Avatar" />
                   ) : (
-                    <AvatarFallback className="bg-[#666]">{getInitials(reply)}</AvatarFallback>
+                    <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(reply)}</AvatarFallback>
                   )}
                 </Avatar>
                 <div>
-                  <p className="font-medium text-sm text-white">
+                  <p className="font-medium text-sm text-gray-900">
                     {reply.profiles?.first_name || "Usuario"}{" "}
                     {reply.profiles?.last_name || ""}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     {formatDate(reply.created_at)}
                   </p>
                 </div>
               </div>
-              <p className="text-sm ml-10 whitespace-pre-line text-gray-300">{reply.content}</p>
+              <p className="text-sm ml-10 whitespace-pre-line text-gray-600">{reply.content}</p>
             </div>
           ))}
         </div>

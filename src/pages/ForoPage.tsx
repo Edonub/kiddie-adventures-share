@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -238,27 +237,26 @@ const ForoPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#333] text-white">
+    <div className="flex min-h-screen flex-col bg-white">
       <Navbar />
       
       <main className="flex-1 py-10">
         <div className="container px-4 mx-auto max-w-4xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Foro de Familea</h1>
-            <p className="text-gray-300">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Foro de Familea</h1>
+            <p className="text-gray-600">
               Comparte tus preguntas, sugerencias y experiencias con la comunidad de Familea.
             </p>
             {showSampleData && (
-              <div className="mt-4 p-4 bg-[#444] border border-[#555] rounded-lg">
-                <p className="text-amber-300 text-sm">
+              <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                <p className="text-amber-700 text-sm">
                   <strong>Nota:</strong> Estás viendo contenido de ejemplo. Los comentarios que añadas se guardarán en la base de datos.
                 </p>
               </div>
             )}
           </div>
           
-          <Card className="bg-[#444] border-[#555] p-4 mb-6">
-            {/* Add the category selector */}
+          <Card className="bg-white border-gray-200 p-4 mb-6 shadow-sm">
             <ForumCategories 
               selectedCategory={selectedCategory} 
               onCategoryChange={setSelectedCategory} 
