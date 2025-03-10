@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MapPin } from 'lucide-react';
 import { NominatimResult, formatDisplayName } from '@/utils/locationSearch';
 
@@ -18,14 +18,16 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
   onSelectSuggestion,
   suggestionsRef
 }) => {
-  // Log para depuración
-  useEffect(() => {
-    console.log("LocationSuggestions rendered with:", { 
-      suggestionsCount: suggestions.length,
-      hasError: !!searchError,
-      isLoading
-    });
-  }, [suggestions, searchError, isLoading]);
+  if (isLoading) {
+    return (
+      <div 
+        ref={suggestionsRef} 
+        className="absolute left-0 right-0 top-full mt-1 px-4 py-3 text-sm text-gray-500 bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
+      >
+        Buscando...
+      </div>
+    );
+  }
 
   if (searchError) {
     return (
@@ -34,17 +36,6 @@ const LocationSuggestions: React.FC<LocationSuggestionsProps> = ({
         className="absolute left-0 right-0 top-full mt-1 px-4 py-3 text-sm bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
       >
         <span className="text-red-500">{searchError}</span>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div 
-        ref={suggestionsRef} 
-        className="absolute left-0 right-0 top-full mt-1 px-4 py-3 text-sm text-gray-500 bg-white shadow-lg rounded-lg border border-gray-200 z-[100]"
-      >
-        Buscando localidades en España...
       </div>
     );
   }

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocationSearch } from "@/hooks/use-location-search";
 import SearchInput from "./SearchInput";
@@ -29,40 +29,31 @@ const DestinationSearch = ({
     suggestionsRef,
     handleClear,
     handleDestinationChange,
-    selectSuggestion,
-    searchLocations
+    selectSuggestion
   } = useLocationSearch(destination, setDestination);
-
-  useEffect(() => {
-    if (activeTab === "destination" && destination.length > 1) {
-      console.log("Tab activo y texto suficiente, buscando...");
-      searchLocations(destination);
-      setShowSuggestions(true);
-    } else if (activeTab !== "destination") {
-      setShowSuggestions(false);
-    }
-  }, [activeTab, destination, searchLocations, setShowSuggestions]);
 
   const handleFocus = () => {
     setActiveTab("destination");
     if (destination.length > 1) {
-      console.log("Focus en input, buscando...");
-      searchLocations(destination);
       setShowSuggestions(true);
     }
   };
 
-  // Mostrar indicadores de depuración
-  console.log("Renderizando DestinationSearch:", { 
-    showSuggestions, 
-    isLoading, 
-    suggestionsCount: suggestions.length,
-    activeTab
-  });
+  const handleClickOutside = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Solo se ejecuta cuando hacemos clic en el contenedor pero no en el input ni en las sugerencias
+    if (
+      inputRef.current && 
+      !inputRef.current.contains(event.target as Node) &&
+      suggestionsRef.current && 
+      !suggestionsRef.current.contains(event.target as Node)
+    ) {
+      setShowSuggestions(false);
+    }
+  };
 
   if (isMobile) {
     return (
-      <div className="relative w-full">
+      <div className="relative w-full" onClick={handleClickOutside}>
         <SearchInput
           destination={destination}
           inputRef={inputRef}
@@ -89,7 +80,10 @@ const DestinationSearch = ({
   return (
     <div 
       className={`relative flex-1 p-2 cursor-pointer ${activeTab === "destination" ? "bg-gray-50 rounded-lg" : ""}`}
-      onClick={() => setActiveTab("destination")}
+      onClick={(e) => {
+        setActiveTab("destination");
+        handleClickOutside(e);
+      }}
     >
       <SearchInput
         destination={destination}
