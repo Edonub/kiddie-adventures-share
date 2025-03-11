@@ -279,5 +279,74 @@ export const sampleComments: Comment[] = [
         }
       }
     ]
+  },
+  {
+    id: "sample-9",
+    content: "**¿Cómo gestionáis los caprichos de los niños cuando salís de compras?**\n\nMi hijo de 4 años quiere comprarse algo cada vez que entramos en una tienda. Estoy intentando enseñarle el valor del dinero pero es complicado a su edad.",
+    created_at: new Date(Date.now() - 86400000 * 3.7).toISOString(),
+    user_id: "sample-user-18",
+    parent_id: null,
+    category: "general",
+    profiles: {
+      first_name: "Raúl",
+      last_name: "Torres",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Raul"
+    },
+    replies: [
+      {
+        id: "sample-9-reply-1",
+        content: "Nosotros establecimos el sistema de \"un capricho al mes\". Le damos una pequeña paga y puede elegir en qué gastársela, pero solo una vez. Le ayuda a valorar más lo que tiene y a pensárselo antes de pedir.",
+        created_at: new Date(Date.now() - 86400000 * 3.2).toISOString(),
+        user_id: "sample-user-19",
+        parent_id: "sample-9",
+        category: "general",
+        profiles: {
+          first_name: "Claudia",
+          last_name: "Hernández",
+          avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Claudia"
+        }
+      }
+    ]
+  },
+  {
+    id: "sample-10",
+    content: "**¿Alguna actividad extraescolar recomendable para niños tímidos?**\n\nMi hija tiene 7 años y le cuesta mucho relacionarse con otros niños. Me gustaría apuntarla a algo que le ayude a socializar pero que no le resulte demasiado abrumador.",
+    created_at: new Date(Date.now() - 86400000 * 7.5).toISOString(),
+    user_id: "sample-user-20",
+    parent_id: null,
+    category: "general",
+    profiles: {
+      first_name: "Sofía",
+      last_name: "Flores",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia"
+    },
+    replies: [
+      {
+        id: "sample-10-reply-1",
+        content: "El teatro infantil funcionó genial con mi hijo que también era muy tímido. Empezó algo forzado pero al final se soltó muchísimo y ahora tiene muchos amigos.",
+        created_at: new Date(Date.now() - 86400000 * 7).toISOString(),
+        user_id: "sample-user-21",
+        parent_id: "sample-10",
+        category: "general",
+        profiles: {
+          first_name: "Adrián",
+          last_name: "Castro",
+          avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Adrian"
+        }
+      },
+      {
+        id: "sample-10-reply-2",
+        content: "Puedes probar con actividades más estructuradas como robótica o ajedrez, donde la interacción es más limitada al principio pero igual pueden hacer amigos con intereses similares.",
+        created_at: new Date(Date.now() - 86400000 * 6.8).toISOString(),
+        user_id: "sample-user-22",
+        parent_id: "sample-10",
+        category: "general",
+        profiles: {
+          first_name: "Marina",
+          last_name: "Blanco",
+          avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marina"
+        }
+      }
+    ]
   }
 ];

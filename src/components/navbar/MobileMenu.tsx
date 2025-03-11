@@ -24,18 +24,18 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
           Experiencias
         </Link>
         <Link
-          to="/blog"
-          className="text-gray-700 hover:text-familyxp-primary font-medium"
-          onClick={onClose}
-        >
-          Blog
-        </Link>
-        <Link
           to="/foro"
           className="text-gray-700 hover:text-familyxp-primary font-medium"
           onClick={onClose}
         >
           Foro
+        </Link>
+        <Link
+          to="/blog"
+          className="text-gray-700 hover:text-familyxp-primary font-medium"
+          onClick={onClose}
+        >
+          Blog
         </Link>
         {user ? (
           <>

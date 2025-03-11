@@ -17,16 +17,16 @@ const DesktopNav = ({ user, onSignOut }: DesktopNavProps) => {
         Experiencias
       </Link>
       <Link
-        to="/blog"
-        className="text-gray-700 hover:text-familyxp-primary font-medium"
-      >
-        Blog
-      </Link>
-      <Link
         to="/foro"
         className="text-gray-700 hover:text-familyxp-primary font-medium"
       >
         Foro
+      </Link>
+      <Link
+        to="/blog"
+        className="text-gray-700 hover:text-familyxp-primary font-medium"
+      >
+        Blog
       </Link>
       {user ? (
         <UserDropdown user={user} onSignOut={onSignOut} />
