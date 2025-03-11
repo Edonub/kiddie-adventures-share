@@ -7,7 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Comment } from "./types";
 import { ForumCategory } from "./ForumCategories";
-import AvatarSelector from "./AvatarSelector";
 
 interface CommentFormProps {
   replyTo: Comment | null;
@@ -19,7 +18,6 @@ interface CommentFormProps {
 const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category }: CommentFormProps) => {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,16 +56,13 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category }: Comm
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 rounded-md border border-gray-200 shadow-sm">
-      <div className="flex items-start gap-3">
-        <AvatarSelector onSelect={(avatarUrl) => setSelectedAvatar(avatarUrl)} selectedAvatar={selectedAvatar} />
-        <div className="flex-1">
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder={replyTo ? "Escribe tu respuesta..." : "¿Qué quieres compartir?"}
-            className="min-h-[100px] resize-y border-gray-200"
-          />
-        </div>
+      <div className="flex-1">
+        <Textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder={replyTo ? "Escribe tu respuesta..." : "¿Qué quieres compartir?"}
+          className="min-h-[100px] resize-y border-gray-200"
+        />
       </div>
       
       <div className="flex justify-end gap-2">
