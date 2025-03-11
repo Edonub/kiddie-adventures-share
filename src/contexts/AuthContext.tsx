@@ -105,22 +105,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Attempting to sign out");
       setLoading(true);
       
+      // Primero, limpiar el estado local para una respuesta de UI inmediata
+      setUser(null);
+      setSession(null);
+      setIsAdmin(false);
+      
+      // Luego, realizar la llamada a Supabase para cerrar sesión
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error("Error in signOut:", error);
         throw error;
       }
       
-      // Explicitly clear the local state
-      setUser(null);
-      setSession(null);
-      setIsAdmin(false);
-      
       console.log("Sign out successful");
       toast.success("Has cerrado sesión correctamente");
     } catch (error: any) {
       console.error("Error signing out:", error);
       toast.error("Error al cerrar sesión");
+      
+      // Intentar restablecer la sesión en caso de error
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        setSession(data.session);
+        setUser(data.session.user);
+      }
     } finally {
       setLoading(false);
     }

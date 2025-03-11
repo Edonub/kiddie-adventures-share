@@ -62,7 +62,7 @@ const UserDropdown = ({ user, onSignOut }: UserDropdownProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-500 hover:text-red-700 hover:bg-red-50">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Cerrar sesión</span>
         </DropdownMenuItem>
