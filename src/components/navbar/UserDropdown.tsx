@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Plus } from "lucide-react";
+import { LogOut, Plus, Settings } from "lucide-react";
 import { User as AuthUser } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,16 @@ const UserDropdown = ({ user, onSignOut }: UserDropdownProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem asChild>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start" 
+            onClick={() => navigate("/configuracion")}
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Configuración</span>
+          </Button>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Button 
             variant="ghost" 

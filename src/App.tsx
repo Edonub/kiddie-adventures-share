@@ -19,6 +19,7 @@ import ContactoPage from "./pages/ContactoPage";
 import CentroAyudaPage from "./pages/CentroAyudaPage";
 import GruposPage from "./pages/GruposPage";
 import ForoCochesPage from "./pages/ForoCochesPage";
+import ConfiguracionPage from "./pages/ConfiguracionPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ function App() {
               <Route path="/crear-actividad" element={<CrearActividadPage />} />
               <Route path="/editar-actividad/:id" element={<CrearActividadPage />} />
               <Route path="/actividad/:id" element={<ActividadDetailPage />} />
+              <Route path="/configuracion" element={<ConfiguracionPage />} />
               <Route path="/terminos" element={<TerminosPage />} />
               <Route path="/privacidad" element={<PrivacidadPage />} />
               <Route path="/contacto" element={<ContactoPage />} />
