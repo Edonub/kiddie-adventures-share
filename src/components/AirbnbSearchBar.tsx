@@ -71,20 +71,6 @@ const AirbnbSearchBar = () => {
   if (isMobile) {
     return (
       <div className="w-full mt-2">
-        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center overflow-hidden"> 
-          <div className="flex-1 min-w-0"> 
-            <DestinationSearch
-              destination={destination}
-              setDestination={setDestination}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-          </div>
-          <div className="pr-1 flex-shrink-0"> 
-            <SearchButton onClick={handleSearch} />
-          </div>
-        </div>
-        
         <div className="mt-2 flex gap-2">
           <div className="flex-1 min-w-0"> 
             <DateSelection
@@ -108,6 +94,20 @@ const AirbnbSearchBar = () => {
               childrenDetails={childrenDetails}
               setChildrenDetails={setChildrenDetails}
             />
+          </div>
+        </div>
+
+        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center overflow-hidden mt-2"> 
+          <div className="flex-1 min-w-0"> 
+            <DestinationSearch
+              destination={destination}
+              setDestination={setDestination}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          </div>
+          <div className="pr-1 flex-shrink-0"> 
+            <SearchButton onClick={handleSearch} />
           </div>
         </div>
       </div>
