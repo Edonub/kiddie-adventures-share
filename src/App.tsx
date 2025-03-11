@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,7 +18,7 @@ import ContactoPage from "./pages/ContactoPage";
 import CentroAyudaPage from "./pages/CentroAyudaPage";
 import GruposPage from "./pages/GruposPage";
 import ForoCochesPage from "./pages/ForoCochesPage";
-import ConfiguracionPage from "./pages/ConfiguracionPage";
+import ConfiguracionPage from "./pages/configuracion/ConfiguracionPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
