@@ -20,6 +20,7 @@ const ConfiguracionPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
+    // Only attempt to load the user profile when authentication is complete
     if (!authLoading) {
       if (!user) {
         toast.error("Debes iniciar sesión para acceder a la configuración");
@@ -27,28 +28,29 @@ const ConfiguracionPage = () => {
         return;
       }
       
+      // Load user profile when we have a user
       loadUserProfile();
     }
   }, [user, authLoading, navigate]);
   
   const loadUserProfile = async () => {
+    if (!user) return; // Ensure we have a user before attempting to load profile
+    
     try {
       setIsLoading(true);
       
-      if (user) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-          
-        if (error) {
-          console.error("Error loading profile:", error);
-          throw error;
-        }
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
         
-        setUserProfile(data);
+      if (error) {
+        console.error("Error loading profile:", error);
+        throw error;
       }
+      
+      setUserProfile(data);
     } catch (error) {
       console.error("Error loading profile:", error);
       toast.error("Error al cargar tu perfil. Inténtalo de nuevo más tarde.");
@@ -57,6 +59,7 @@ const ConfiguracionPage = () => {
     }
   };
 
+  // Show loading spinner while auth state is being determined
   if (authLoading) {
     return (
       <>
@@ -64,12 +67,19 @@ const ConfiguracionPage = () => {
         <div className="container mx-auto p-4 py-8">
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            <p className="ml-2">Verificando sesión...</p>
           </div>
         </div>
       </>
     );
   }
 
+  // If not authenticated, this will redirect - should never render
+  if (!user) {
+    return null;
+  }
+
+  // Show skeleton loading while profile data is being loaded
   if (isLoading) {
     return (
       <>
@@ -85,6 +95,7 @@ const ConfiguracionPage = () => {
     );
   }
   
+  // Once everything is loaded, render the full page
   return (
     <>
       <Navbar />
