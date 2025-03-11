@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,7 +24,6 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Ensure App is declared as a function component
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -46,7 +44,6 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} /> {/* English route for compatibility */}
               <Route path="/mis-experiencias" element={<MyExperiencesPage />} />
               
-              {/* Nuevas rutas para el footer */}
               <Route path="/terminos" element={<TerminosPage />} />
               <Route path="/privacidad" element={<PrivacidadPage />} />
               <Route path="/contacto" element={<ContactoPage />} />
@@ -54,7 +51,6 @@ function App() {
               <Route path="/grupos" element={<GruposPage />} />
               <Route path="/forocoches" element={<ForoCochesPage />} />
               
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
