@@ -19,21 +19,27 @@ const ConfiguracionPage = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadingAttempted, setLoadingAttempted] = useState(false);
   
-  // Separate useEffect to handle navigation when user is not authenticated
+  console.log("ConfiguracionPage - Auth loading:", authLoading, "User:", user?.id);
+  
+  // Handle navigation for unauthenticated users
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (!authLoading && !user && loadingAttempted) {
       console.log("User not authenticated, redirecting to auth page");
       toast.error("Debes iniciar sesión para acceder a la configuración");
       navigate("/auth");
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, loadingAttempted]);
   
-  // Load user profile only when we have a user and auth is done loading
+  // Load user profile only when authentication is complete
   useEffect(() => {
-    if (!authLoading && user) {
-      console.log("Loading user profile for:", user.id);
-      loadUserProfile();
+    if (!authLoading) {
+      setLoadingAttempted(true);
+      if (user) {
+        console.log("Auth completed, loading profile for:", user.id);
+        loadUserProfile();
+      }
     }
   }, [user, authLoading]);
   
@@ -51,7 +57,7 @@ const ConfiguracionPage = () => {
         .from('profiles')
         .select('*')
         .eq('id', user.id)
-        .maybeSingle(); // Using maybeSingle instead of single to avoid errors
+        .maybeSingle(); 
         
       if (error) {
         console.error("Error loading profile:", error.message);
@@ -70,6 +76,8 @@ const ConfiguracionPage = () => {
     }
   };
 
+  console.log("Render state - Auth loading:", authLoading, "Profile loading:", isLoading, "Error:", error);
+
   // Show error state if there was an error loading the profile
   if (error) {
     return (
@@ -79,7 +87,11 @@ const ConfiguracionPage = () => {
           <div className="flex flex-col justify-center items-center h-40">
             <p className="text-red-500 mb-4">{error}</p>
             <button 
-              onClick={() => window.location.reload()} 
+              onClick={() => {
+                setError(null);
+                setLoadingAttempted(false);
+                window.location.reload();
+              }} 
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Intentar de nuevo
@@ -112,6 +124,7 @@ const ConfiguracionPage = () => {
         <Navbar />
         <div className="container mx-auto p-4 py-8">
           <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mr-2"></div>
             <p>Redirigiendo a la página de inicio de sesión...</p>
           </div>
         </div>

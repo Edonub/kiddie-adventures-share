@@ -27,11 +27,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log("AuthProvider mounted");
     
-    const setData = async () => {
-      setLoading(true);
+    // Function to check user session and status
+    const initializeAuth = async () => {
       try {
         console.log("Checking initial session");
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("Error getting session:", error.message);
+          setLoading(false);
+          return;
+        }
+        
         console.log("Initial session:", session?.user?.email || "No session");
         
         if (session) {
@@ -40,13 +47,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           
           // Check if user is admin
           if (session.user) {
-            const { data, error } = await supabase
+            const { data, error: profileError } = await supabase
               .from('profiles')
-              .select('email, is_admin')
+              .select('is_admin')
               .eq('id', session.user.id)
-              .maybeSingle(); // Using maybeSingle instead of single to prevent errors
+              .maybeSingle();
               
-            if (!error && data && data.is_admin) {
+            if (!profileError && data && data.is_admin) {
               setIsAdmin(true);
             }
           }
@@ -55,20 +62,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("Error in auth context setup:", error);
       } finally {
         setLoading(false);
-        console.log("Auth loading complete, user:", session?.user?.email || "No user");
+        console.log("Auth initialization complete");
       }
     };
 
-    setData();
+    // Initialize authentication status
+    initializeAuth();
 
+    // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
       
       if (event === 'SIGNED_OUT') {
+        console.log("User signed out");
         setSession(null);
         setUser(null);
         setIsAdmin(false);
       } else if (session) {
+        console.log("User session updated:", session.user?.email);
         setSession(session);
         setUser(session.user);
       
@@ -77,9 +88,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (session.user) {
             const { data, error } = await supabase
               .from('profiles')
-              .select('email, is_admin')
+              .select('is_admin')
               .eq('id', session.user.id)
-              .maybeSingle(); // Using maybeSingle instead of single
+              .maybeSingle();
               
             if (!error && data && data.is_admin) {
               setIsAdmin(true);
@@ -92,7 +103,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setIsAdmin(false);
         }
       }
-      setLoading(false);
     });
 
     return () => {
@@ -136,7 +146,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .from('profiles')
         .select('id')
         .eq('email', email)
-        .maybeSingle(); // Using maybeSingle instead of single
+        .maybeSingle();
 
       if (profileError || !profile) {
         throw new Error('Usuario no encontrado');
@@ -172,7 +182,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     makeAdmin
   };
 
-  console.log("AuthProvider rendering with user:", user?.email || "No user");
+  console.log("AuthProvider rendering with user:", user?.email || "No user", "loading:", loading);
   
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
