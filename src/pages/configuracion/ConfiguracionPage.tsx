@@ -1,17 +1,12 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PersonalDataTab from "./tabs/PersonalDataTab";
-import SecurityTab from "./tabs/SecurityTab";
-import ContactTab from "./tabs/ContactTab";
-import BankAccountTab from "./tabs/BankAccountTab";
+import ConfigTabs from "@/components/configuration/ConfigTabs";
+import LoadingState from "@/components/configuration/LoadingState";
 import { UserProfile } from "./types";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const ConfiguracionPage = () => {
   const { user, loading: authLoading } = useAuth();
@@ -23,7 +18,6 @@ const ConfiguracionPage = () => {
   
   console.log("ConfiguracionPage - Auth loading:", authLoading, "User:", user?.id);
   
-  // Handle navigation for unauthenticated users
   useEffect(() => {
     if (!authLoading && !user && loadingAttempted) {
       console.log("User not authenticated, redirecting to auth page");
@@ -32,7 +26,6 @@ const ConfiguracionPage = () => {
     }
   }, [user, authLoading, navigate, loadingAttempted]);
   
-  // Load user profile only when authentication is complete
   useEffect(() => {
     if (!authLoading) {
       setLoadingAttempted(true);
@@ -76,9 +69,6 @@ const ConfiguracionPage = () => {
     }
   };
 
-  console.log("Render state - Auth loading:", authLoading, "Profile loading:", isLoading, "Error:", error);
-
-  // Show error state if there was an error loading the profile
   if (error) {
     return (
       <>
@@ -102,7 +92,6 @@ const ConfiguracionPage = () => {
     );
   }
 
-  // Show loading spinner while auth state is being determined
   if (authLoading) {
     return (
       <>
@@ -117,7 +106,6 @@ const ConfiguracionPage = () => {
     );
   }
 
-  // If not authenticated, show message and redirect
   if (!user) {
     return (
       <>
@@ -132,57 +120,24 @@ const ConfiguracionPage = () => {
     );
   }
 
-  // Show skeleton loading while profile data is being loaded
   if (isLoading) {
     return (
       <>
         <Navbar />
         <div className="container mx-auto p-4 py-8">
           <h1 className="text-3xl font-bold mb-6">Configuración de cuenta</h1>
-          <div className="flex justify-center items-center mb-4">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mr-2"></div>
-            <p>Cargando tu perfil...</p>
-          </div>
-          <div className="space-y-4">
-            <Skeleton className="h-12 w-full" />
-            <Skeleton className="h-96 w-full" />
-          </div>
+          <LoadingState />
         </div>
       </>
     );
   }
   
-  // Once everything is loaded, render the full page
   return (
     <>
       <Navbar />
       <div className="container mx-auto p-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Configuración de cuenta</h1>
-        
-        <Tabs defaultValue="personal" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="personal">Datos personales</TabsTrigger>
-            <TabsTrigger value="seguridad">Seguridad</TabsTrigger>
-            <TabsTrigger value="contacto">Contacto</TabsTrigger>
-            <TabsTrigger value="bancaria">Cuenta bancaria</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="personal">
-            <PersonalDataTab userProfile={userProfile} user={user} />
-          </TabsContent>
-          
-          <TabsContent value="seguridad">
-            <SecurityTab />
-          </TabsContent>
-          
-          <TabsContent value="contacto">
-            <ContactTab userProfile={userProfile} user={user} />
-          </TabsContent>
-          
-          <TabsContent value="bancaria">
-            <BankAccountTab userProfile={userProfile} user={user} />
-          </TabsContent>
-        </Tabs>
+        <ConfigTabs userProfile={userProfile} user={user} />
       </div>
     </>
   );
