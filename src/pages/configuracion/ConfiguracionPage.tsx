@@ -11,24 +11,25 @@ import SecurityTab from "./tabs/SecurityTab";
 import ContactTab from "./tabs/ContactTab";
 import BankAccountTab from "./tabs/BankAccountTab";
 import { UserProfile } from "./types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ConfiguracionPage = () => {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Debes iniciar sesión para acceder a la configuración");
-      navigate("/auth");
-      return;
-    }
-    
-    if (user) {
+    if (!authLoading) {
+      if (!user) {
+        toast.error("Debes iniciar sesión para acceder a la configuración");
+        navigate("/auth");
+        return;
+      }
+      
       loadUserProfile();
     }
-  }, [user, loading, navigate]);
+  }, [user, authLoading, navigate]);
   
   const loadUserProfile = async () => {
     try {
@@ -41,27 +42,43 @@ const ConfiguracionPage = () => {
           .eq('id', user.id)
           .single();
           
-        if (error) throw error;
-        
-        if (data) {
-          setUserProfile(data);
+        if (error) {
+          console.error("Error loading profile:", error);
+          throw error;
         }
+        
+        setUserProfile(data);
       }
     } catch (error) {
-      console.error("Error cargando el perfil:", error);
+      console.error("Error loading profile:", error);
       toast.error("Error al cargar tu perfil. Inténtalo de nuevo más tarde.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (loading || isLoading) {
+  if (authLoading) {
     return (
       <>
         <Navbar />
         <div className="container mx-auto p-4 py-8">
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 py-8">
+          <h1 className="text-3xl font-bold mb-6">Configuración de cuenta</h1>
+          <div className="space-y-4">
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-96 w-full" />
           </div>
         </div>
       </>
