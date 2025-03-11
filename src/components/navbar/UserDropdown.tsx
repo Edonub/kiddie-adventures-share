@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User, LogOut, Plus, Bookmark } from "lucide-react";
 import { User as AuthUser } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,6 +19,13 @@ interface UserDropdownProps {
 }
 
 const UserDropdown = ({ user, onSignOut }: UserDropdownProps) => {
+  const navigate = useNavigate();
+  
+  const handleSignOut = async () => {
+    await onSignOut();
+    navigate("/");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,14 +58,10 @@ const UserDropdown = ({ user, onSignOut }: UserDropdownProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {user && user.app_metadata?.provider === "email" && (
-          <>
-            <DropdownMenuItem onClick={onSignOut} className="cursor-pointer">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Cerrar sesión</span>
-            </DropdownMenuItem>
-          </>
-        )}
+        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Cerrar sesión</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

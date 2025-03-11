@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User } from "@/contexts/AuthContext";
 
 interface MobileMenuProps {
@@ -11,7 +11,15 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
+  const navigate = useNavigate();
+  
   if (!isOpen) return null;
+
+  const handleSignOut = async () => {
+    await onSignOut();
+    navigate("/");
+    onClose();
+  };
 
   return (
     <div className="md:hidden mt-4 border-t pt-4">
@@ -61,10 +69,7 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
               Crear Experiencia
             </Link>
             <button
-              onClick={() => {
-                onSignOut();
-                onClose();
-              }}
+              onClick={handleSignOut}
               className="text-left text-gray-700 hover:text-familyxp-primary font-medium"
             >
               Cerrar sesión
