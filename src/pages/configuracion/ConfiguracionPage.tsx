@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import ConfigTabs from "@/components/configuration/ConfigTabs";
 import LoadingState from "@/components/configuration/LoadingState";
-import { UserProfile } from "./types";
+import { UserProfile } from "@/components/configuration/types";
 
 const ConfiguracionPage = () => {
   const { user, loading: authLoading } = useAuth();
