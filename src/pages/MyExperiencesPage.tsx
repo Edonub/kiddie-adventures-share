@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -52,8 +51,9 @@ const MyExperiencesPage = () => {
           category: item.category,
           price: item.price,
           image_url: item.image_url || "https://placehold.co/600x400",
-          status: item.is_published ? "published" : "draft",
-          bookings: item.booking_count || 0
+          // Default to draft if is_premium is true
+          status: item.is_premium ? "published" : "draft",
+          bookings: item.review_count || 0
         }));
         
         setExperiences(transformedData);

@@ -21,6 +21,7 @@ interface ExperienceListProps {
 }
 
 const ExperienceList: React.FC<ExperienceListProps> = ({ experiences, status, onDeleteExperience }) => {
+  // Filter experiences by status
   const filteredExperiences = experiences.filter(exp => exp.status === status);
 
   if (filteredExperiences.length === 0) {
