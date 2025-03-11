@@ -3,12 +3,11 @@ import React, { useEffect } from "react";
 import ProfileLayout from "@/components/profile/ProfileLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import LoadingExperience from "@/components/experiences/LoadingExperience";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const ProfilePage = () => {
   const { user, loading } = useAuth();
-  const navigate = useNavigate();
   
   console.log("ProfilePage: loading =", loading, "user =", user?.email || "null");
 
