@@ -17,9 +17,10 @@ interface Experience {
 interface ExperienceListProps {
   experiences: Experience[];
   status: "published" | "draft";
+  onDeleteExperience?: (id: string) => void;
 }
 
-const ExperienceList: React.FC<ExperienceListProps> = ({ experiences, status }) => {
+const ExperienceList: React.FC<ExperienceListProps> = ({ experiences, status, onDeleteExperience }) => {
   const filteredExperiences = experiences.filter(exp => exp.status === status);
 
   if (filteredExperiences.length === 0) {
@@ -29,7 +30,11 @@ const ExperienceList: React.FC<ExperienceListProps> = ({ experiences, status }) 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredExperiences.map(experience => (
-        <ExperienceCard key={experience.id} experience={experience} />
+        <ExperienceCard 
+          key={experience.id} 
+          experience={experience} 
+          onDeleteExperience={onDeleteExperience}
+        />
       ))}
     </div>
   );

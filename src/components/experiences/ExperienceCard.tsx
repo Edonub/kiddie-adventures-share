@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit, Eye, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface ExperienceCardProps {
   experience: {
@@ -16,9 +17,20 @@ interface ExperienceCardProps {
     status: string;
     bookings: number;
   };
+  onDeleteExperience?: (id: string) => void;
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) => {
+const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, onDeleteExperience }) => {
+  const handleDelete = () => {
+    if (window.confirm(`¿Estás seguro de que quieres eliminar "${experience.title}"?`)) {
+      if (onDeleteExperience) {
+        onDeleteExperience(experience.id);
+      } else {
+        toast.error("Función de eliminación no disponible");
+      }
+    }
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       <div className="relative h-48">
@@ -80,6 +92,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) => {
             variant="ghost" 
             size="sm" 
             className="text-red-400 hover:text-red-600 hover:bg-red-50"
+            onClick={handleDelete}
           >
             <Trash2 size={16} className="mr-1" />
             <span>Borrar</span>

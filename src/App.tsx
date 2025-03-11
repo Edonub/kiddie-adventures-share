@@ -40,6 +40,7 @@ function App() {
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/super-admin" element={<SuperAdminPage />} />
               <Route path="/crear-actividad" element={<CrearActividadPage />} />
+              <Route path="/editar-actividad/:id" element={<CrearActividadPage />} />
               <Route path="/actividad/:id" element={<ActividadDetailPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
               <Route path="/mis-experiencias" element={<MyExperiencesPage />} />

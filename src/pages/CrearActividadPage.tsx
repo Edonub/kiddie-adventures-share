@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,8 @@ import { Upload } from "lucide-react";
 const CrearActividadPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = !!id;
   
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -35,6 +37,49 @@ const CrearActividadPage = () => {
   const [ageRange, setAgeRange] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(false);
+
+  useEffect(() => {
+    if (isEditMode) {
+      fetchExperienceData();
+    }
+  }, [id, user]);
+
+  const fetchExperienceData = async () => {
+    if (!user || !id) return;
+
+    setInitialLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("activities")
+        .select("*")
+        .eq("id", id)
+        .eq("creator_id", user.id)
+        .single();
+
+      if (error) {
+        toast.error("No se pudo cargar la experiencia");
+        navigate("/mis-experiencias");
+        return;
+      }
+
+      if (data) {
+        setTitle(data.title || "");
+        setDescription(data.description || "");
+        setLocation(data.location || "");
+        setCategory(data.category || "");
+        setPrice(data.price ? data.price.toString() : "0");
+        setImageUrl(data.image_url || "");
+        setAgeRange(data.age_range || "");
+        setIsPremium(data.is_premium || false);
+      }
+    } catch (error) {
+      console.error("Error fetching experience:", error);
+      toast.error("Error al cargar la experiencia");
+    } finally {
+      setInitialLoading(false);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -101,26 +146,63 @@ const CrearActividadPage = () => {
         location,
         category,
         price: parseFloat(price),
-        image_url: finalImageUrl,
+        image_url: finalImageUrl || imageUrl,
         age_range: ageRange,
         is_premium: isPremium,
         creator_id: user.id,
       };
       
-      const { error } = await supabase
-        .from("activities")
-        .insert([activityData]);
+      let error;
+      
+      if (isEditMode) {
+        // Update existing experience
+        const response = await supabase
+          .from("activities")
+          .update(activityData)
+          .eq("id", id)
+          .eq("creator_id", user.id);
+          
+        error = response.error;
         
+        if (!error) {
+          toast.success("Experiencia actualizada exitosamente");
+        }
+      } else {
+        // Create new experience
+        const response = await supabase
+          .from("activities")
+          .insert([activityData]);
+          
+        error = response.error;
+        
+        if (!error) {
+          toast.success("Experiencia creada exitosamente");
+        }
+      }
+      
       if (error) throw error;
       
-      toast.success("Experiencia creada exitosamente");
-      navigate("/");
+      navigate("/mis-experiencias");
     } catch (error: any) {
-      toast.error(error.message || "Error al crear la experiencia");
+      toast.error(error.message || "Error al guardar la experiencia");
     } finally {
       setLoading(false);
     }
   };
+  
+  if (initialLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-6 max-w-3xl">
+          <div className="flex justify-center items-center h-[50vh]">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            <p className="ml-4 text-gray-600">Cargando experiencia...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
   
   return (
     <>
@@ -128,9 +210,13 @@ const CrearActividadPage = () => {
       <div className="container mx-auto p-6 max-w-3xl">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Crear Nueva Experiencia</CardTitle>
+            <CardTitle className="text-2xl">
+              {isEditMode ? "Editar Experiencia" : "Crear Nueva Experiencia"}
+            </CardTitle>
             <CardDescription>
-              Comparte actividades y experiencias interesantes para familias
+              {isEditMode 
+                ? "Actualiza los detalles de tu experiencia" 
+                : "Comparte actividades y experiencias interesantes para familias"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -254,6 +340,18 @@ const CrearActividadPage = () => {
                     />
                   </div>
                 </div>
+                {imageUrl && (
+                  <div className="mt-2">
+                    <img 
+                      src={imageUrl} 
+                      alt="Preview" 
+                      className="max-h-32 border rounded-md"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://placehold.co/600x400?text=Error+al+cargar";
+                      }}
+                    />
+                  </div>
+                )}
                 <p className="text-sm text-muted-foreground mt-1">
                   Añade una imagen para ilustrar la experiencia
                 </p>
@@ -269,7 +367,7 @@ const CrearActividadPage = () => {
               </div>
             
               <Button type="submit" className="w-full" disabled={loading || uploading}>
-                {loading ? "Creando..." : "Crear Experiencia"}
+                {loading ? (isEditMode ? "Actualizando..." : "Creando...") : (isEditMode ? "Actualizar Experiencia" : "Crear Experiencia")}
               </Button>
             </form>
           </CardContent>
