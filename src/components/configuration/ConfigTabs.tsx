@@ -4,7 +4,7 @@ import PersonalDataTab from "@/pages/configuracion/tabs/PersonalDataTab";
 import SecurityTab from "@/pages/configuracion/tabs/SecurityTab";
 import ContactTab from "@/pages/configuracion/tabs/ContactTab";
 import BankAccountTab from "@/pages/configuracion/tabs/BankAccountTab";
-import { TabProps } from "@/pages/configuracion/types";
+import { TabProps } from "@/components/configuration/types";
 
 interface ConfigTabsProps extends TabProps {}
 
