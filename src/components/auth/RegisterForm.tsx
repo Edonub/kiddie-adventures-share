@@ -1,10 +1,9 @@
 
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
+import { useRegister } from "@/hooks/useRegister";
 
 interface RegisterFormProps {
   email: string;
@@ -31,35 +30,22 @@ const RegisterForm = ({
   setLoginError,
   setVerificationSent
 }: RegisterFormProps) => {
+  const { register, error, setError } = useRegister();
   
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setLoginError("");
 
-    try {
-      const { error, data } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: name,
-          },
-          emailRedirectTo: `${window.location.origin}/auth`,
-        },
-      });
-
-      if (error) throw error;
-      
+    const result = await register(email, password, name);
+    
+    if (result.success) {
       setVerificationSent(true);
-      toast.success("Se ha enviado un email de verificación a tu correo. Por favor, confírmalo para continuar.");
-    } catch (error: any) {
-      console.error("Error al registrarse:", error.message);
-      setLoginError(error.message || "Error al registrarse");
-      toast.error(error.message || "Error al registrarse");
-    } finally {
-      setLoading(false);
+    } else {
+      setLoginError(error);
     }
+    
+    setLoading(false);
   };
 
   return (

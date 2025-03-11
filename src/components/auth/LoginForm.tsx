@@ -1,12 +1,9 @@
 
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { useLogin } from "@/hooks/useLogin";
 
 interface LoginFormProps {
   email: string;
@@ -29,65 +26,23 @@ const LoginForm = ({
   loginError,
   setLoginError
 }: LoginFormProps) => {
+  const { login, resetPassword, error, setError } = useLogin();
   
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setLoginError("");
-
-    try {
-      console.log("Attempting sign in with:", email);
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-      
-      toast.success("Inicio de sesión exitoso!");
-    } catch (error: any) {
-      console.error("Error al iniciar sesión:", error.message);
-      
-      if (error.message.includes("Email not confirmed")) {
-        setLoginError("Tu email no ha sido verificado. Por favor, revisa tu bandeja de entrada y confirma tu email.");
-        
-        // Reenviar email de verificación
-        const { error: resendError } = await supabase.auth.resend({
-          type: 'signup',
-          email,
-        });
-        
-        if (!resendError) {
-          toast.info("Hemos reenviado el email de verificación a tu correo.");
-        }
-      } else {
-        setLoginError(error.message || "Error al iniciar sesión");
-        toast.error(error.message || "Error al iniciar sesión");
-      }
-    } finally {
-      setLoading(false);
+    
+    const result = await login(email, password);
+    
+    if (!result.success) {
+      setLoginError(error);
     }
+    
+    setLoading(false);
   };
 
   const handleResetPassword = async () => {
-    if (!email) {
-      toast.error("Por favor, introduce tu email para restablecer la contraseña");
-      return;
-    }
-    
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth`,
-      });
-      
-      if (error) throw error;
-      toast.success("Se ha enviado un email para restablecer tu contraseña");
-    } catch (error: any) {
-      toast.error(error.message || "Error al enviar el email de recuperación");
-    } finally {
-      setLoading(false);
-    }
+    await resetPassword(email);
   };
 
   return (
