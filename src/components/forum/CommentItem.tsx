@@ -6,27 +6,17 @@ import { Reply, ThumbsUp, Flag } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import { useState } from "react";
-
-type Comment = {
-  id: string;
-  content: string;
-  created_at: string;
-  user_id: string;
-  parent_id: string | null;
-  profiles?: {
-    first_name: string;
-    last_name: string;
-    avatar_url: string;
-  };
-  replies?: Comment[];
-};
+import { Comment } from "./types";
+import ReactMarkdown from "react-markdown";
 
 interface CommentItemProps {
   comment: Comment;
   onReply: (comment: Comment) => void;
+  isThread?: boolean;
+  isReply?: boolean;
 }
 
-const CommentItem = ({ comment, onReply }: CommentItemProps) => {
+const CommentItem = ({ comment, onReply, isThread = false, isReply = false }: CommentItemProps) => {
   const [likes, setLikes] = useState(Math.floor(Math.random() * 10)); // Just for demo
 
   const formatDate = (dateString: string) => {
@@ -53,9 +43,28 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
     setLikes(likes + 1);
   };
 
+  // Extract title from content for thread posts
+  const getContentParts = () => {
+    if (!isThread || !comment.content.includes("**")) {
+      return { title: null, content: comment.content };
+    }
+
+    const parts = comment.content.split("\n\n");
+    const title = parts[0].replace(/\*\*/g, "");
+    const content = parts.slice(1).join("\n\n");
+    
+    return { title, content };
+  };
+
+  const { title, content } = getContentParts();
+
   return (
-    <Card key={comment.id} id={comment.id} className="bg-white border-gray-200 text-gray-900 shadow-sm">
-      <CardHeader className="pb-3 border-b border-gray-100">
+    <Card 
+      key={comment.id} 
+      id={comment.id} 
+      className={`bg-white border-gray-200 text-gray-900 shadow-sm ${isReply ? "mt-3" : ""}`}
+    >
+      <CardHeader className={`pb-3 border-b border-gray-100 ${isThread ? "bg-gray-50" : ""}`}>
         <div className="flex items-center gap-3">
           <Avatar className="border-2 border-familyxp-primary">
             {comment.profiles?.avatar_url ? (
@@ -64,19 +73,26 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
               <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(comment)}</AvatarFallback>
             )}
           </Avatar>
-          <div>
-            <p className="font-medium text-gray-900">
-              {comment.profiles?.first_name || "Usuario"}{" "}
-              {comment.profiles?.last_name || ""}
-            </p>
-            <p className="text-xs text-gray-500">
-              {formatDate(comment.created_at)}
-            </p>
+          <div className="flex-1">
+            {title && isThread ? (
+              <p className="font-bold text-lg text-gray-900">{title}</p>
+            ) : null}
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-gray-900">
+                {comment.profiles?.first_name || "Usuario"}{" "}
+                {comment.profiles?.last_name || ""}
+              </p>
+              <p className="text-xs text-gray-500">
+                {formatDate(comment.created_at)}
+              </p>
+            </div>
           </div>
         </div>
       </CardHeader>
       <CardContent className="pb-3 pt-4">
-        <p className="whitespace-pre-line text-gray-700">{comment.content}</p>
+        <div className="whitespace-pre-line text-gray-700">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
       </CardContent>
       <CardFooter className="flex gap-4 pt-0 text-sm text-gray-500 border-t border-gray-100 py-3">
         <Button
@@ -103,35 +119,6 @@ const CommentItem = ({ comment, onReply }: CommentItemProps) => {
           <Flag size={16} className="mr-1" /> Reportar
         </Button>
       </CardFooter>
-
-      {/* Replies */}
-      {comment.replies && comment.replies.length > 0 && (
-        <div className="ml-6 pl-6 pr-4 pb-4 border-l-2 border-gray-100 bg-gray-50">
-          {comment.replies.map((reply) => (
-            <div key={reply.id} className="mt-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Avatar className="h-8 w-8 border-2 border-familyxp-primary">
-                  {reply.profiles?.avatar_url ? (
-                    <AvatarImage src={reply.profiles.avatar_url} alt="Avatar" />
-                  ) : (
-                    <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(reply)}</AvatarFallback>
-                  )}
-                </Avatar>
-                <div>
-                  <p className="font-medium text-sm text-gray-900">
-                    {reply.profiles?.first_name || "Usuario"}{" "}
-                    {reply.profiles?.last_name || ""}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {formatDate(reply.created_at)}
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm ml-10 whitespace-pre-line text-gray-600">{reply.content}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </Card>
   );
 };

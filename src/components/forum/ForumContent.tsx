@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import ForumCategories, { ForumCategory } from "./ForumCategories";
 import CommentForm from "./CommentForm";
@@ -12,6 +11,8 @@ interface ForumContentProps {
   selectedCategory: ForumCategory;
   onCategoryChange: (category: ForumCategory) => void;
   onCommentSubmitted: () => void;
+  replyingToComment: string | null;
+  setReplyingToComment: (commentId: string | null) => void;
 }
 
 const ForumContent = ({ 
@@ -19,10 +20,10 @@ const ForumContent = ({
   loading, 
   selectedCategory, 
   onCategoryChange, 
-  onCommentSubmitted 
+  onCommentSubmitted,
+  replyingToComment,
+  setReplyingToComment
 }: ForumContentProps) => {
-  const [replyTo, setReplyTo] = useState<Comment | null>(null);
-
   return (
     <>
       <Card className="bg-white border-gray-200 p-4 mb-6 shadow-sm">
@@ -32,17 +33,28 @@ const ForumContent = ({
         />
       </Card>
       
-      <CommentForm 
-        replyTo={replyTo} 
-        setReplyTo={setReplyTo} 
-        onCommentSubmitted={onCommentSubmitted}
-        category={selectedCategory}
-      />
+      {replyingToComment === "new" && (
+        <CommentForm 
+          replyTo={null} 
+          setReplyTo={() => setReplyingToComment(null)} 
+          onCommentSubmitted={() => {
+            onCommentSubmitted();
+            setReplyingToComment(null);
+          }}
+          category={selectedCategory}
+        />
+      )}
       
       <CommentList 
         comments={comments} 
         loading={loading} 
-        onReply={setReplyTo} 
+        onReply={(comment) => {
+          setReplyingToComment(comment.id);
+        }}
+        replyingToComment={replyingToComment}
+        setReplyingToComment={setReplyingToComment}
+        onCommentSubmitted={onCommentSubmitted}
+        category={selectedCategory}
       />
     </>
   );
