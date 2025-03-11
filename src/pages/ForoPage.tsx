@@ -31,14 +31,14 @@ const ForoPage = () => {
             setReplyingToComment={setReplyingToComment}
           />
           
-          {/* Tab content similar to ForoCoches */}
-          <TabsContent value={selectedCategory} className="mt-6">
+          {/* Contenedor de los resultados */}
+          <div className="mt-6">
             {!loading && comments.length === 0 && (
               <div className="bg-gray-50 p-8 rounded-lg text-center">
                 <p className="text-gray-500">No hay hilos en esta categoría. ¡Sé el primero en crear uno!</p>
               </div>
             )}
-          </TabsContent>
+          </div>
         </div>
       </main>
       

@@ -13,5 +13,5 @@ export type Comment = {
     avatar_url: string;
   };
   replies?: Comment[];
-  category?: ForumCategory | string;
+  category: ForumCategory | string;
 };
