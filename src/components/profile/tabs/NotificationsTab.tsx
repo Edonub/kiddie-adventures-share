@@ -1,8 +1,13 @@
 
 import React from "react";
+import { User } from "@/contexts/AuthContext";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 
-const NotificationsTab = () => {
+interface NotificationsTabProps {
+  user: User;
+}
+
+const NotificationsTab = ({ user }: NotificationsTabProps) => {
   return (
     <Card>
       <CardHeader>
