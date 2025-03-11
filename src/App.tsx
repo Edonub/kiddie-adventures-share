@@ -43,7 +43,7 @@ function App() {
               <Route path="/editar-actividad/:id" element={<CrearActividadPage />} />
               <Route path="/actividad/:id" element={<ActividadDetailPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
-              <Route path="/profile" element={<ProfilePage />} /> {/* Add English route for compatibility */}
+              <Route path="/profile" element={<ProfilePage />} /> {/* English route for compatibility */}
               <Route path="/mis-experiencias" element={<MyExperiencesPage />} />
               
               {/* Nuevas rutas para el footer */}

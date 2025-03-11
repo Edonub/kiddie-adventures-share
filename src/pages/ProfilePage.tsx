@@ -8,7 +8,6 @@ const ProfilePage = () => {
   
   console.log("ProfilePage: loading =", loading, "user =", user?.email || "null");
 
-  // Using ProfileLayout which handles loading and authentication
   return <ProfileLayout />;
 };
 

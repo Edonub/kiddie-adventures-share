@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +11,6 @@ import LoadingExperience from "@/components/experiences/LoadingExperience";
 
 const ProfileLayout = () => {
   const { user, loading } = useAuth();
-  const navigate = useNavigate();
   
   // Adding debug logs to track loading state and user
   console.log("ProfileLayout: loading =", loading, "user =", user?.email || "null");
