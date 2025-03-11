@@ -22,8 +22,12 @@ const UserDropdown = ({ user, onSignOut }: UserDropdownProps) => {
   const navigate = useNavigate();
   
   const handleSignOut = async () => {
-    await onSignOut();
-    navigate("/");
+    try {
+      await onSignOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (

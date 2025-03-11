@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,11 +16,19 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ProfilePage = () => {
   const { user, loading, isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Debes iniciar sesión para acceder a esta página");
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
   
   // Initialize form values when user data loads
   React.useEffect(() => {

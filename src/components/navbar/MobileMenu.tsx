@@ -16,9 +16,13 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
   if (!isOpen) return null;
 
   const handleSignOut = async () => {
-    await onSignOut();
-    navigate("/");
-    onClose();
+    try {
+      await onSignOut();
+      onClose();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (

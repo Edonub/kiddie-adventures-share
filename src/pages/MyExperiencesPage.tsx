@@ -1,6 +1,6 @@
 
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
@@ -10,10 +10,19 @@ import MyExperiencesLoading from "@/components/experiences/MyExperiencesLoading"
 import MyExperiencesHeader from "@/components/experiences/MyExperiencesHeader";
 import BookingsTabContent from "@/components/experiences/BookingsTabContent";
 import { useMyExperiences } from "@/hooks/useMyExperiences";
+import { toast } from "sonner";
 
 const MyExperiencesPage = () => {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
   const { experiences, bookings, isLoading, isLoadingBookings, handleDeleteExperience } = useMyExperiences(user?.id);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Debes iniciar sesión para acceder a esta página");
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
 
   if (loading || isLoading) {
     return <MyExperiencesLoading />;

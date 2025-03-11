@@ -28,25 +28,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("AuthProvider mounted");
     
     const setData = async () => {
+      setLoading(true);
       try {
         console.log("Checking initial session");
         const { data: { session } } = await supabase.auth.getSession();
         console.log("Initial session:", session?.user?.email || "No session");
-        setSession(session);
-        setUser(session?.user ?? null);
         
-        // Check if user is admin
-        if (session?.user) {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('email, is_admin')
-            .eq('id', session.user.id)
-            .single();
-            
-          if (error) {
-            console.error("Error fetching profile:", error);
-          } else if (data && data.is_admin) {
-            setIsAdmin(true);
+        if (session) {
+          setSession(session);
+          setUser(session.user);
+          
+          // Check if user is admin
+          if (session.user) {
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('email, is_admin')
+              .eq('id', session.user.id)
+              .single();
+              
+            if (!error && data && data.is_admin) {
+              setIsAdmin(true);
+            }
           }
         }
       } catch (error) {
@@ -60,35 +62,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
-      setSession(session);
-      setUser(session?.user ?? null);
       
-      try {
-        // Check admin status on auth state change
-        if (session?.user) {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('email, is_admin')
-            .eq('id', session.user.id)
-            .single();
-            
-          if (error) {
-            console.error("Error fetching profile on auth change:", error);
-            setIsAdmin(false);
-          } else if (data && data.is_admin) {
-            setIsAdmin(true);
-          } else {
-            setIsAdmin(false);
+      if (event === 'SIGNED_OUT') {
+        setSession(null);
+        setUser(null);
+        setIsAdmin(false);
+      } else if (session) {
+        setSession(session);
+        setUser(session.user);
+      
+        try {
+          // Check admin status on auth state change
+          if (session.user) {
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('email, is_admin')
+              .eq('id', session.user.id)
+              .single();
+              
+            if (!error && data && data.is_admin) {
+              setIsAdmin(true);
+            } else {
+              setIsAdmin(false);
+            }
           }
-        } else {
+        } catch (error) {
+          console.error("Error checking admin status:", error);
           setIsAdmin(false);
         }
-      } catch (error) {
-        console.error("Error checking admin status:", error);
-        setIsAdmin(false);
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     });
 
     return () => {
@@ -100,6 +103,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async () => {
     try {
       console.log("Attempting to sign out");
+      setLoading(true);
+      
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error("Error in signOut:", error);
@@ -116,6 +121,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       console.error("Error signing out:", error);
       toast.error("Error al cerrar sesión");
+    } finally {
+      setLoading(false);
     }
   };
 
