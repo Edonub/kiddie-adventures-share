@@ -11,22 +11,6 @@ const ProfileLayout = () => {
   
   console.log("ProfileLayout rendering with user:", user?.email || "null");
 
-  // This should not happen because ProfilePage should redirect,
-  // but adding as a safety check
-  if (!user) {
-    return (
-      <div className="flex min-h-screen flex-col">
-        <Navbar />
-        <main className="flex-1 py-8 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <p className="text-center py-8">Por favor inicia sesión para ver tu perfil.</p>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />

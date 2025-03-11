@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import LoadingExperience from "@/components/experiences/LoadingExperience";
 import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
+import Navbar from "@/components/Navbar";
 
 const ProfilePage = () => {
   const { user, loading } = useAuth();
@@ -12,15 +13,19 @@ const ProfilePage = () => {
   console.log("ProfilePage: loading =", loading, "user =", user?.email || "null");
 
   useEffect(() => {
-    // Verificamos el estado de autenticación cuando cambie
     if (!loading && !user) {
       toast.error("Debes iniciar sesión para acceder a esta página");
     }
   }, [user, loading]);
 
-  // Show a loading screen until we know the user's auth state
+  // Show loading screen with navbar while checking auth
   if (loading) {
-    return <LoadingExperience />;
+    return (
+      <>
+        <Navbar />
+        <LoadingExperience />
+      </>
+    );
   }
 
   // Redirect to auth if no user
