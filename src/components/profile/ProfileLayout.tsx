@@ -23,11 +23,11 @@ const ProfileLayout = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1">
-              <ProfileSidebar user={user} />
+              {user && <ProfileSidebar user={user} />}
             </div>
 
             <div className="col-span-1 md:col-span-3">
-              <ProfileTabs user={user} />
+              {user && <ProfileTabs user={user} />}
             </div>
           </div>
         </div>
