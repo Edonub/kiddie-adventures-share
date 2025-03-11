@@ -7,7 +7,6 @@ import ForumHeader from "@/components/forum/ForumHeader";
 import ForumContent from "@/components/forum/ForumContent";
 import { useForumData } from "@/hooks/use-forum-data";
 import { TabsContent } from "@/components/ui/tabs";
-import CreatePostDialog from "@/components/forum/CreatePostDialog";
 
 const ForoPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<ForumCategory>("general");
@@ -21,14 +20,6 @@ const ForoPage = () => {
       <main className="flex-1 py-10">
         <div className="container px-4 mx-auto max-w-4xl">
           <ForumHeader showSampleData={showSampleData} />
-          
-          {/* New Thread button */}
-          <div className="mt-4 mb-6">
-            <CreatePostDialog 
-              activeCategory={selectedCategory} 
-              onPostCreated={fetchComments} 
-            />
-          </div>
           
           <ForumContent 
             comments={comments}

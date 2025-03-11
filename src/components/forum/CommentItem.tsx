@@ -1,13 +1,12 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Reply, ThumbsUp, Flag } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
-import { useState } from "react";
+import { MessageSquare } from "lucide-react";
 import { Comment } from "./types";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from 'react-markdown';
 
 interface CommentItemProps {
   comment: Comment;
@@ -17,108 +16,72 @@ interface CommentItemProps {
 }
 
 const CommentItem = ({ comment, onReply, isThread = false, isReply = false }: CommentItemProps) => {
-  const [likes, setLikes] = useState(Math.floor(Math.random() * 10)); // Just for demo
+  const getInitials = (name: string = "Usuario") => {
+    return name.substring(0, 2).toUpperCase();
+  };
 
-  const formatDate = (dateString: string) => {
-    try {
-      return formatDistanceToNow(new Date(dateString), {
-        addSuffix: true,
-        locale: es,
-      });
-    } catch (e) {
-      return "fecha desconocida";
+  // Function to extract title from content if it's formatted with markdown
+  const extractTitleAndContent = (content: string) => {
+    // Check if content starts with bold text (markdown format)
+    const titleMatch = content.match(/^\*\*(.*?)\*\*/);
+    if (titleMatch) {
+      const title = titleMatch[1];
+      const mainContent = content.replace(/^\*\*(.*?)\*\*\n*/, '').trim();
+      return { title, content: mainContent };
     }
+    return { title: null, content };
   };
 
-  const getInitials = (comment: Comment) => {
-    if (!comment.profiles) return "?";
-
-    const firstName = comment.profiles.first_name || "";
-    const lastName = comment.profiles.last_name || "";
-
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || "?";
-  };
-
-  const handleLike = () => {
-    setLikes(likes + 1);
-  };
-
-  // Extract title from content for thread posts
-  const getContentParts = () => {
-    if (!isThread || !comment.content.includes("**")) {
-      return { title: null, content: comment.content };
-    }
-
-    const parts = comment.content.split("\n\n");
-    const title = parts[0].replace(/\*\*/g, "");
-    const content = parts.slice(1).join("\n\n");
-    
-    return { title, content };
-  };
-
-  const { title, content } = getContentParts();
+  const { title, content } = extractTitleAndContent(comment.content || "");
+  const formattedDate = comment.created_at 
+    ? formatDistanceToNow(new Date(comment.created_at), { addSuffix: true, locale: es })
+    : "hace un momento";
 
   return (
-    <Card 
-      key={comment.id} 
-      id={comment.id} 
-      className={`bg-white border-gray-200 text-gray-900 shadow-sm ${isReply ? "mt-3" : ""}`}
-    >
-      <CardHeader className={`pb-3 border-b border-gray-100 ${isThread ? "bg-gray-50" : ""}`}>
-        <div className="flex items-center gap-3">
-          <Avatar className="border-2 border-familyxp-primary">
-            {comment.profiles?.avatar_url ? (
-              <AvatarImage src={comment.profiles.avatar_url} alt="Avatar" />
-            ) : (
-              <AvatarFallback className="bg-gray-100 text-gray-600">{getInitials(comment)}</AvatarFallback>
-            )}
+    <Card className={`bg-white border-gray-200 shadow-sm ${isReply ? 'mb-2' : 'mb-4'}`}>
+      {(isThread && title) ? (
+        <CardHeader className="pb-2 bg-gray-50 border-b border-gray-100">
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            {title}
+          </CardTitle>
+        </CardHeader>
+      ) : null}
+      
+      <CardContent className={`${isReply ? 'p-3' : 'p-4'}`}>
+        <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={comment.profiles?.avatar_url} />
+            <AvatarFallback className="bg-familyxp-primary text-white">
+              {getInitials(comment.profiles?.first_name)}
+            </AvatarFallback>
           </Avatar>
-          <div className="flex-1">
-            {title && isThread ? (
-              <p className="font-bold text-lg text-gray-900">{title}</p>
-            ) : null}
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-gray-900">
-                {comment.profiles?.first_name || "Usuario"}{" "}
-                {comment.profiles?.last_name || ""}
-              </p>
-              <p className="text-xs text-gray-500">
-                {formatDate(comment.created_at)}
-              </p>
-            </div>
+          <span className="font-medium text-gray-900">
+            {comment.profiles?.first_name || "Usuario"} {comment.profiles?.last_name || ""}
+          </span>
+          <span className="text-gray-400">•</span>
+          <span>{formattedDate}</span>
+        </div>
+        
+        <div className="mt-2 text-gray-800 whitespace-pre-line">
+          <ReactMarkdown className="prose prose-sm max-w-none">
+            {title ? content : comment.content || ""}
+          </ReactMarkdown>
+        </div>
+        
+        {!isReply && (
+          <div className="mt-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onReply(comment)}
+              className="text-gray-600 hover:text-familyxp-primary hover:bg-gray-50"
+            >
+              <MessageSquare className="mr-1 h-4 w-4" />
+              Responder
+            </Button>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent className="pb-3 pt-4">
-        <div className="whitespace-pre-line text-gray-700">
-          <ReactMarkdown>{content}</ReactMarkdown>
-        </div>
+        )}
       </CardContent>
-      <CardFooter className="flex gap-4 pt-0 text-sm text-gray-500 border-t border-gray-100 py-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="p-0 h-auto hover:text-familyxp-primary hover:bg-transparent"
-          onClick={() => onReply(comment)}
-        >
-          <Reply size={16} className="mr-1" /> Responder
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="p-0 h-auto hover:text-familyxp-primary hover:bg-transparent"
-          onClick={handleLike}
-        >
-          <ThumbsUp size={16} className="mr-1" /> {likes}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="p-0 h-auto hover:text-familyxp-primary hover:bg-transparent ml-auto"
-        >
-          <Flag size={16} className="mr-1" /> Reportar
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

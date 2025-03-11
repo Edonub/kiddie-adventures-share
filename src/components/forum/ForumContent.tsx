@@ -4,6 +4,8 @@ import ForumCategories, { ForumCategory } from "./ForumCategories";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
 import { Comment } from "./types";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 interface ForumContentProps {
   comments: Comment[];
@@ -33,16 +35,28 @@ const ForumContent = ({
         />
       </Card>
       
+      {/* New Thread button - ForoCoches style */}
+      <div className="mb-6">
+        <Button 
+          className="bg-familyxp-primary hover:bg-familyxp-primary/90 text-white"
+          onClick={() => setReplyingToComment("new")}
+        >
+          <Plus className="mr-2 h-4 w-4" /> Nuevo Tema
+        </Button>
+      </div>
+      
       {replyingToComment === "new" && (
-        <CommentForm 
-          replyTo={null} 
-          setReplyTo={() => setReplyingToComment(null)} 
-          onCommentSubmitted={() => {
-            onCommentSubmitted();
-            setReplyingToComment(null);
-          }}
-          category={selectedCategory}
-        />
+        <div className="mb-6">
+          <CommentForm 
+            replyTo={null} 
+            setReplyTo={() => setReplyingToComment(null)} 
+            onCommentSubmitted={() => {
+              onCommentSubmitted();
+              setReplyingToComment(null);
+            }}
+            category={selectedCategory}
+          />
+        </div>
       )}
       
       <CommentList 

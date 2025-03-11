@@ -6,6 +6,7 @@ import { AlertCircle } from "lucide-react";
 import { Comment } from "./types";
 import CommentForm from "./CommentForm";
 import { ForumCategory } from "./ForumCategories";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface CommentListProps {
   comments: Comment[];
@@ -30,16 +31,18 @@ const CommentList = ({
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
-          <Card key={i} className="animate-pulse bg-gray-50 border-gray-200">
-            <CardContent className="py-4">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gray-200" />
-                <div className="h-5 w-32 bg-gray-200 rounded" />
+          <Card key={i} className="bg-white border-gray-200">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3 mb-4">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div>
+                  <Skeleton className="h-4 w-24 mb-2" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
               </div>
-              <div className="mt-4">
-                <div className="h-4 w-full bg-gray-200 rounded mb-2" />
-                <div className="h-4 w-3/4 bg-gray-200 rounded" />
-              </div>
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-[90%] mb-2" />
+              <Skeleton className="h-4 w-[70%]" />
             </CardContent>
           </Card>
         ))}
@@ -72,7 +75,7 @@ const CommentList = ({
           />
           
           {replyingToComment === comment.id && (
-            <div className="mt-4 mb-6 pl-4 border-l-2 border-familyxp-primary/20">
+            <div className="mt-3 mb-6 pl-4 border-l-2 border-familyxp-primary/20">
               <CommentForm 
                 replyTo={comment} 
                 setReplyTo={() => setReplyingToComment(null)} 
@@ -87,7 +90,7 @@ const CommentList = ({
           
           {/* Replies */}
           {comment.replies && comment.replies.length > 0 && (
-            <div className="mt-2 space-y-3 pl-6 border-l-2 border-gray-100">
+            <div className="mt-3 pt-2 pl-6 border-l-2 border-gray-100 space-y-3">
               {comment.replies.map((reply) => (
                 <CommentItem 
                   key={reply.id} 
