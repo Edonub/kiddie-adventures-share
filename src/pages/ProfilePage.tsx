@@ -11,12 +11,15 @@ const ProfilePage = () => {
   const { user, loading } = useAuth();
   
   useEffect(() => {
+    // Display a log to debug issues
+    console.log("ProfilePage: loading =", loading, "user =", user?.email);
+    
     if (!loading && !user) {
       toast.error("Debes iniciar sesión para acceder a esta página");
     }
   }, [user, loading]);
 
-  // Mientras carga, mostrar una pantalla de carga con la barra de navegación
+  // Mostrar pantalla de carga mientras verifica la autenticación
   if (loading) {
     return (
       <div className="flex min-h-screen flex-col">

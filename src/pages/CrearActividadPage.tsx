@@ -5,7 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import { useExperienceData } from "@/hooks/useExperienceData";
 import ExperienceFormWrapper from "@/components/experiences/ExperienceFormWrapper";
-import LoadingExperience from "@/components/experiences/LoadingExperience";
 import { toast } from "sonner";
 
 const CrearActividadPage = () => {
@@ -29,7 +28,12 @@ const CrearActividadPage = () => {
       <>
         <Navbar />
         <div className="container mx-auto p-6 max-w-3xl">
-          <LoadingExperience />
+          <div className="flex justify-center items-center py-16">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Cargando experiencia...</p>
+            </div>
+          </div>
         </div>
       </>
     );
