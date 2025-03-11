@@ -15,15 +15,6 @@ const ProfileLayout = () => {
   
   // Adding debug logs to track loading state and user
   console.log("ProfileLayout: loading =", loading, "user =", user?.email || "null");
-  
-  // Remove this effect as it's causing a redirect loop
-  // when combined with the Navigate component below
-  // React.useEffect(() => {
-  //   if (!loading && !user) {
-  //     toast.error("Debes iniciar sesión para acceder a esta página");
-  //     navigate("/auth");
-  //   }
-  // }, [user, loading, navigate]);
 
   if (loading) {
     return (
