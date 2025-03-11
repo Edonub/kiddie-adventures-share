@@ -1,40 +1,50 @@
 
 import React, { useEffect } from "react";
-import ProfileLayout from "@/components/profile/ProfileLayout";
 import { useAuth } from "@/contexts/AuthContext";
-import LoadingExperience from "@/components/experiences/LoadingExperience";
 import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ProfileContent from "@/components/profile/ProfileContent";
 
 const ProfilePage = () => {
   const { user, loading } = useAuth();
   
-  console.log("ProfilePage: loading =", loading, "user =", user?.email || "null");
-
   useEffect(() => {
     if (!loading && !user) {
       toast.error("Debes iniciar sesión para acceder a esta página");
     }
   }, [user, loading]);
 
-  // Show loading screen with navbar while checking auth
+  // Mientras carga, mostrar una pantalla de carga con la barra de navegación
   if (loading) {
     return (
-      <>
+      <div className="flex min-h-screen flex-col">
         <Navbar />
-        <LoadingExperience />
-      </>
+        <main className="flex-1 flex justify-center items-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Cargando perfil...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
     );
   }
 
-  // Redirect to auth if no user
+  // Redirigir a la página de autenticación si no hay usuario
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
 
-  // Only render the profile layout when we have a user
-  return <ProfileLayout />;
+  // Renderizar la página de perfil cuando tenemos un usuario
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      <ProfileContent user={user} />
+      <Footer />
+    </div>
+  );
 };
 
 export default ProfilePage;
