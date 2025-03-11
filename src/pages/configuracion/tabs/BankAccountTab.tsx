@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TabProps } from "../types";
+import { TabProps } from "@/components/configuration/types";
 
 const BankAccountTab = ({ userProfile, user }: TabProps) => {
   const [bankAccount, setBankAccount] = useState(userProfile?.bank_account || "");

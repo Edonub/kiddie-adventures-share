@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { TabProps } from "../types";
+import { TabProps } from "@/components/configuration/types";
 
 const PersonalDataTab = ({ userProfile, user }: TabProps) => {
   const [firstName, setFirstName] = useState(userProfile?.first_name || "");
