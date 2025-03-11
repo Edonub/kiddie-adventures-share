@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,18 @@ const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [loginError, setLoginError] = useState("");
+
+  // Check for existing session
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate('/');
+      }
+    };
+    
+    checkSession();
+  }, [navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +68,7 @@ const AuthPage = () => {
     setLoginError("");
 
     try {
+      console.log("Attempting sign in with:", email);
       const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -111,30 +124,29 @@ const AuthPage = () => {
   };
 
   // Check if we have a hash in the URL (for password reset or email confirmation)
-  const handleAuthRedirect = async () => {
-    const hash = window.location.hash;
-    if (hash && hash.includes("access_token")) {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase.auth.getSession();
-        if (error) throw error;
-        if (data.session) {
-          toast.success("¡Autenticación exitosa!");
-          navigate("/");
+  useEffect(() => {
+    const handleAuthRedirect = async () => {
+      const hash = window.location.hash;
+      if (hash && hash.includes("access_token")) {
+        setLoading(true);
+        try {
+          const { data, error } = await supabase.auth.getSession();
+          if (error) throw error;
+          if (data.session) {
+            toast.success("¡Autenticación exitosa!");
+            navigate("/");
+          }
+        } catch (error: any) {
+          console.error("Error de autenticación:", error);
+          toast.error(error.message || "Error de autenticación");
+        } finally {
+          setLoading(false);
         }
-      } catch (error: any) {
-        console.error("Error de autenticación:", error);
-        toast.error(error.message || "Error de autenticación");
-      } finally {
-        setLoading(false);
       }
-    }
-  };
-
-  // Call this on component mount
-  useState(() => {
+    };
+    
     handleAuthRedirect();
-  });
+  }, [navigate]);
 
   return (
     <div className="flex min-h-screen justify-center items-center bg-slate-50 p-4">

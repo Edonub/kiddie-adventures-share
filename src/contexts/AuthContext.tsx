@@ -25,9 +25,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("AuthProvider mounted");
+    
     const setData = async () => {
       try {
+        console.log("Checking initial session");
         const { data: { session } } = await supabase.auth.getSession();
+        console.log("Initial session:", session?.user?.email || "No session");
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -54,8 +58,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     setData();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      console.log("Auth state changed:", _event, session?.user?.email);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
@@ -87,19 +91,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      console.log("Unsubscribing from auth state changes");
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
     try {
+      console.log("Attempting to sign out");
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        console.error("Error in signOut:", error);
+        throw error;
+      }
       
       // Explicitly clear the local state
       setUser(null);
       setSession(null);
       setIsAdmin(false);
       
+      console.log("Sign out successful");
       toast.success("Has cerrado sesión correctamente");
     } catch (error: any) {
       console.error("Error signing out:", error);
@@ -151,6 +163,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     makeAdmin
   };
 
+  console.log("AuthProvider rendering with user:", user?.email || "No user");
+  
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
