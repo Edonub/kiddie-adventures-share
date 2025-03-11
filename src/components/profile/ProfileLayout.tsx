@@ -11,6 +11,20 @@ const ProfileLayout = () => {
   
   console.log("ProfileLayout rendering with user:", user?.email || "null");
 
+  if (!user) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <main className="flex-1 py-8 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <p className="text-center py-8">Por favor inicia sesión para ver tu perfil.</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -23,11 +37,11 @@ const ProfileLayout = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1">
-              {user && <ProfileSidebar user={user} />}
+              <ProfileSidebar user={user} />
             </div>
 
             <div className="col-span-1 md:col-span-3">
-              {user && <ProfileTabs user={user} />}
+              <ProfileTabs user={user} />
             </div>
           </div>
         </div>

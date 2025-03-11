@@ -7,7 +7,7 @@ interface NotificationsTabProps {
   user: User;
 }
 
-const NotificationsTab = ({ user }: NotificationsTabProps) => {
+const NotificationsTab: React.FC<NotificationsTabProps> = ({ user }) => {
   return (
     <Card>
       <CardHeader>
