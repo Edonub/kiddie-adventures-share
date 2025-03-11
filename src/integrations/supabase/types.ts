@@ -130,6 +130,7 @@ export type Database = {
       comments: {
         Row: {
           activity_id: string | null
+          category: string | null
           content: string
           created_at: string
           id: string
@@ -140,6 +141,7 @@ export type Database = {
         }
         Insert: {
           activity_id?: string | null
+          category?: string | null
           content: string
           created_at?: string
           id?: string
@@ -150,6 +152,7 @@ export type Database = {
         }
         Update: {
           activity_id?: string | null
+          category?: string | null
           content?: string
           created_at?: string
           id?: string
