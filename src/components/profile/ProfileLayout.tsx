@@ -12,12 +12,14 @@ const ProfileLayout = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   
-  React.useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Debes iniciar sesión para acceder a esta página");
-      navigate("/auth");
-    }
-  }, [user, loading, navigate]);
+  // Remove this effect as it's causing a redirect loop
+  // when combined with the Navigate component below
+  // React.useEffect(() => {
+  //   if (!loading && !user) {
+  //     toast.error("Debes iniciar sesión para acceder a esta página");
+  //     navigate("/auth");
+  //   }
+  // }, [user, loading, navigate]);
 
   if (loading) {
     return (
@@ -37,6 +39,7 @@ const ProfileLayout = () => {
   }
 
   if (!user) {
+    toast.error("Debes iniciar sesión para acceder a esta página");
     return <Navigate to="/auth" replace />;
   }
 
