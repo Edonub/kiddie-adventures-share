@@ -1,7 +1,7 @@
 
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { User, LogOut, Plus, Bookmark } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { LogOut, Plus } from "lucide-react";
 import { User as AuthUser } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -44,22 +44,14 @@ const UserDropdown = ({ user, onSignOut }: UserDropdownProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem asChild>
-          <Link to="/perfil" className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
-            <span>Mi Perfil</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/mis-experiencias" className="cursor-pointer">
-            <Bookmark className="mr-2 h-4 w-4" />
-            <span>Mis Experiencias</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/crear-actividad" className="cursor-pointer">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start" 
+            onClick={() => navigate("/crear-actividad")}
+          >
             <Plus className="mr-2 h-4 w-4" />
             <span>Crear Experiencia</span>
-          </Link>
+          </Button>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-500 hover:text-red-700 hover:bg-red-50">
