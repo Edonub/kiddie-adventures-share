@@ -315,6 +315,9 @@ export const useForumData = (selectedCategory: ForumCategory) => {
         // Process real comments if there are any
         const commentsWithReplies = await Promise.all(
           data.map(async (comment) => {
+            // Ensure the category is cast to ForumCategory if possible
+            const validCategory = comment.category as ForumCategory;
+            
             const { data: replies, error: repliesError } = await supabase
               .from("comments")
               .select(`
@@ -332,19 +335,21 @@ export const useForumData = (selectedCategory: ForumCategory) => {
               console.error("Error fetching replies:", repliesError);
               return {
                 ...comment,
+                category: validCategory,
                 replies: []
               };
             }
 
             return {
               ...comment,
+              category: validCategory,
               replies: replies || []
             };
           })
         );
 
         setShowSampleData(false);
-        setComments(commentsWithReplies);
+        setComments(commentsWithReplies as Comment[]);
       } else {
         // No real comments, use sample data
         setShowSampleData(true);
