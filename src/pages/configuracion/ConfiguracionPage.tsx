@@ -17,47 +17,78 @@ const ConfiguracionPage = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
+  // Separate useEffect to handle navigation when user is not authenticated
   useEffect(() => {
-    // Only attempt to load the user profile when authentication is complete
-    if (!authLoading) {
-      if (!user) {
-        toast.error("Debes iniciar sesión para acceder a la configuración");
-        navigate("/auth");
-        return;
-      }
-      
-      // Load user profile when we have a user
-      loadUserProfile();
+    if (!authLoading && !user) {
+      console.log("User not authenticated, redirecting to auth page");
+      toast.error("Debes iniciar sesión para acceder a la configuración");
+      navigate("/auth");
     }
   }, [user, authLoading, navigate]);
   
+  // Load user profile only when we have a user and auth is done loading
+  useEffect(() => {
+    if (!authLoading && user) {
+      console.log("Loading user profile for:", user.id);
+      loadUserProfile();
+    }
+  }, [user, authLoading]);
+  
   const loadUserProfile = async () => {
-    if (!user) return; // Ensure we have a user before attempting to load profile
+    if (!user) {
+      console.log("No user found, cannot load profile");
+      return;
+    }
     
     try {
       setIsLoading(true);
+      console.log("Fetching profile data for user ID:", user.id);
       
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
-        .single();
+        .maybeSingle(); // Using maybeSingle instead of single to avoid errors
         
       if (error) {
-        console.error("Error loading profile:", error);
+        console.error("Error loading profile:", error.message);
+        setError("Error al cargar el perfil");
         throw error;
       }
       
+      console.log("Profile data received:", data);
       setUserProfile(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading profile:", error);
+      setError(error.message || "Error al cargar tu perfil");
       toast.error("Error al cargar tu perfil. Inténtalo de nuevo más tarde.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Show error state if there was an error loading the profile
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 py-8">
+          <div className="flex flex-col justify-center items-center h-40">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Intentar de nuevo
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   // Show loading spinner while auth state is being determined
   if (authLoading) {
@@ -74,9 +105,18 @@ const ConfiguracionPage = () => {
     );
   }
 
-  // If not authenticated, this will redirect - should never render
+  // If not authenticated, show message and redirect
   if (!user) {
-    return null;
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 py-8">
+          <div className="flex justify-center items-center h-40">
+            <p>Redirigiendo a la página de inicio de sesión...</p>
+          </div>
+        </div>
+      </>
+    );
   }
 
   // Show skeleton loading while profile data is being loaded
@@ -86,6 +126,10 @@ const ConfiguracionPage = () => {
         <Navbar />
         <div className="container mx-auto p-4 py-8">
           <h1 className="text-3xl font-bold mb-6">Configuración de cuenta</h1>
+          <div className="flex justify-center items-center mb-4">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mr-2"></div>
+            <p>Cargando tu perfil...</p>
+          </div>
           <div className="space-y-4">
             <Skeleton className="h-12 w-full" />
             <Skeleton className="h-96 w-full" />
