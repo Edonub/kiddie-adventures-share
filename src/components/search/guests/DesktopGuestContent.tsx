@@ -39,7 +39,7 @@ const DesktopGuestContent = ({
     <Popover>
       <PopoverTrigger asChild>
         <div 
-          className={`p-3 md:p-4 flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "guests" ? "bg-gray-50" : ""}`}
+          className={`p-3 md:p-4 flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "guests" ? "" : ""}`}
           onClick={() => setActiveTab("guests")}
         >
           <div className="px-2 flex-1">
