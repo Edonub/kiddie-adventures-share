@@ -23,7 +23,7 @@ const ConfigTabs = ({ userProfile, user }: ConfigTabsProps) => {
       </TabsContent>
       
       <TabsContent value="seguridad">
-        <SecurityTab />
+        <SecurityTab userProfile={userProfile} user={user} />
       </TabsContent>
       
       <TabsContent value="contacto">

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -19,22 +20,21 @@ const ConfiguracionPage = () => {
   console.log("ConfiguracionPage - Auth loading:", authLoading, "User:", user?.id);
   
   useEffect(() => {
-    if (!authLoading && !user && loadingAttempted) {
+    // Si la autenticación ha terminado y no hay usuario, redirigir
+    if (!authLoading && !user) {
       console.log("User not authenticated, redirecting to auth page");
       toast.error("Debes iniciar sesión para acceder a la configuración");
       navigate("/auth");
+      return;
     }
-  }, [user, authLoading, navigate, loadingAttempted]);
-  
-  useEffect(() => {
-    if (!authLoading) {
+    
+    // Si la autenticación ha terminado y hay usuario, cargar el perfil
+    if (!authLoading && user && !isLoading && !loadingAttempted) {
+      console.log("Auth completed, loading profile for:", user.id);
       setLoadingAttempted(true);
-      if (user) {
-        console.log("Auth completed, loading profile for:", user.id);
-        loadUserProfile();
-      }
+      loadUserProfile();
     }
-  }, [user, authLoading]);
+  }, [user, authLoading, navigate]);
   
   const loadUserProfile = async () => {
     if (!user) {
@@ -69,29 +69,6 @@ const ConfiguracionPage = () => {
     }
   };
 
-  if (error) {
-    return (
-      <>
-        <Navbar />
-        <div className="container mx-auto p-4 py-8">
-          <div className="flex flex-col justify-center items-center h-40">
-            <p className="text-red-500 mb-4">{error}</p>
-            <button 
-              onClick={() => {
-                setError(null);
-                setLoadingAttempted(false);
-                window.location.reload();
-              }} 
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Intentar de nuevo
-            </button>
-          </div>
-        </div>
-      </>
-    );
-  }
-
   if (authLoading) {
     return (
       <>
@@ -114,6 +91,29 @@ const ConfiguracionPage = () => {
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mr-2"></div>
             <p>Redirigiendo a la página de inicio de sesión...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 py-8">
+          <div className="flex flex-col justify-center items-center h-40">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={() => {
+                setError(null);
+                setLoadingAttempted(false);
+                window.location.reload();
+              }} 
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Intentar de nuevo
+            </button>
           </div>
         </div>
       </>
