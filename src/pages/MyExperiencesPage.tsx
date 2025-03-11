@@ -13,7 +13,7 @@ import { useMyExperiences } from "@/hooks/useMyExperiences";
 
 const MyExperiencesPage = () => {
   const { user, loading } = useAuth();
-  const { experiences, isLoading, handleDeleteExperience } = useMyExperiences(user?.id);
+  const { experiences, bookings, isLoading, isLoadingBookings, handleDeleteExperience } = useMyExperiences(user?.id);
 
   if (loading || isLoading) {
     return <MyExperiencesLoading />;
@@ -54,7 +54,10 @@ const MyExperiencesPage = () => {
             </TabsContent>
 
             <TabsContent value="bookings">
-              <BookingsTabContent />
+              <BookingsTabContent 
+                bookings={bookings}
+                isLoading={isLoadingBookings}
+              />
             </TabsContent>
           </Tabs>
         </div>
