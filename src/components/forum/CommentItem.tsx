@@ -63,7 +63,7 @@ const CommentItem = ({ comment, onReply, isThread = false, isReply = false }: Co
         </div>
         
         <div className="mt-2 text-gray-800 whitespace-pre-line">
-          <ReactMarkdown className="prose prose-sm max-w-none">
+          <ReactMarkdown>
             {title ? content : comment.content || ""}
           </ReactMarkdown>
         </div>

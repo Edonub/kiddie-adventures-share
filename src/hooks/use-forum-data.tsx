@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { Comment } from "@/components/forum/types";
@@ -280,6 +281,7 @@ export const useForumData = (selectedCategory: ForumCategory) => {
   const fetchComments = async () => {
     setLoading(true);
     try {
+      // Try to fetch real comments from the database
       const { data, error } = await supabase
         .from("comments")
         .select(`
@@ -297,46 +299,65 @@ export const useForumData = (selectedCategory: ForumCategory) => {
         .eq("category", selectedCategory)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
-
-      const commentsWithReplies = await Promise.all(
-        data.map(async (comment) => {
-          const { data: replies, error: repliesError } = await supabase
-            .from("comments")
-            .select(`
-              id, 
-              content, 
-              created_at, 
-              user_id, 
-              parent_id,
-              profiles:user_id(first_name, last_name, avatar_url)
-            `)
-            .eq("parent_id", comment.id)
-            .order("created_at", { ascending: true });
-
-          if (repliesError) throw repliesError;
-
-          return {
-            ...comment,
-            replies: replies || []
-          };
-        })
-      );
-
-      if (commentsWithReplies.length === 0) {
+      if (error) {
+        // If there's an error (possibly the category column doesn't exist yet)
+        console.error("Error fetching comments:", error);
         setShowSampleData(true);
         const filteredComments = sampleComments.filter(comment => 
           comment.category === selectedCategory
         );
         setComments(filteredComments);
-      } else {
+        setLoading(false);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        // Process real comments if there are any
+        const commentsWithReplies = await Promise.all(
+          data.map(async (comment) => {
+            const { data: replies, error: repliesError } = await supabase
+              .from("comments")
+              .select(`
+                id, 
+                content, 
+                created_at, 
+                user_id, 
+                parent_id,
+                profiles:user_id(first_name, last_name, avatar_url)
+              `)
+              .eq("parent_id", comment.id)
+              .order("created_at", { ascending: true });
+
+            if (repliesError) {
+              console.error("Error fetching replies:", repliesError);
+              return {
+                ...comment,
+                replies: []
+              };
+            }
+
+            return {
+              ...comment,
+              replies: replies || []
+            };
+          })
+        );
+
         setShowSampleData(false);
         setComments(commentsWithReplies);
+      } else {
+        // No real comments, use sample data
+        setShowSampleData(true);
+        const filteredComments = sampleComments.filter(comment => 
+          comment.category === selectedCategory
+        );
+        setComments(filteredComments);
       }
     } catch (error) {
-      console.error("Error fetching comments:", error);
+      console.error("Error in fetch operation:", error);
       toast.error("Error al cargar los comentarios del foro");
       
+      // Fallback to sample data
       setShowSampleData(true);
       const filteredComments = sampleComments.filter(comment => 
         comment.category === selectedCategory

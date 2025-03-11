@@ -19,6 +19,7 @@ interface CommentFormProps {
 const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category }: CommentFormProps) => {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,7 +59,7 @@ const CommentForm = ({ replyTo, setReplyTo, onCommentSubmitted, category }: Comm
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 rounded-md border border-gray-200 shadow-sm">
       <div className="flex items-start gap-3">
-        <AvatarSelector />
+        <AvatarSelector onSelect={(avatarUrl) => setSelectedAvatar(avatarUrl)} selectedAvatar={selectedAvatar} />
         <div className="flex-1">
           <Textarea
             value={content}
