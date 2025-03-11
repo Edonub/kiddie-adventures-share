@@ -55,6 +55,7 @@ export const fetchForumComments = async (selectedCategory: ForumCategory): Promi
               created_at, 
               user_id, 
               parent_id,
+              category,
               profiles:user_id(first_name, last_name, avatar_url)
             `)
             .eq("parent_id", comment.id)
@@ -69,10 +70,16 @@ export const fetchForumComments = async (selectedCategory: ForumCategory): Promi
             };
           }
 
+          // Add the parent's category to each reply if missing
+          const formattedReplies = replies?.map(reply => ({
+            ...reply,
+            category: reply.category || validCategory // Use reply's category if it exists, otherwise use parent's
+          })) || [];
+
           return {
             ...comment,
             category: validCategory,
-            replies: replies || []
+            replies: formattedReplies as Comment[]
           };
         })
       );

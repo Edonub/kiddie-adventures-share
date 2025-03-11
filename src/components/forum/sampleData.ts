@@ -3,7 +3,7 @@ import { Comment } from "@/components/forum/types";
 import { ForumCategory } from "@/components/forum/ForumCategories";
 
 // Sample comments data with categories
-export const sampleComments: (Comment & { category?: ForumCategory })[] = [
+export const sampleComments: Comment[] = [
   {
     id: "sample-1",
     content: "**¡Hola a todos! ¿Alguien tiene recomendaciones para viajar con niños a Portugal?**\n\nEstamos pensando en ir a Portugal este verano con nuestros hijos de 5 y 7 años. ¿Qué zonas nos recomendáis que sean family-friendly? ¿Y alojamientos? Gracias de antemano, foreros.",
@@ -23,6 +23,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 1.5).toISOString(), // 1.5 days ago
         user_id: "sample-user-2",
         parent_id: "sample-1",
+        category: "viajes",
         profiles: {
           first_name: "Carlos",
           last_name: "Rodríguez",
@@ -35,6 +36,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
         user_id: "sample-user-3",
         parent_id: "sample-1",
+        category: "viajes",
         profiles: {
           first_name: "Ana",
           last_name: "Martínez",
@@ -62,6 +64,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 2.5).toISOString(), // 2.5 days ago
         user_id: "sample-user-5",
         parent_id: "sample-2",
+        category: "viajes",
         profiles: {
           first_name: "Laura",
           last_name: "Fernández",
@@ -89,6 +92,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 0.5).toISOString(),
         user_id: "sample-user-8",
         parent_id: "sample-3",
+        category: "general",
         profiles: {
           first_name: "Pablo",
           last_name: "Martín",
@@ -116,6 +120,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 3.5).toISOString(),
         user_id: "sample-user-9",
         parent_id: "sample-4",
+        category: "alojamientos",
         profiles: {
           first_name: "Lucía",
           last_name: "Fernández",
@@ -128,6 +133,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
         user_id: "sample-user-10",
         parent_id: "sample-4",
+        category: "alojamientos",
         profiles: {
           first_name: "Alberto",
           last_name: "Díaz",
@@ -155,6 +161,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 4.5).toISOString(), // 4.5 days ago
         user_id: "sample-user-9",
         parent_id: "sample-5",
+        category: "humor",
         profiles: {
           first_name: "Diego",
           last_name: "Pérez",
@@ -167,6 +174,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
         user_id: "sample-user-11",
         parent_id: "sample-5",
+        category: "humor",
         profiles: {
           first_name: "Carmen",
           last_name: "Vega",
@@ -194,6 +202,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 5.5).toISOString(),
         user_id: "sample-user-12",
         parent_id: "sample-6",
+        category: "offtopic",
         profiles: {
           first_name: "Roberto",
           last_name: "Torres",
@@ -206,6 +215,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
         user_id: "sample-user-13",
         parent_id: "sample-6",
+        category: "offtopic",
         profiles: {
           first_name: "Sara",
           last_name: "López",
@@ -233,6 +243,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
         user_id: "sample-user-15",
         parent_id: "sample-7",
+        category: "general",
         profiles: {
           first_name: "Isabel",
           last_name: "Navarro",
@@ -260,6 +271,7 @@ export const sampleComments: (Comment & { category?: ForumCategory })[] = [
         created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
         user_id: "sample-user-17",
         parent_id: "sample-8",
+        category: "offtopic",
         profiles: {
           first_name: "Marta",
           last_name: "Gil",
