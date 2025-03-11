@@ -11,6 +11,8 @@ const ProfileLayout = () => {
   
   console.log("ProfileLayout rendering with user:", user?.email || "null");
 
+  // This should not happen because ProfilePage should redirect,
+  // but adding as a safety check
   if (!user) {
     return (
       <div className="flex min-h-screen flex-col">

@@ -18,14 +18,17 @@ const ProfilePage = () => {
     }
   }, [user, loading]);
 
+  // Show a loading screen until we know the user's auth state
   if (loading) {
     return <LoadingExperience />;
   }
 
+  // Redirect to auth if no user
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
 
+  // Only render the profile layout when we have a user
   return <ProfileLayout />;
 };
 
