@@ -4,9 +4,11 @@ import ProfileLayout from "@/components/profile/ProfileLayout";
 import { useAuth } from "@/contexts/AuthContext";
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  
+  console.log("ProfilePage: loading =", loading, "user =", user?.email || "null");
 
-  // No need for additional loading state here since ProfileLayout handles it
+  // Using ProfileLayout which handles loading and authentication
   return <ProfileLayout />;
 };
 

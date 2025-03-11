@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               .from('profiles')
               .select('email, is_admin')
               .eq('id', session.user.id)
-              .single();
+              .maybeSingle(); // Using maybeSingle instead of single to prevent errors
               
             if (!error && data && data.is_admin) {
               setIsAdmin(true);
@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("Error in auth context setup:", error);
       } finally {
         setLoading(false);
+        console.log("Auth loading complete, user:", session?.user?.email || "No user");
       }
     };
 
@@ -78,7 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               .from('profiles')
               .select('email, is_admin')
               .eq('id', session.user.id)
-              .single();
+              .maybeSingle(); // Using maybeSingle instead of single
               
             if (!error && data && data.is_admin) {
               setIsAdmin(true);
@@ -105,30 +106,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Attempting to sign out");
       setLoading(true);
       
-      // Primero, limpiar el estado local para una respuesta de UI inmediata
-      setUser(null);
-      setSession(null);
-      setIsAdmin(false);
-      
-      // Luego, realizar la llamada a Supabase para cerrar sesión
+      // First make the API call to Supabase to sign out
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error("Error in signOut:", error);
         throw error;
       }
       
+      // Then, clear the local state
+      setUser(null);
+      setSession(null);
+      setIsAdmin(false);
+      
       console.log("Sign out successful");
       toast.success("Has cerrado sesión correctamente");
     } catch (error: any) {
       console.error("Error signing out:", error);
       toast.error("Error al cerrar sesión");
-      
-      // Intentar restablecer la sesión en caso de error
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        setSession(data.session);
-        setUser(data.session.user);
-      }
     } finally {
       setLoading(false);
     }
@@ -142,9 +136,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .from('profiles')
         .select('id')
         .eq('email', email)
-        .single();
+        .maybeSingle(); // Using maybeSingle instead of single
 
-      if (profileError) {
+      if (profileError || !profile) {
         throw new Error('Usuario no encontrado');
       }
 

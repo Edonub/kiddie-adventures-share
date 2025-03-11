@@ -7,10 +7,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import ProfileSidebar from "./ProfileSidebar";
 import ProfileTabs from "./ProfileTabs";
+import LoadingExperience from "@/components/experiences/LoadingExperience";
 
 const ProfileLayout = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  
+  // Adding debug logs to track loading state and user
+  console.log("ProfileLayout: loading =", loading, "user =", user?.email || "null");
   
   // Remove this effect as it's causing a redirect loop
   // when combined with the Navigate component below
@@ -27,10 +31,7 @@ const ProfileLayout = () => {
         <Navbar />
         <main className="flex-1 py-16 bg-gray-50">
           <div className="container mx-auto px-4 max-w-4xl">
-            <div className="text-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Cargando perfil...</p>
-            </div>
+            <LoadingExperience />
           </div>
         </main>
         <Footer />
