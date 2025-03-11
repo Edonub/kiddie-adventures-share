@@ -92,7 +92,7 @@ const ConfiguracionPage = () => {
           first_name: firstName,
           last_name: lastName,
           avatar_url: avatarUrl,
-          updated_at: new Date()
+          updated_at: new Date().toISOString() // Fixed: Convert Date to ISO string
         })
         .eq('id', user?.id);
         
@@ -153,7 +153,7 @@ const ConfiguracionPage = () => {
         .update({
           phone,
           address,
-          updated_at: new Date()
+          updated_at: new Date().toISOString() // Fixed: Convert Date to ISO string
         })
         .eq('id', user?.id);
         
@@ -176,7 +176,7 @@ const ConfiguracionPage = () => {
         .from('profiles')
         .update({
           bank_account: bankAccount,
-          updated_at: new Date()
+          updated_at: new Date().toISOString() // Fixed: Convert Date to ISO string
         })
         .eq('id', user?.id);
         

@@ -221,33 +221,42 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar_url: string | null
+          bank_account: string | null
           created_at: string
           email: string | null
           first_name: string | null
           id: string
           is_admin: boolean | null
           last_name: string | null
+          phone: string | null
           updated_at: string
         }
         Insert: {
+          address?: string | null
           avatar_url?: string | null
+          bank_account?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
           id: string
           is_admin?: boolean | null
           last_name?: string | null
+          phone?: string | null
           updated_at?: string
         }
         Update: {
+          address?: string | null
           avatar_url?: string | null
+          bank_account?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
           id?: string
           is_admin?: boolean | null
           last_name?: string | null
+          phone?: string | null
           updated_at?: string
         }
         Relationships: []
