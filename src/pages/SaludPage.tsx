@@ -78,7 +78,7 @@ const SaludPage = () => {
       <main className="flex-1 pb-12">
         <div className="py-4 bg-gray-50">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-gray-800">Salud Familiar</h1>
+            <h1 className="text-3xl font-bold text-familyxp-primary">Salud Familiar</h1>
           </div>
         </div>
         
