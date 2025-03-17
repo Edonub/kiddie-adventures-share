@@ -42,9 +42,9 @@ const DateSelection = ({
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="flex justify-between items-center w-full h-12 px-3 py-2 bg-white">
-            <CalendarIcon size={18} className="text-gray-500 mr-2" />
-            <span className="flex-1 text-left text-sm text-gray-500 truncate">
+          <Button variant="outline" className="flex justify-between items-center w-full h-9 px-2 py-1 bg-white">
+            <CalendarIcon size={16} className="text-gray-500 mr-1" />
+            <span className="flex-1 text-left text-xs text-gray-500 truncate">
               {date?.from ? (
                 date.to ? (
                   <>
@@ -77,14 +77,14 @@ const DateSelection = ({
     <Popover>
       <PopoverTrigger asChild>
         <div 
-          className={`p-3 md:p-4 flex-1 border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "dates" ? "bg-gray-50" : ""}`}
+          className={`p-2 flex-1 border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "dates" ? "bg-gray-50" : ""}`}
           onClick={() => setActiveTab("dates")}
         >
-          <div className="px-2">
+          <div className="px-1">
             <div className="text-xs font-bold">Fecha</div>
             <div className="flex items-center">
-              <CalendarIcon size={16} className="text-gray-500 mr-2" />
-              <div className="text-sm text-gray-500">
+              <CalendarIcon size={14} className="text-gray-500 mr-1" />
+              <div className="text-xs text-gray-500">
                 {date?.from ? (
                   date.to ? (
                     <>

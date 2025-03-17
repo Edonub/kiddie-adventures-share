@@ -35,9 +35,9 @@ const MobileGuestContent = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="flex justify-between items-center w-full h-12 px-3 py-2 bg-transparent">
-          <Users size={18} className="text-gray-500 mr-2" />
-          <span className="flex-1 text-left text-sm text-gray-500 truncate">
+        <Button variant="outline" className="flex justify-between items-center w-full h-9 px-2 py-1 bg-transparent">
+          <Users size={16} className="text-gray-500 mr-1" />
+          <span className="flex-1 text-left text-xs text-gray-500 truncate">
             {displayText}
           </span>
         </Button>

@@ -70,8 +70,8 @@ const AirbnbSearchBar = () => {
 
   if (isMobile) {
     return (
-      <div className="w-full mt-2">
-        <div className="mt-2 flex gap-2">
+      <div className="w-full mt-1">
+        <div className="mt-1 flex gap-2">
           <div className="flex-1 min-w-0"> 
             <DateSelection
               activeTab={activeTab}
@@ -97,7 +97,7 @@ const AirbnbSearchBar = () => {
           </div>
         </div>
 
-        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center overflow-hidden mt-2"> 
+        <div className="bg-white shadow-md rounded-full border border-gray-200 flex items-center overflow-hidden mt-1"> 
           <div className="flex-1 min-w-0"> 
             <DestinationSearch
               destination={destination}
@@ -116,7 +116,7 @@ const AirbnbSearchBar = () => {
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-full shadow-lg border border-gray-200 relative z-10">
-      <div className="flex items-center h-16">
+      <div className="flex items-center h-12">
         <div className="w-1/3 border-r border-gray-200">
           <DestinationSearch 
             destination={destination}

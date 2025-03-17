@@ -39,14 +39,14 @@ const DesktopGuestContent = ({
     <Popover>
       <PopoverTrigger asChild>
         <div 
-          className={`p-3 md:p-4 flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "guests" ? "" : ""}`}
+          className={`p-2 flex-1 flex items-center border-b md:border-b-0 md:border-r border-gray-200 cursor-pointer ${activeTab === "guests" ? "" : ""}`}
           onClick={() => setActiveTab("guests")}
         >
-          <div className="px-2 flex-1">
+          <div className="px-1 flex-1">
             <div className="text-xs font-bold">Viajeros</div>
             <div className="flex items-center">
-              <Users size={16} className="text-gray-500 mr-2" />
-              <div className="text-sm text-gray-500">
+              <Users size={14} className="text-gray-500 mr-1" />
+              <div className="text-xs text-gray-500">
                 {displayText}
               </div>
             </div>

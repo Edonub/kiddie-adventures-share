@@ -1,40 +1,26 @@
 
 import { Search } from "lucide-react";
 import { Button } from "../ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface SearchButtonProps {
   onClick: () => void;
+  className?: string;
 }
 
-const SearchButton = ({
-  onClick
-}: SearchButtonProps) => {
-  const isMobile = useIsMobile();
-  
-  if (isMobile) {
-    return (
-      <Button 
-        onClick={onClick} 
-        size="icon" 
-        className="h-10 w-10 rounded-full bg-familyxp-primary hover:bg-familyxp-secondary flex items-center justify-center text-white"
-      >
-        <Search size={18} />
-      </Button>
-    );
-  }
-  
+const SearchButton = ({ onClick, className }: SearchButtonProps) => {
   return (
-    <div className="h-full flex items-center justify-center">
-      <Button 
-        onClick={onClick} 
-        size="lg" 
-        className="w-full h-12 text-white rounded-full bg-familyxp-primary hover:bg-familyxp-secondary flex items-center justify-center"
-      >
-        <Search size={20} className="mr-1" />
-        <span>Buscar</span>
-      </Button>
-    </div>
+    <Button
+      onClick={onClick}
+      type="button"
+      className={cn(
+        "rounded-full h-8 w-8 md:h-8 md:w-auto md:px-4 flex items-center justify-center",
+        className
+      )}
+    >
+      <Search className="h-4 w-4" />
+      <span className="ml-2 hidden md:inline text-xs">Buscar</span>
+    </Button>
   );
 };
 
