@@ -33,17 +33,17 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
   };
 
   return (
-    <div className="md:hidden mt-1 border-t pt-1 pb-1 animate-accordion-down">
+    <div className="md:hidden mt-0.5 border-t pt-0.5 pb-0.5 animate-accordion-down">
       {user ? (
         <Collapsible
           open={isUserMenuOpen}
           onOpenChange={setIsUserMenuOpen}
           className="w-full px-1"
         >
-          <CollapsibleTrigger className="flex justify-between items-center w-full px-3 py-1 text-left rounded-md hover:bg-gray-100 transition-colors">
-            <span className="font-medium text-gray-700">Mi cuenta</span>
+          <CollapsibleTrigger className="flex justify-between items-center w-full px-2 py-0.5 text-left rounded-md hover:bg-gray-100 transition-colors">
+            <span className="font-medium text-gray-700 text-sm">Mi cuenta</span>
             <ChevronDown
-              className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
+              className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${
                 isUserMenuOpen ? "transform rotate-180" : ""
               }`}
             />
@@ -51,21 +51,21 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
           <CollapsibleContent className="space-y-0.5 mt-0.5">
             <Link
               to="/configuracion"
-              className="block px-4 py-1 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors"
+              className="block px-3 py-0.5 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors text-xs"
               onClick={onClose}
             >
               Configuración
             </Link>
             <Link
               to="/mis-posts"
-              className="block px-4 py-1 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors"
+              className="block px-3 py-0.5 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors text-xs"
               onClick={onClose}
             >
               Mis posts
             </Link>
             <button
               onClick={handleSignOut}
-              className="text-left w-full px-4 py-1 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors"
+              className="text-left w-full px-3 py-0.5 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors text-xs"
             >
               Cerrar sesión
             </button>
@@ -74,7 +74,7 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
       ) : (
         <Link
           to="/auth"
-          className="block mx-1 px-4 py-1.5 text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 rounded-md transition-colors hover:text-familyxp-primary"
+          className="block mx-1 px-3 py-1 text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 rounded-md transition-colors hover:text-familyxp-primary text-sm"
           onClick={onClose}
         >
           Iniciar sesión
