@@ -1,22 +1,10 @@
 
 import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
-
-export interface Plan {
-  id: number | string;
-  title: string;
-  category: string;
-  image_url: string;
-  // Add other fields that might be needed for plans
-  description?: string;
-  location?: string;
-  price?: number;
-}
-
-export const planCategories = ["Todos", "Al aire libre", "Cultural", "Interior", "Comida y bebida"];
+import type { Plan } from "./types";
+import { planCategories } from "./types";
 
 interface PlanCategoriesProps {
   isLoading: boolean;
@@ -88,7 +76,6 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                       key={plan.id}
                       id={plan.id.toString()}
                       title={plan.title}
-                      category={plan.category}
                       image={plan.image_url}
                       location={plan.location || ""}
                       price={plan.price || 0}
@@ -97,8 +84,6 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                   ))}
                 </div>
               )}
-              
-              {/* Removed the "Cargar más artículos" button as requested */}
             </TabsContent>
           ))}
         </Tabs>

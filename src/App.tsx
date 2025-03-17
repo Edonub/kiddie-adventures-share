@@ -23,6 +23,11 @@ import ForoCochesPage from "./pages/ForoCochesPage";
 import ConfiguracionPage from "./pages/configuracion/ConfiguracionPage";
 import NotFound from "./pages/NotFound";
 import ExplorarPage from "./pages/ExplorarPage";
+import PlanesPage from "./pages/PlanesPage";
+import SaludPage from "./pages/SaludPage";
+import EducacionPage from "./pages/EducacionPage";
+import PodcastPage from "./pages/PodcastPage";
+import AyudasPage from "./pages/AyudasPage";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +55,11 @@ function App() {
               <Route path="/grupos" element={<GruposPage />} />
               <Route path="/forocoches" element={<ForoCochesPage />} />
               <Route path="/explorar" element={<ExplorarPage />} />
+              <Route path="/planes" element={<PlanesPage />} />
+              <Route path="/salud" element={<SaludPage />} />
+              <Route path="/educacion" element={<EducacionPage />} />
+              <Route path="/podcast" element={<PodcastPage />} />
+              <Route path="/ayudas" element={<AyudasPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <BottomNav />
