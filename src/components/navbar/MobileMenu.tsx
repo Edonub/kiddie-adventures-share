@@ -1,8 +1,13 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "@/contexts/AuthContext";
-import { Plane, Heart, GraduationCap, MessageSquare, Podcast, HelpCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { 
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger 
+} from "@/components/ui/collapsible";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -13,6 +18,7 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
   const navigate = useNavigate();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   if (!isOpen) return null;
 
@@ -27,41 +33,53 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
   };
 
   return (
-    <div className="md:hidden mt-4 border-t pt-4">
-      <div className="flex flex-col space-y-3">
-        {user ? (
-          <>
+    <div className="md:hidden mt-4 border-t pt-4 pb-4 animate-accordion-down">
+      {user ? (
+        <Collapsible
+          open={isUserMenuOpen}
+          onOpenChange={setIsUserMenuOpen}
+          className="w-full"
+        >
+          <CollapsibleTrigger className="flex justify-between items-center w-full px-2 py-2 text-left rounded-md hover:bg-gray-100 transition-colors">
+            <span className="font-medium text-gray-700">Mi cuenta</span>
+            <ChevronDown
+              className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
+                isUserMenuOpen ? "transform rotate-180" : ""
+              }`}
+            />
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-1 mt-1 pl-2">
             <Link
               to="/configuracion"
-              className="text-gray-700 hover:text-familyxp-primary font-medium"
+              className="block px-2 py-2 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors"
               onClick={onClose}
             >
               Configuración
             </Link>
             <Link
               to="/mis-posts"
-              className="text-gray-700 hover:text-familyxp-primary font-medium"
+              className="block px-2 py-2 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors"
               onClick={onClose}
             >
               Mis posts
             </Link>
             <button
               onClick={handleSignOut}
-              className="text-left text-gray-700 hover:text-familyxp-primary font-medium"
+              className="text-left w-full px-2 py-2 text-gray-700 hover:bg-gray-100 hover:text-familyxp-primary rounded-md transition-colors"
             >
               Cerrar sesión
             </button>
-          </>
-        ) : (
-          <Link
-            to="/auth"
-            className="text-gray-700 hover:text-familyxp-primary font-medium"
-            onClick={onClose}
-          >
-            Iniciar sesión
-          </Link>
-        )}
-      </div>
+          </CollapsibleContent>
+        </Collapsible>
+      ) : (
+        <Link
+          to="/auth"
+          className="block px-4 py-3 text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 rounded-md transition-colors hover:text-familyxp-primary"
+          onClick={onClose}
+        >
+          Iniciar sesión
+        </Link>
+      )}
     </div>
   );
 };
