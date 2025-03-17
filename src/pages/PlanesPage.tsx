@@ -6,7 +6,6 @@ import { useToast } from "@/components/ui/use-toast";
 import PlanCategories from "@/components/plans/PlanCategories";
 import { samplePlans } from "@/components/plans/types";
 import type { Plan } from "@/components/plans/types";
-import { Sun, Landmark, Home, Music, Utensils } from "lucide-react";
 import AirbnbSearchBar from "@/components/AirbnbSearchBar";
 
 const PlanesPage = () => {
@@ -47,10 +46,6 @@ const PlanesPage = () => {
           <div className="max-w-screen-xl mx-auto">
             <div className="py-1 px-2 bg-white rounded-xl shadow-sm mb-1.5">
               <AirbnbSearchBar />
-            </div>
-            
-            <div className="py-4 bg-white rounded-xl shadow-sm px-4 mb-4">
-              <h1 className="text-2xl font-bold text-gray-800">Planes</h1>
             </div>
             
             <div className="bg-white rounded-xl shadow-sm p-4">

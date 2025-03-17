@@ -44,7 +44,7 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
   return (
     <div>
       <Tabs value={selectedCategory} onValueChange={handleCategoryChange} defaultValue="todos">
-        <TabsList className="mb-6 flex overflow-x-auto no-scrollbar pb-2 whitespace-nowrap w-full justify-start">
+        <TabsList className="mb-4 flex overflow-x-auto no-scrollbar py-2 whitespace-nowrap w-full justify-start">
           {planCategories.map((category) => {
             const hasContent = categoryHasPlans(category.toLowerCase());
             return (
@@ -52,11 +52,11 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                 key={category} 
                 value={category.toLowerCase()}
                 disabled={!hasContent}
-                className={`${!hasContent ? "opacity-50 cursor-not-allowed" : ""} flex-shrink-0 mx-1 first:ml-0 min-w-[70px]`}
+                className={`${!hasContent ? "opacity-50 cursor-not-allowed" : ""} flex-shrink-0 mx-1 first:ml-0 min-w-[80px]`}
                 onClick={(e) => handleTabClick(e, category)}
               >
-                <div className="flex flex-col items-center gap-1 py-1">
-                  <PlanCategoryIcon category={category} size={20} className="mb-1" />
+                <div className="flex flex-col items-center gap-1 py-1.5">
+                  <PlanCategoryIcon category={category} size={18} className="mb-1" />
                   <span className="text-xs font-medium">{category}</span>
                 </div>
               </TabsTrigger>
