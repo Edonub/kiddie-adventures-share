@@ -89,8 +89,9 @@
   * {
     @apply border-border;
   }
+  
   body {
-    @apply bg-background text-foreground pb-16 md:pb-0;
+    @apply bg-background text-foreground pb-16 md:pb-0 scrollbar-none overflow-x-hidden;
   }
   
   /* Make all images responsive */
