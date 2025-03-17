@@ -5,6 +5,7 @@ import { useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import type { Plan } from "./types";
 import { planCategories } from "./types";
+import PlanCategoryIcon from "./PlanCategoryIcon";
 
 interface PlanCategoriesProps {
   isLoading: boolean;
@@ -57,7 +58,10 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                   className={!hasContent ? "opacity-50 cursor-not-allowed" : ""}
                   onClick={(e) => handleTabClick(e, category)}
                 >
-                  {category}
+                  <div className="flex items-center gap-2">
+                    <PlanCategoryIcon category={category} size={16} />
+                    <span>{category}</span>
+                  </div>
                 </TabsTrigger>
               );
             })}
