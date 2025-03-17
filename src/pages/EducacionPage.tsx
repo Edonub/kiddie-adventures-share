@@ -77,7 +77,7 @@ const EducacionPage = () => {
       <main className="flex-1 pb-12">
         <div className="py-8 bg-gray-50">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Educación Familiar</h1>
+            <h1 className="text-3xl font-bold text-familyxp-primary mb-2">Educación Familiar</h1>
             <p className="text-gray-600">Recursos y actividades educativas para toda la familia</p>
           </div>
         </div>
