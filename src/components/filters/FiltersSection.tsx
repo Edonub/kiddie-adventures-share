@@ -37,7 +37,7 @@ const FiltersSection = ({
   };
 
   return (
-    <div className={`flex flex-wrap gap-2 mt-1 sm:mt-0 items-center ${isMobile ? "" : "flex-grow"}`}>
+    <div className={`flex flex-wrap gap-2 mt-0 items-center ${isMobile ? "" : "flex-grow"}`}>
       <FiltersDropdown
         categories={categories}
         selectedCategories={selectedCategories}
