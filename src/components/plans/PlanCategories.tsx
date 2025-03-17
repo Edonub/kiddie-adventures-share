@@ -76,10 +76,12 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                       key={plan.id}
                       id={plan.id.toString()}
                       title={plan.title}
-                      image={plan.image_url}
+                      images={[plan.image_url]}
                       location={plan.location || ""}
+                      host={"Anfitrión"}
+                      dates={"Fechas disponibles"}
                       price={plan.price || 0}
-                      is_available={true}
+                      rating={4.5}
                     />
                   ))}
                 </div>
