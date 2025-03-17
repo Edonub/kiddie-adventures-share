@@ -56,14 +56,14 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-1 pt-1 w-full overflow-x-hidden">
-        <div className="px-2 mt-2">
+        <div className="px-2 mt-1">
           <div className="max-w-screen-xl mx-auto">
-            <div className="py-1 px-2 bg-white rounded-xl shadow-sm mb-3">
+            <div className="py-1 px-2 bg-white rounded-xl shadow-sm mb-2">
               <AirbnbSearchBar />
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm px-2 py-2 mb-3">
-              <div className="w-full overflow-x-auto scrollbar-none mb-2">
+            <div className="bg-white rounded-xl shadow-sm px-2 py-1 mb-2">
+              <div className="w-full overflow-x-auto scrollbar-none mb-1">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
@@ -82,7 +82,7 @@ const Index = () => {
                       </div>
                     </div>
                     
-                    <div className="w-full flex justify-center mt-2">
+                    <div className="w-full flex justify-center mt-1">
                       <FiltersDropdown 
                         categories={categories}
                         selectedCategories={selectedCategories}
