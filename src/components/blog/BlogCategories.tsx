@@ -33,6 +33,13 @@ const BlogCategories = ({ isLoading, recentPosts, blogPosts }: BlogCategoriesPro
     }
   };
 
+  // Prevent default behavior for tabs that would navigate away
+  const handleTabClick = (e: React.MouseEvent, category: string) => {
+    if (!categoryHasPosts(category.toLowerCase())) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
@@ -48,6 +55,7 @@ const BlogCategories = ({ isLoading, recentPosts, blogPosts }: BlogCategoriesPro
                   value={category.toLowerCase()}
                   disabled={!hasContent}
                   className={!hasContent ? "opacity-50 cursor-not-allowed" : ""}
+                  onClick={(e) => handleTabClick(e, category)}
                 >
                   {category}
                 </TabsTrigger>
