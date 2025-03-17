@@ -6,7 +6,7 @@ interface ForumHeaderProps {
 const ForumHeader = ({ showSampleData }: ForumHeaderProps) => {
   return (
     <div className="mb-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Foro de Familea</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">Foro</h1>
       <p className="text-gray-600">
         Comparte tus preguntas, sugerencias y experiencias con la comunidad de Familea.
       </p>
