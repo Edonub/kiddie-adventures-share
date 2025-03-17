@@ -8,7 +8,7 @@ import { samplePlans } from "@/components/plans/types";
 import type { Plan } from "@/components/plans/types";
 import CategoryTabs from "@/components/CategoryTabs";
 import { planCategories } from "@/components/plans/types";
-import { Beach, Mountain, Camera, Music, Utensils } from "lucide-react";
+import { Sun, Landmark, Home, Music, Utensils } from "lucide-react";
 
 const PlanesPage = () => {
   const [plans, setPlans] = useState<Plan[]>([]);

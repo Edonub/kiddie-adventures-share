@@ -2,7 +2,7 @@
 import React from "react";
 import { 
   Sun, 
-  Museum, 
+  Landmark, 
   Home, 
   Utensils, 
   LayoutGrid, 
@@ -25,7 +25,7 @@ const PlanCategoryIcon: React.FC<CategoryIconProps> = ({
     const lowerCategory = category.toLowerCase();
     
     if (lowerCategory.includes("aire libre")) return Sun;
-    if (lowerCategory.includes("cultural")) return Museum;
+    if (lowerCategory.includes("cultural")) return Landmark;
     if (lowerCategory.includes("interior")) return Home;
     if (lowerCategory.includes("comida")) return Utensils;
     
