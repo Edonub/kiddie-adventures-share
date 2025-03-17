@@ -72,13 +72,15 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
           </CollapsibleContent>
         </Collapsible>
       ) : (
-        <Link
-          to="/auth"
-          className="block mx-1 px-3 py-1 text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 rounded-md transition-colors hover:text-familyxp-primary text-sm"
-          onClick={onClose}
-        >
-          Iniciar sesión
-        </Link>
+        <div className="flex justify-end mx-1">
+          <Link
+            to="/auth"
+            className="px-3 py-0.5 text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 rounded-md transition-colors hover:text-familyxp-primary text-xs"
+            onClick={onClose}
+          >
+            Iniciar sesión
+          </Link>
+        </div>
       )}
     </div>
   );
