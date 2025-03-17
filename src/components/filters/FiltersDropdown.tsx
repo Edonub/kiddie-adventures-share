@@ -64,7 +64,7 @@ const FiltersDropdown = ({
           className={`p-1 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
           size="icon"
         >
-          <SlidersHorizontal className="h-3 w-3" />
+          <SlidersHorizontal className="h-4 w-4" />
           {hasActiveFilters && (
             <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-familyxp-primary text-white text-[10px] flex items-center justify-center">
               {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0) + (bookingType !== "all" ? 1 : 0)}
