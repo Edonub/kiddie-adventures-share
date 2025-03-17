@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Plane, Heart, GraduationCap, MessageSquare, Apple } from "lucide-react";
+import { Plane, Heart, GraduationCap, MessageSquare, Podcast, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const BottomNav = () => {
@@ -12,7 +12,7 @@ const BottomNav = () => {
     { name: "Salud", path: "/salud", icon: Heart },
     { name: "Educación", path: "/educacion", icon: GraduationCap },
     { name: "Foro", path: "/foro", icon: MessageSquare },
-    { name: "Alimentación", path: "/alimentacion", icon: Apple },
+    { name: "Podcast", path: "/podcast", icon: Podcast },
   ];
 
   return (

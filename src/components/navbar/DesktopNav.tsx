@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { User } from "@/contexts/AuthContext";
 import UserDropdown from "./UserDropdown";
-import { Plane, Heart, GraduationCap, MessageSquare, Apple, HelpCircle } from "lucide-react";
+import { Plane, Heart, GraduationCap, MessageSquare, Podcast, HelpCircle } from "lucide-react";
 
 interface DesktopNavProps {
   user: User | null;
@@ -30,9 +30,9 @@ const DesktopNav = ({ user, onSignOut }: DesktopNavProps) => {
         <MessageSquare className="w-4 h-4" />
         <span>Foro</span>
       </Link>
-      <Link to="/alimentacion" className="text-gray-700 hover:text-familyxp-primary font-medium flex items-center gap-1">
-        <Apple className="w-4 h-4" />
-        <span>Alimentación</span>
+      <Link to="/podcast" className="text-gray-700 hover:text-familyxp-primary font-medium flex items-center gap-1">
+        <Podcast className="w-4 h-4" />
+        <span>Podcast</span>
       </Link>
       <Link to="/ayudas" className="text-gray-700 hover:text-familyxp-primary font-medium flex items-center gap-1">
         <HelpCircle className="w-4 h-4" />

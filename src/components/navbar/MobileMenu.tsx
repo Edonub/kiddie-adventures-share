@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "@/contexts/AuthContext";
-import { Plane, Heart, GraduationCap, MessageSquare, Apple, HelpCircle } from "lucide-react";
+import { Plane, Heart, GraduationCap, MessageSquare, Podcast, HelpCircle } from "lucide-react";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -58,11 +58,11 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }: MobileMenuProps) => {
           <MessageSquare className="w-4 h-4" /> Foro
         </Link>
         <Link
-          to="/alimentacion"
+          to="/podcast"
           className="text-gray-700 hover:text-familyxp-primary font-medium flex items-center gap-2"
           onClick={onClose}
         >
-          <Apple className="w-4 h-4" /> Alimentación
+          <Podcast className="w-4 h-4" /> Podcast
         </Link>
         <Link
           to="/ayudas"
