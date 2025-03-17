@@ -61,7 +61,7 @@ const FiltersDropdown = ({
       <PopoverTrigger asChild>
         <Button 
           variant="outline" 
-          className={`p-1 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
+          className={`p-0 bg-white border-0 shadow-none hover:bg-transparent ${hasActiveFilters ? "text-familyxp-primary" : "text-gray-600"}`}
           size="icon"
         >
           <SlidersHorizontal className="h-4 w-4" />
