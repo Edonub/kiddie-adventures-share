@@ -29,7 +29,7 @@ const PropertyCard = ({ id, title, location, host, dates, price, rating, images 
   return (
     <div className="group">
       <Link to={`/actividad/${id}`} className="block relative">
-        <div className="relative aspect-square rounded-xl overflow-hidden">
+        <div className="relative aspect-square rounded-xl overflow-hidden w-[70%] mx-auto">
           <img
             src={images[currentImage]}
             alt={title}
