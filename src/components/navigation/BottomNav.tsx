@@ -8,8 +8,7 @@ const BottomNav = () => {
   const location = useLocation();
   
   const routes = [
-    { name: "Inicio", path: "/", icon: Home },
-    { name: "Planes", path: "/planes", icon: Plane },
+    { name: "Planes", path: "/", icon: Plane },
     { name: "Salud", path: "/salud", icon: Heart },
     { name: "Educación", path: "/educacion", icon: GraduationCap },
     { name: "Foro", path: "/foro", icon: MessageSquare },
