@@ -38,7 +38,7 @@ const BlogCategories = ({ isLoading, recentPosts, blogPosts }: BlogCategoriesPro
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Explora nuestro contenido</h2>
         
-        <Tabs value={selectedCategory} onValueChange={handleCategoryChange}>
+        <Tabs value={selectedCategory} onValueChange={handleCategoryChange} defaultValue="todos">
           <TabsList className="mb-6 flex flex-wrap">
             {blogCategories.map((category) => {
               const hasContent = categoryHasPosts(category.toLowerCase());
