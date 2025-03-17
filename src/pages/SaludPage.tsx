@@ -89,9 +89,9 @@ const SaludPage = () => {
                 <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {healthPlans.map((plan) => (
-                  <div className="max-w-sm" key={plan.id}>
+                  <div key={plan.id}>
                     <PropertyCard 
                       id={plan.id.toString()}
                       title={plan.title}
