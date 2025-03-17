@@ -90,7 +90,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground pb-16 md:pb-0;
   }
   
   /* Make all images responsive */
@@ -102,6 +102,11 @@
   .container {
     @apply px-4 sm:px-6 lg:px-8;
   }
+}
+
+/* Safe area for bottom navigation on mobile devices */
+.h-safe-area-bottom {
+  height: env(safe-area-inset-bottom);
 }
 
 /* Custom scrollbar hide utility */

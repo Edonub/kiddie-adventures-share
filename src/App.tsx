@@ -1,9 +1,11 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import BottomNav from "./components/navigation/BottomNav";
 import Index from "./pages/Index";
 import ForoPage from "./pages/ForoPage";
 import BlogPage from "./pages/BlogPage";
@@ -20,6 +22,7 @@ import GruposPage from "./pages/GruposPage";
 import ForoCochesPage from "./pages/ForoCochesPage";
 import ConfiguracionPage from "./pages/configuracion/ConfiguracionPage";
 import NotFound from "./pages/NotFound";
+import ExplorarPage from "./pages/ExplorarPage";
 
 const queryClient = new QueryClient();
 
@@ -46,11 +49,13 @@ function App() {
               <Route path="/centro-ayuda" element={<CentroAyudaPage />} />
               <Route path="/grupos" element={<GruposPage />} />
               <Route path="/forocoches" element={<ForoCochesPage />} />
+              <Route path="/explorar" element={<ExplorarPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <BottomNav />
+            <Toaster />
+            <Sonner />
           </BrowserRouter>
-          <Toaster />
-          <Sonner />
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>

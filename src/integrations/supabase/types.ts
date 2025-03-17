@@ -11,57 +11,134 @@ export type Database = {
     Tables: {
       activities: {
         Row: {
+          activity_type_id: string | null
           age_range: string
+          age_range_id: string | null
+          availability: Json | null
+          average_rating: number | null
+          booking_requirements: string[] | null
+          bookings_count: number | null
+          cancellation_policy: string | null
           category: string
           created_at: string
           creator_id: string | null
           creator_name: string | null
           description: string
+          duration_minutes: number | null
+          excluded_items: string[] | null
+          featured_position: number | null
           id: string
           image_url: string | null
+          included_items: string[] | null
           is_premium: boolean | null
           location: string
+          location_id: string | null
+          max_participants: number | null
+          meeting_point: Json | null
+          min_participants: number | null
           price: number
+          published_at: string | null
           rating: number | null
           review_count: number | null
+          seo_description: string | null
+          seo_keywords: string[] | null
+          seo_title: string | null
+          status: string | null
           title: string
           updated_at: string
+          views_count: number | null
         }
         Insert: {
+          activity_type_id?: string | null
           age_range: string
+          age_range_id?: string | null
+          availability?: Json | null
+          average_rating?: number | null
+          booking_requirements?: string[] | null
+          bookings_count?: number | null
+          cancellation_policy?: string | null
           category: string
           created_at?: string
           creator_id?: string | null
           creator_name?: string | null
           description: string
+          duration_minutes?: number | null
+          excluded_items?: string[] | null
+          featured_position?: number | null
           id?: string
           image_url?: string | null
+          included_items?: string[] | null
           is_premium?: boolean | null
           location: string
+          location_id?: string | null
+          max_participants?: number | null
+          meeting_point?: Json | null
+          min_participants?: number | null
           price?: number
+          published_at?: string | null
           rating?: number | null
           review_count?: number | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          status?: string | null
           title: string
           updated_at?: string
+          views_count?: number | null
         }
         Update: {
+          activity_type_id?: string | null
           age_range?: string
+          age_range_id?: string | null
+          availability?: Json | null
+          average_rating?: number | null
+          booking_requirements?: string[] | null
+          bookings_count?: number | null
+          cancellation_policy?: string | null
           category?: string
           created_at?: string
           creator_id?: string | null
           creator_name?: string | null
           description?: string
+          duration_minutes?: number | null
+          excluded_items?: string[] | null
+          featured_position?: number | null
           id?: string
           image_url?: string | null
+          included_items?: string[] | null
           is_premium?: boolean | null
           location?: string
+          location_id?: string | null
+          max_participants?: number | null
+          meeting_point?: Json | null
+          min_participants?: number | null
           price?: number
+          published_at?: string | null
           rating?: number | null
           review_count?: number | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          status?: string | null
           title?: string
           updated_at?: string
+          views_count?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "activities_activity_type_id_fkey"
+            columns: ["activity_type_id"]
+            isOneToOne: false
+            referencedRelation: "activity_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_age_range_id_fkey"
+            columns: ["age_range_id"]
+            isOneToOne: false
+            referencedRelation: "age_ranges"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "activities_creator_id_fkey"
             columns: ["creator_id"]
@@ -69,7 +146,128 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "activities_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      activity_categories: {
+        Row: {
+          activity_id: string
+          category_id: string
+          created_at: string | null
+        }
+        Insert: {
+          activity_id: string
+          category_id: string
+          created_at?: string | null
+        }
+        Update: {
+          activity_id?: string
+          category_id?: string
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_categories_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_types: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_premium: boolean | null
+          name: string
+          price_range_max: number | null
+          price_range_min: number | null
+          slug: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_premium?: boolean | null
+          name: string
+          price_range_max?: number | null
+          price_range_min?: number | null
+          slug: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_premium?: boolean | null
+          name?: string
+          price_range_max?: number | null
+          price_range_min?: number | null
+          slug?: string
+        }
+        Relationships: []
+      }
+      age_ranges: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          max_age: number | null
+          min_age: number
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          max_age?: number | null
+          min_age: number
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          max_age?: number | null
+          min_age?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      auth_config: {
+        Row: {
+          description: string | null
+          key: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          description?: string | null
+          key: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          description?: string | null
+          key?: string
+          updated_at?: string | null
+          value?: string
+        }
+        Relationships: []
       }
       blog_posts: {
         Row: {
@@ -126,6 +324,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          icon_url: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          icon_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       comments: {
         Row: {
@@ -219,6 +453,186 @@ export type Database = {
         }
         Relationships: []
       }
+      experience_pricing: {
+        Row: {
+          activity_id: string
+          created_at: string | null
+          date_from: string
+          date_to: string
+          description: string | null
+          id: string
+          max_participants: number | null
+          min_participants: number | null
+          price: number
+          updated_at: string | null
+        }
+        Insert: {
+          activity_id: string
+          created_at?: string | null
+          date_from: string
+          date_to: string
+          description?: string | null
+          id?: string
+          max_participants?: number | null
+          min_participants?: number | null
+          price: number
+          updated_at?: string | null
+        }
+        Update: {
+          activity_id?: string
+          created_at?: string | null
+          date_from?: string
+          date_to?: string
+          description?: string | null
+          id?: string
+          max_participants?: number | null
+          min_participants?: number | null
+          price?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experience_pricing_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      experience_schedules: {
+        Row: {
+          activity_id: string
+          available_spots: number
+          booked_spots: number | null
+          created_at: string | null
+          date: string
+          end_time: string
+          id: string
+          is_available: boolean | null
+          notes: string | null
+          price_override: number | null
+          start_time: string
+          updated_at: string | null
+        }
+        Insert: {
+          activity_id: string
+          available_spots: number
+          booked_spots?: number | null
+          created_at?: string | null
+          date: string
+          end_time: string
+          id?: string
+          is_available?: boolean | null
+          notes?: string | null
+          price_override?: number | null
+          start_time: string
+          updated_at?: string | null
+        }
+        Update: {
+          activity_id?: string
+          available_spots?: number
+          booked_spots?: number | null
+          created_at?: string | null
+          date?: string
+          end_time?: string
+          id?: string
+          is_available?: boolean | null
+          notes?: string | null
+          price_override?: number | null
+          start_time?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experience_schedules_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      host_balances: {
+        Row: {
+          available_balance: number | null
+          created_at: string | null
+          id: string
+          last_withdrawal: Json | null
+          pending_balance: number | null
+          total_earnings: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          available_balance?: number | null
+          created_at?: string | null
+          id?: string
+          last_withdrawal?: Json | null
+          pending_balance?: number | null
+          total_earnings?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          available_balance?: number | null
+          created_at?: string | null
+          id?: string
+          last_withdrawal?: Json | null
+          pending_balance?: number | null
+          total_earnings?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "host_balances_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          country: string | null
+          created_at: string | null
+          id: string
+          is_featured: boolean | null
+          latitude: number | null
+          longitude: number | null
+          name: string
+          popularity: number | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          is_featured?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          popularity?: number | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string | null
+          id?: string
+          is_featured?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          popularity?: number | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
@@ -261,12 +675,83 @@ export type Database = {
         }
         Relationships: []
       }
+      withdrawal_requests: {
+        Row: {
+          amount: number
+          bank_account: string
+          created_at: string | null
+          id: string
+          processed_at: string | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          bank_account: string
+          created_at?: string | null
+          id?: string
+          processed_at?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          bank_account?: string
+          created_at?: string | null
+          id?: string
+          processed_at?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "withdrawal_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_password_strength: {
+        Args: {
+          password: string
+        }
+        Returns: boolean
+      }
+      is_valid_email: {
+        Args: {
+          email: string
+        }
+        Returns: boolean
+      }
+      is_valid_iban: {
+        Args: {
+          iban: string
+        }
+        Returns: boolean
+      }
+      is_valid_phone: {
+        Args: {
+          phone: string
+        }
+        Returns: boolean
+      }
+      update_auth_config: {
+        Args: {
+          config_key: string
+          config_value: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
