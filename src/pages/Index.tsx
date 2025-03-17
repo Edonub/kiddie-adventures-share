@@ -12,6 +12,11 @@ import ViewSwitcher from "@/components/map/ViewSwitcher";
 import { properties } from "@/data/properties";
 import { useIsMobile } from "@/hooks/use-mobile";
 import FiltersDropdown from "@/components/filters/FiltersDropdown";
+import CategoryList from "@/components/CategoryList";
+import PropertyCard from "@/components/PropertyCard";
+import { samplePlans } from "@/components/plans/types";
+import { ActivityProps } from "@/components/ActivityCard";
+import ActivityCard from "@/components/ActivityCard";
 
 const Index = () => {
   const [bookingType, setBookingType] = useState<"all" | "free" | "paid">("all");
@@ -49,6 +54,56 @@ const Index = () => {
     setBookingType("all");
     selectedCategories.forEach(cat => toggleCategory(cat));
   };
+
+  // Sample activities for showcase
+  const sampleActivities: ActivityProps[] = [
+    {
+      id: "1",
+      title: "Taller de Cocina para Niños",
+      location: "Madrid Centro",
+      category: "Gastronómico",
+      price: 25,
+      rating: 4.8,
+      reviewCount: 45,
+      image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+      ageRange: "4-12 años",
+      isPremium: true,
+      description: "Aprende a cocinar platos divertidos con tu familia"
+    },
+    {
+      id: "2",
+      title: "Excursión a la Sierra",
+      location: "Sierra de Guadarrama",
+      category: "Al aire libre",
+      price: 0,
+      rating: 4.5,
+      reviewCount: 32,
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      ageRange: "Todas las edades"
+    },
+    {
+      id: "3",
+      title: "Visita al Museo de Ciencias",
+      location: "Museo Nacional",
+      category: "Cultural",
+      price: 12,
+      rating: 4.7,
+      reviewCount: 56,
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+      ageRange: "6-16 años"
+    },
+    {
+      id: "4",
+      title: "Taller de Programación",
+      location: "Centro Tecnológico",
+      category: "Educativo",
+      price: 30,
+      rating: 4.9,
+      reviewCount: 28,
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+      ageRange: "10-16 años"
+    }
+  ];
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -111,7 +166,7 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm p-2">
+            <div className="bg-white rounded-xl shadow-sm p-2 mb-4">
               {viewMode === 'list' ? (
                 <PropertyListing 
                   bookingType={bookingType}
@@ -123,6 +178,33 @@ const Index = () => {
                 <MapSearch filteredProperties={filteredProperties} />
               )}
             </div>
+            
+            {/* Planes Recomendados Section */}
+            <CategoryList title="Planes Recomendados" seeAllLink="/planes">
+              {samplePlans.slice(0, 4).map((plan) => (
+                <PropertyCard 
+                  key={plan.id}
+                  id={plan.id.toString()}
+                  title={plan.title}
+                  images={[plan.image_url]}
+                  location={plan.location || ""}
+                  host={"Anfitrión"}
+                  dates={"Fechas disponibles"}
+                  price={plan.price || 0}
+                  rating={4.5}
+                />
+              ))}
+            </CategoryList>
+            
+            {/* Actividades para Familias Section */}
+            <CategoryList title="Actividades para Familias" seeAllLink="/explorar">
+              {sampleActivities.map((activity) => (
+                <ActivityCard
+                  key={activity.id}
+                  {...activity}
+                />
+              ))}
+            </CategoryList>
           </div>
         </div>
       </main>
