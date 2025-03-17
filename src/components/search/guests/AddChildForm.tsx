@@ -35,16 +35,17 @@ const AddChildForm = ({ addChild }: AddChildFormProps) => {
           max="12"
           value={childAge || ''}
           onChange={handleAgeChange}
-          className="w-full"
+          className="h-8 text-sm"
           placeholder="Edad del niño"
         />
       </div>
       <Button 
         variant="outline"
         onClick={handleAddChild}
-        className="whitespace-nowrap"
+        className="whitespace-nowrap h-8 text-xs"
+        size="sm"
       >
-        <Plus size={16} className="mr-1" />
+        <Plus size={14} className="mr-1" />
         Añadir niño
       </Button>
     </div>

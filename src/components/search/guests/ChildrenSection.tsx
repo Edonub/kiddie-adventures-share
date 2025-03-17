@@ -25,11 +25,11 @@ const ChildrenSection = ({
     <div>
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h3 className="font-medium">Niños</h3>
-          <p className="text-sm text-gray-500">De 0 a 12 años</p>
+          <h3 className="font-medium text-sm">Niños</h3>
+          <p className="text-xs text-gray-500">De 0 a 12 años</p>
         </div>
         <div className="flex items-center space-x-3">
-          <span className="w-5 text-center">{children}</span>
+          <span className="w-4 text-center text-sm">{children}</span>
         </div>
       </div>
       

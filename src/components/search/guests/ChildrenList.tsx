@@ -19,24 +19,24 @@ const ChildrenList = ({ childrenDetails, removeChild }: ChildrenListProps) => {
   }
 
   return (
-    <div className="space-y-2 mt-2">
+    <div className="space-y-1 mt-2">
       {childrenDetails.map((child) => (
-        <div key={child.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+        <div key={child.id} className="flex items-center justify-between bg-gray-50 p-1.5 rounded text-sm">
           <div className="flex items-center">
-            <Badge variant="outline" className="mr-2">
+            <Badge variant="outline" className="mr-1 text-xs px-1.5 py-0.5">
               {child.age} {child.age === 1 ? 'año' : 'años'}
             </Badge>
           </div>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6"
+            className="h-5 w-5"
             onClick={(e) => {
               e.stopPropagation();
               removeChild(child.id);
             }}
           >
-            <X size={14} />
+            <X size={12} />
           </Button>
         </div>
       ))}
