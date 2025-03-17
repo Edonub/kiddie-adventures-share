@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
@@ -65,7 +64,7 @@ const FiltersDropdown = ({
           className={`p-2 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
           size="icon"
         >
-          <SlidersHorizontal className="h-4 w-4" />
+          <SlidersHorizontal className="h-3 w-3" />
           {hasActiveFilters && (
             <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
               {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0) + (bookingType !== "all" ? 1 : 0)}
@@ -82,7 +81,6 @@ const FiltersDropdown = ({
         avoidCollisions={false}
       >
         <div className="space-y-6">
-          {/* Booking Type */}
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-gray-800">Tipo de experiencia</h3>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -124,7 +122,6 @@ const FiltersDropdown = ({
 
           <Separator className="bg-gray-100" />
 
-          {/* Price Range */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-gray-800">Precio máximo</h3>
@@ -146,7 +143,6 @@ const FiltersDropdown = ({
 
           <Separator className="bg-gray-100" />
 
-          {/* Duration Range */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-gray-800">Duración máxima</h3>
@@ -168,7 +164,6 @@ const FiltersDropdown = ({
 
           <Separator className="bg-gray-100" />
 
-          {/* Categories */}
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-gray-800">Categorías</h3>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -191,7 +186,6 @@ const FiltersDropdown = ({
 
           <Separator className="bg-gray-100" />
 
-          {/* Reset and Apply buttons */}
           <div className="flex items-center justify-between pt-2">
             <Button 
               variant="ghost" 
