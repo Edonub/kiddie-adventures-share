@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -61,14 +62,14 @@ const Index = () => {
             </div>
             
             <div className="bg-white rounded-xl shadow-sm px-2 py-1 mb-2">
-              <div className="w-full overflow-x-auto scrollbar-none mb-1">
+              <div className="w-full overflow-x-auto scrollbar-none mb-0.5">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>
               
               <div className="w-full flex flex-wrap md:flex-nowrap items-center justify-between">
                 {isMobile ? (
                   <>
-                    <div className="flex items-center w-full mt-1">
+                    <div className="flex items-center w-full mt-0.5">
                       <div className="flex-shrink-0 mr-2">
                         <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                       </div>

@@ -19,7 +19,7 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
   const isMobile = useIsMobile();
   
   return (
-    <div className="border-b border-gray-200 mb-2 w-full">
+    <div className="border-b border-gray-200 mb-0.5 w-full">
       <div className="relative w-full">
         <ScrollArea className="w-full pb-1">
           <div className={isMobile 
