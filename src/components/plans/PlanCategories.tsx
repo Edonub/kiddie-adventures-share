@@ -44,8 +44,6 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Explora nuestros planes</h2>
-        
         <Tabs value={selectedCategory} onValueChange={handleCategoryChange} defaultValue="todos">
           <TabsList className="mb-6 flex flex-wrap">
             {planCategories.map((category) => {
