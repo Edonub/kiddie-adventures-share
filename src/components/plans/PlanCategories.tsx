@@ -42,57 +42,55 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
   };
 
   return (
-    <section className="py-8">
-      <div className="container mx-auto px-4">
-        <Tabs value={selectedCategory} onValueChange={handleCategoryChange} defaultValue="todos">
-          <TabsList className="mb-6 flex flex-wrap">
-            {planCategories.map((category) => {
-              const hasContent = categoryHasPlans(category.toLowerCase());
-              return (
-                <TabsTrigger 
-                  key={category} 
-                  value={category.toLowerCase()}
-                  disabled={!hasContent}
-                  className={!hasContent ? "opacity-50 cursor-not-allowed" : ""}
-                  onClick={(e) => handleTabClick(e, category)}
-                >
-                  <div className="flex items-center gap-2">
-                    <PlanCategoryIcon category={category} size={16} />
-                    <span>{category}</span>
-                  </div>
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
-          
-          {planCategories.map((category) => (
-            <TabsContent key={category} value={category.toLowerCase()} className="mt-2">
-              {isLoading ? (
-                <div className="flex justify-center items-center h-40">
-                  <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
+    <div>
+      <Tabs value={selectedCategory} onValueChange={handleCategoryChange} defaultValue="todos">
+        <TabsList className="mb-6 flex flex-wrap">
+          {planCategories.map((category) => {
+            const hasContent = categoryHasPlans(category.toLowerCase());
+            return (
+              <TabsTrigger 
+                key={category} 
+                value={category.toLowerCase()}
+                disabled={!hasContent}
+                className={!hasContent ? "opacity-50 cursor-not-allowed" : ""}
+                onClick={(e) => handleTabClick(e, category)}
+              >
+                <div className="flex items-center gap-2">
+                  <PlanCategoryIcon category={category} size={16} />
+                  <span>{category}</span>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getPlansByCategory(category.toLowerCase()).map((plan) => (
-                    <PropertyCard 
-                      key={plan.id}
-                      id={plan.id.toString()}
-                      title={plan.title}
-                      images={[plan.image_url]}
-                      location={plan.location || ""}
-                      host={"Anfitrión"}
-                      dates={"Fechas disponibles"}
-                      price={plan.price || 0}
-                      rating={4.5}
-                    />
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
-    </section>
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+        
+        {planCategories.map((category) => (
+          <TabsContent key={category} value={category.toLowerCase()} className="mt-2">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {getPlansByCategory(category.toLowerCase()).map((plan) => (
+                  <PropertyCard 
+                    key={plan.id}
+                    id={plan.id.toString()}
+                    title={plan.title}
+                    images={[plan.image_url]}
+                    location={plan.location || ""}
+                    host={"Anfitrión"}
+                    dates={"Fechas disponibles"}
+                    price={plan.price || 0}
+                    rating={4.5}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
   );
 };
 
