@@ -44,7 +44,7 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
   return (
     <div>
       <Tabs value={selectedCategory} onValueChange={handleCategoryChange} defaultValue="todos">
-        <TabsList className="mb-6 flex flex-wrap">
+        <TabsList className="mb-6 flex overflow-x-auto no-scrollbar pb-2 whitespace-nowrap w-full justify-start">
           {planCategories.map((category) => {
             const hasContent = categoryHasPlans(category.toLowerCase());
             return (
@@ -52,7 +52,7 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                 key={category} 
                 value={category.toLowerCase()}
                 disabled={!hasContent}
-                className={!hasContent ? "opacity-50 cursor-not-allowed" : ""}
+                className={`${!hasContent ? "opacity-50 cursor-not-allowed" : ""} flex-shrink-0 mx-1 first:ml-0`}
                 onClick={(e) => handleTabClick(e, category)}
               >
                 <div className="flex items-center gap-2">
