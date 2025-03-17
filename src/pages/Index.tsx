@@ -61,7 +61,7 @@ const Index = () => {
               <AirbnbSearchBar />
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm px-2 py-0.5 mb-2">
+            <div className="bg-white rounded-xl shadow-sm px-2 py-0.5 mb-1.5">
               <div className="w-full overflow-x-auto scrollbar-none mb-0">
                 <CategoryTabs categories={categories} activeCategory="beach" />
               </div>

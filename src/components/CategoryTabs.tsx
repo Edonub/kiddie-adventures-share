@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { ScrollArea } from "./ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CategoryItem {
@@ -23,7 +23,7 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
       <div className="relative w-full">
         <ScrollArea className="w-full pb-1">
           <div className={isMobile 
-            ? "flex overflow-x-auto py-1 w-full gap-1" 
+            ? "flex overflow-x-auto py-1 w-full gap-1 scrollbar-none" 
             : "flex justify-between py-1 w-full"
           }>
             {categories.map((category) => (
@@ -50,7 +50,6 @@ const CategoryTabs = ({ categories, activeCategory }: CategoryTabsProps) => {
               </Link>
             ))}
           </div>
-          {isMobile && <ScrollBar orientation="horizontal" />}
         </ScrollArea>
       </div>
     </div>
