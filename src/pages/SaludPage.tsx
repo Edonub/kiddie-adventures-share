@@ -89,19 +89,20 @@ const SaludPage = () => {
                 <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {healthPlans.map((plan) => (
-                  <PropertyCard 
-                    key={plan.id}
-                    id={plan.id.toString()}
-                    title={plan.title}
-                    images={[plan.image_url]}
-                    location={plan.location || ""}
-                    host={"Anfitrión"}
-                    dates={"Fechas disponibles"}
-                    price={plan.price || 0}
-                    rating={4.5}
-                  />
+                  <div className="max-w-sm" key={plan.id}>
+                    <PropertyCard 
+                      id={plan.id.toString()}
+                      title={plan.title}
+                      images={[plan.image_url]}
+                      location={plan.location || ""}
+                      host={"Anfitrión"}
+                      dates={"Fechas disponibles"}
+                      price={plan.price || 0}
+                      rating={4.5}
+                    />
+                  </div>
                 ))}
               </div>
             )}
