@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,7 +10,6 @@ import MapSearch from "@/components/map/MapSearch";
 import ViewSwitcher from "@/components/map/ViewSwitcher";
 import { properties } from "@/data/properties";
 import { useIsMobile } from "@/hooks/use-mobile";
-import BookingTypeSelector from "@/components/filters/BookingTypeSelector";
 import FiltersDropdown from "@/components/filters/FiltersDropdown";
 
 const Index = () => {
@@ -71,34 +69,30 @@ const Index = () => {
                 {isMobile ? (
                   <>
                     <div className="flex items-center w-full mt-1">
-                      <div className="flex-shrink-0 mr-3">
+                      <div className="flex-shrink-0 mr-2">
                         <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                       </div>
-                      <div className="flex-grow flex justify-center">
-                        <BookingTypeSelector 
+                      <div className="flex-grow flex justify-end">
+                        <FiltersDropdown 
+                          categories={categories}
+                          selectedCategories={selectedCategories}
+                          toggleCategory={toggleCategory}
+                          priceRange={priceRange}
+                          setPriceRange={setPriceRange}
+                          durationRange={durationRange}
+                          setDurationRange={setDurationRange}
+                          resetFilters={resetFilters}
+                          isMobile={isMobile}
                           bookingType={bookingType}
                           setBookingType={setBookingType}
                         />
                       </div>
                     </div>
-                    
-                    <div className="w-full flex justify-center mt-1">
-                      <FiltersDropdown 
-                        categories={categories}
-                        selectedCategories={selectedCategories}
-                        toggleCategory={toggleCategory}
-                        priceRange={priceRange}
-                        setPriceRange={setPriceRange}
-                        durationRange={durationRange}
-                        setDurationRange={setDurationRange}
-                        resetFilters={resetFilters}
-                        isMobile={isMobile}
-                      />
-                    </div>
                   </>
                 ) : (
                   <>
-                    <div className="flex-grow">
+                    <div className="flex-grow flex items-center gap-2">
+                      <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                       <FiltersSection 
                         categories={categories}
                         selectedCategories={selectedCategories}
@@ -110,10 +104,6 @@ const Index = () => {
                         durationRange={durationRange}
                         setDurationRange={setDurationRange}
                       />
-                    </div>
-                    
-                    <div className="ml-auto mt-1 md:mt-0 md:ml-4">
-                      <ViewSwitcher view={viewMode} onViewChange={setViewMode} />
                     </div>
                   </>
                 )}

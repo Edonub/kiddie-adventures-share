@@ -23,6 +23,8 @@ interface FiltersDropdownProps {
   setDurationRange: (range: number[]) => void;
   resetFilters: () => void;
   isMobile?: boolean;
+  bookingType: "all" | "free" | "paid";
+  setBookingType: (type: "all" | "free" | "paid") => void;
 }
 
 const FiltersDropdown = ({
@@ -34,7 +36,9 @@ const FiltersDropdown = ({
   durationRange,
   setDurationRange,
   resetFilters,
-  isMobile = false
+  isMobile = false,
+  bookingType,
+  setBookingType
 }: FiltersDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobileDevice = useIsMobile();
@@ -51,37 +55,23 @@ const FiltersDropdown = ({
     }
   };
 
-  const hasActiveFilters = selectedCategories.length > 0 || priceRange[0] < 200 || durationRange[0] < 180;
+  const hasActiveFilters = selectedCategories.length > 0 || priceRange[0] < 200 || durationRange[0] < 180 || bookingType !== "all";
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        {isMobile ? (
-          <Button 
-            variant="outline" 
-            className="h-10 w-10 py-2 px-2 rounded-full flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
-          >
-            <SlidersHorizontal size={16} />
-            {hasActiveFilters && (
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
-                {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0)}
-              </span>
-            )}
-          </Button>
-        ) : (
-          <Button 
-            variant="outline" 
-            className={`rounded-full p-2 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
-            size="icon"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            {hasActiveFilters && (
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
-                {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0)}
-              </span>
-            )}
-          </Button>
-        )}
+        <Button 
+          variant="outline" 
+          className={`rounded-full p-2 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 ${hasActiveFilters ? "text-familyxp-primary border-familyxp-primary/30" : "text-gray-600"}`}
+          size="icon"
+        >
+          <SlidersHorizontal className="h-4 w-4" />
+          {hasActiveFilters && (
+            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-familyxp-primary text-white text-xs flex items-center justify-center">
+              {selectedCategories.length + (priceRange[0] < 200 ? 1 : 0) + (durationRange[0] < 180 ? 1 : 0) + (bookingType !== "all" ? 1 : 0)}
+            </span>
+          )}
+        </Button>
       </PopoverTrigger>
       <PopoverContent 
         side="bottom" 
@@ -92,6 +82,48 @@ const FiltersDropdown = ({
         avoidCollisions={false}
       >
         <div className="space-y-6">
+          {/* Booking Type */}
+          <div className="space-y-3">
+            <h3 className="text-base font-semibold text-gray-800">Tipo de experiencia</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <Badge
+                variant={bookingType === "all" ? "default" : "secondary"}
+                onClick={() => setBookingType("all")}
+                className={`cursor-pointer transition-all duration-200 px-3 py-1.5 text-sm ${
+                  bookingType === "all"
+                    ? "bg-familyxp-primary text-white hover:bg-familyxp-primary/90"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Todos
+              </Badge>
+              <Badge
+                variant={bookingType === "free" ? "default" : "secondary"}
+                onClick={() => setBookingType("free")}
+                className={`cursor-pointer transition-all duration-200 px-3 py-1.5 text-sm ${
+                  bookingType === "free"
+                    ? "bg-familyxp-primary text-white hover:bg-familyxp-primary/90"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Gratis
+              </Badge>
+              <Badge
+                variant={bookingType === "paid" ? "default" : "secondary"}
+                onClick={() => setBookingType("paid")}
+                className={`cursor-pointer transition-all duration-200 px-3 py-1.5 text-sm ${
+                  bookingType === "paid"
+                    ? "bg-familyxp-primary text-white hover:bg-familyxp-primary/90"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Reservar
+              </Badge>
+            </div>
+          </div>
+
+          <Separator className="bg-gray-100" />
+
           {/* Price Range */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">

@@ -1,6 +1,5 @@
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import BookingTypeSelector from "./BookingTypeSelector";
 import FiltersDropdown from "./FiltersDropdown";
 import { Category } from "@/data/categories";
 
@@ -39,11 +38,6 @@ const FiltersSection = ({
 
   return (
     <div className={`flex flex-wrap gap-2 mt-1 sm:mt-0 items-center ${isMobile ? "" : "flex-grow"}`}>
-      <BookingTypeSelector 
-        bookingType={bookingType}
-        setBookingType={setBookingType}
-      />
-      
       <FiltersDropdown
         categories={categories}
         selectedCategories={selectedCategories}
@@ -54,6 +48,8 @@ const FiltersSection = ({
         setDurationRange={setDurationRange}
         resetFilters={resetFilters}
         isMobile={isMobile}
+        bookingType={bookingType}
+        setBookingType={setBookingType}
       />
     </div>
   );
