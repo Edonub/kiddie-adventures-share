@@ -52,12 +52,12 @@ const PlanCategories = ({ isLoading, recentPlans, plans }: PlanCategoriesProps) 
                 key={category} 
                 value={category.toLowerCase()}
                 disabled={!hasContent}
-                className={`${!hasContent ? "opacity-50 cursor-not-allowed" : ""} flex-shrink-0 mx-1 first:ml-0`}
+                className={`${!hasContent ? "opacity-50 cursor-not-allowed" : ""} flex-shrink-0 mx-1 first:ml-0 min-w-[70px]`}
                 onClick={(e) => handleTabClick(e, category)}
               >
-                <div className="flex items-center gap-2">
-                  <PlanCategoryIcon category={category} size={16} />
-                  <span>{category}</span>
+                <div className="flex flex-col items-center gap-1 py-1">
+                  <PlanCategoryIcon category={category} size={20} className="mb-1" />
+                  <span className="text-xs font-medium">{category}</span>
                 </div>
               </TabsTrigger>
             );
