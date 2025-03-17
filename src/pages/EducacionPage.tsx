@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useToast } from "@/components/ui/use-toast";
-import PlanCategories from "@/components/plans/PlanCategories";
+import { Loader2 } from "lucide-react";
+import PropertyCard from "@/components/PropertyCard";
 import type { Plan } from "@/components/plans/types";
 
 const EducacionPage = () => {
@@ -78,15 +79,35 @@ const EducacionPage = () => {
         <div className="py-8 bg-gray-50">
           <div className="container mx-auto px-4">
             <h1 className="text-3xl font-bold text-familyxp-primary mb-2">Educación Familiar</h1>
-            <p className="text-gray-600">Recursos y actividades educativas para toda la familia</p>
           </div>
         </div>
         
-        <PlanCategories 
-          isLoading={isLoading} 
-          recentPlans={educationPlans} 
-          plans={educationPlans} 
-        />
+        <section className="py-8">
+          <div className="container mx-auto px-4">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <Loader2 className="h-8 w-8 animate-spin text-familyxp-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {educationPlans.map((plan) => (
+                  <div key={plan.id}>
+                    <PropertyCard 
+                      id={plan.id.toString()}
+                      title={plan.title}
+                      images={[plan.image_url]}
+                      location={plan.location || ""}
+                      host={"Anfitrión"}
+                      dates={"Fechas disponibles"}
+                      price={plan.price || 0}
+                      rating={4.5}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
       </main>
       
       <Footer />
