@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Plane, LayoutGrid, Search } from "lucide-react";
+import { Plane, Heart, GraduationCap, MessageSquare, Podcast } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const BottomNavigation = () => {
@@ -9,8 +9,11 @@ const BottomNavigation = () => {
   
   const routes = [
     { name: "Planes", path: "/planes", icon: Plane },
-    { name: "Categorías", path: "/categorias", icon: LayoutGrid },
-    { name: "Buscar", path: "/buscar", icon: Search },
+    { name: "Salud", path: "/salud", icon: Heart },
+    { name: "Educación", path: "/educacion", icon: GraduationCap },
+    { name: "Foro", path: "/foro", icon: MessageSquare },
+    { name: "Podcast", path: "/podcast", icon: Podcast },
+    { name: "Viajes", path: "/viajes", icon: Plane }, // Using Plane icon again for Viajes
   ];
 
   return (
