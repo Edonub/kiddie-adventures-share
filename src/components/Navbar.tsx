@@ -6,6 +6,13 @@ import FamilyLogo from "./FamilyLogo";
 import DesktopNav from "./navbar/DesktopNav";
 import MobileNav from "./navbar/MobileNav";
 import MobileMenu from "./navbar/MobileMenu";
+import { Menu, X } from "lucide-react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,12 +56,31 @@ const Navbar = () => {
           {/* Desktop navigation */}
           <DesktopNav user={user} onSignOut={handleSignOut} />
 
-          {/* Mobile menu button */}
-          <MobileNav 
-            user={user} 
-            isMenuOpen={isMenuOpen} 
-            toggleMenu={toggleMenu} 
-          />
+          {/* Hamburger Menu */}
+          <div className="flex items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="p-2 rounded-full text-gray-700 hover:bg-gray-100 focus:outline-none transition-colors"
+                  aria-label="Menu"
+                >
+                  <Menu className="h-6 w-6" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link to="/configuracion/cuenta" className="w-full">
+                    Account Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/configuracion/posts" className="w-full">
+                    Post Settings
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         {/* Mobile menu, show/hide based on menu state */}

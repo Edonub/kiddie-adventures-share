@@ -49,6 +49,10 @@ const PlanesPage = () => {
             </div>
             
             <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="mb-4 flex justify-center">
+                <h1 className="text-xl font-medium text-gray-700">Plans Page</h1>
+              </div>
+              
               <PlanCategories 
                 isLoading={isLoading} 
                 recentPlans={plans} 
