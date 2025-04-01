@@ -7,10 +7,22 @@ import PlanCategories from "@/components/plans/PlanCategories";
 import { samplePlans } from "@/components/plans/types";
 import type { Plan } from "@/components/plans/types";
 import AirbnbSearchBar from "@/components/AirbnbSearchBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Plane } from "lucide-react";
+
+const categories = [
+  { id: 1, name: "Planes", icon: <Plane className="w-4 h-4 mr-1.5" /> },
+  { id: 2, name: "Todos" },
+  { id: 3, name: "Al aire libre" },
+  { id: 4, name: "Cultural" },
+  { id: 5, name: "Interior" },
+  { id: 6, name: "Comida y bebida" },
+];
 
 const PlanesPage = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<number>(1);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -48,11 +60,29 @@ const PlanesPage = () => {
               <AirbnbSearchBar />
             </div>
             
+            {/* Category Selection Bar */}
+            <div className="bg-white rounded-xl shadow-sm p-4 mb-4">
+              <ScrollArea className="w-full">
+                <div className="flex overflow-x-auto py-2 gap-2 scrollbar-none">
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category.id)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors flex items-center ${
+                        selectedCategory === category.id
+                          ? 'bg-familyxp-primary text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {category.icon}
+                      {category.name}
+                    </button>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+            
             <div className="bg-white rounded-xl shadow-sm p-4">
-              <div className="mb-4 flex justify-center">
-                <h1 className="text-xl font-medium text-gray-700">Plans Page</h1>
-              </div>
-              
               <PlanCategories 
                 isLoading={isLoading} 
                 recentPlans={plans} 
